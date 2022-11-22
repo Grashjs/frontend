@@ -13,6 +13,7 @@ import {
   Select,
   Tab,
   Tabs,
+  TextField,
   Typography,
   useTheme
 } from '@mui/material';
@@ -46,6 +47,7 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
   const [openAddCostModal, setOpenAddCostModal] = useState<boolean>(false);
   const [currentTab, setCurrentTab] = useState<string>('details');
   const [changingStatus, setChangingStatus] = useState<boolean>(false);
+  const [openSelectParts, setOpenSelectParts] = useState<boolean>(false);
   const dispatch = useDispatch();
   const workOrderStatuses = [
     { label: t('Open'), value: 'OPEN' },
@@ -422,17 +424,35 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
                     <ListItem
                       key={partQuantity.id}
                       secondaryAction={
-                        <Typography variant="h6">
-                          {partQuantity.part.quantity} *{' '}
-                          {partQuantity.part.cost} $
-                        </Typography>
+                        <Box
+                          display="flex"
+                          flexDirection="row"
+                          alignItems="center"
+                        >
+                          <TextField
+                            label={t('Quantity')}
+                            variant="outlined"
+                            sx={{ mr: 1 }}
+                            size="small"
+                          />
+                          <Typography variant="h6">
+                            {' * '}
+                            {partQuantity.part.cost} $
+                          </Typography>
+                        </Box>
                       }
                     >
                       <ListItemText
                         primary={
-                          <Typography variant="h6">
+                          <Link
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            href={`/app/inventory/parts/${partQuantity.part.id}`}
+                            key={partQuantity.part.id}
+                            variant="h6"
+                          >
                             {partQuantity.part.name}
-                          </Typography>
+                          </Link>
                         }
                         secondary={partQuantity.part.description}
                       />
@@ -460,6 +480,13 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
                     />
                   </ListItem>
                 </List>
+                <Button
+                  onClick={() => setOpenSelectParts(true)}
+                  variant="outlined"
+                  sx={{ mt: 1 }}
+                >
+                  Add Part
+                </Button>
               </Box>
             )}
             {!!workOrder.files.length && (

@@ -5,6 +5,7 @@ import {
   CircularProgress,
   Grid,
   IconButton,
+  Link,
   TextField,
   Typography
 } from '@mui/material';
@@ -36,6 +37,7 @@ import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone';
 import { useState } from 'react';
 import { getPriorityLabel } from '../../../../utils/formatters';
 import { getCategories } from '../../../../slices/category';
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 
 interface PropsType {
   fields: Array<IField>;
@@ -52,7 +54,8 @@ interface PropsType {
 export default (props: PropsType) => {
   const { t }: { t: any } = useTranslation();
   const shape: IHash<any> = {};
-  const [openTask, setOpenTask] = useState(false);
+  const [openSelectTasks, setOpenSelectTasks] = useState(false);
+  const [openSelectParts, setOpenSelectParts] = useState(false);
   const dispatch = useDispatch();
   const { customers } = useSelector((state) => state.customers);
   const { vendors } = useSelector((state) => state.vendors);
@@ -187,25 +190,54 @@ export default (props: PropsType) => {
         break;
       case 'part':
         return (
-          <SelectParts
-            selected={values?.map((value) => Number(value.value)) ?? []}
-            onChange={(newParts) => {
-              handleChange(formik, field.name, newParts);
-            }}
-          />
+          <>
+            <SelectParts
+              open={openSelectParts}
+              onClose={() => setOpenSelectParts(false)}
+              selected={values?.map((value) => Number(value.value)) ?? []}
+              onChange={(newParts) => {
+                handleChange(formik, field.name, newParts);
+              }}
+            />
+            <Box display="flex" flexDirection="column">
+              {values?.length
+                ? values.map((part) => (
+                    <Link
+                      sx={{ mb: 1 }}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`/app/inventory/parts/${part.id}`}
+                      key={part.id}
+                      variant="h4"
+                    >
+                      {part.name}
+                    </Link>
+                  ))
+                : null}
+            </Box>
+            <Button
+              startIcon={<AddTwoToneIcon />}
+              onClick={() => setOpenSelectParts(true)}
+            >
+              Add Parts
+            </Button>
+          </>
         );
       case 'task':
         return (
           <>
             <SelectTasksModal
-              open={openTask}
-              onClose={() => setOpenTask(false)}
+              open={openSelectTasks}
+              onClose={() => setOpenSelectTasks(false)}
               selected={values ?? []}
               onSelect={(tasks) => {
                 handleChange(formik, field.name, tasks);
               }}
             />
-            <Card onClick={() => setOpenTask(true)} sx={{ cursor: 'pointer' }}>
+            <Card
+              onClick={() => setOpenSelectTasks(true)}
+              sx={{ cursor: 'pointer' }}
+            >
               <Box
                 sx={{
                   p: 2,
