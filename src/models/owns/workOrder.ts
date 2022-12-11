@@ -1,31 +1,12 @@
-import { Audit } from './audit';
 import User, { users } from './user';
 import Request, { requests } from './request';
-import Team, { teams } from './team';
-import Asset, { assets } from './asset';
-import File, { files } from './file';
-import Location, { locations } from './location';
+import { teams } from './team';
+import { assets } from './asset';
+import { files } from './file';
+import { locations } from './location';
 import Category, { categories } from './category';
-import { UserMiniDTO } from '../user';
-import { CustomerMiniDTO, customers } from './customer';
+import { WorkOrderBase } from './workOrderBase';
 
-interface WorkOrderBase extends Audit {
-  dueDate: string;
-  status: string;
-  priority: string;
-  estimatedDuration: number;
-  description: string;
-  title: string;
-  requiredSignature: boolean;
-  location: Location;
-  team: Team;
-  primaryUser: User;
-  assignedTo: UserMiniDTO[];
-  files: File[];
-  image: File | null;
-  customers: CustomerMiniDTO[];
-  asset: Asset;
-}
 export default interface WorkOrder extends WorkOrderBase {
   category: Category | null;
   id: number;
@@ -33,6 +14,7 @@ export default interface WorkOrder extends WorkOrderBase {
   completedOn: string;
   archived: boolean;
   parentRequest: Request;
+  status: string;
   //parentPreventiveMaintenance:
 }
 
@@ -53,8 +35,8 @@ export const workOrders: WorkOrder[] = [
     requiredSignature: true,
     location: locations[0],
     team: teams[0],
-    primaryUser: users[0],
-    assignedTo: users,
+    primaryUser: null,
+    assignedTo: [],
     asset: assets[0],
     //parentPreventiveMaintenance:
     title: 'Work Order1',
@@ -62,7 +44,6 @@ export const workOrders: WorkOrder[] = [
     createdAt: 'fghb',
     createdBy: 1,
     updatedAt: 'string',
-    updatedBy: 1,
-    customers
+    updatedBy: 1
   }
 ];

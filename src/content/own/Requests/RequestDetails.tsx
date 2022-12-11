@@ -22,12 +22,14 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   getAssetUrl,
+  getCustomerUrl,
   getLocationUrl,
   getTeamUrl,
   getUserUrl
 } from '../../../utils/urlPaths';
 import useAuth from '../../../hooks/useAuth';
 import { PermissionEntity } from '../../../models/owns/role';
+import { isUser } from '../../../models/owns/worker';
 
 interface RequestDetailsProps {
   request: Request;
@@ -237,8 +239,17 @@ export default function RequestDetails({
                   >
                     {t('Assigned To')}
                   </Typography>
-                  <Link variant="h6" href={getUserUrl(request.primaryUser.id)}>
-                    {`${request.primaryUser.firstName} ${request.primaryUser.lastName}`}
+                  <Link
+                    variant="h6"
+                    href={
+                      isUser(request.primaryUser)
+                        ? getUserUrl(request.primaryUser.id)
+                        : getCustomerUrl(request.primaryUser.id)
+                    }
+                  >
+                    {isUser(request.primaryUser)
+                      ? `${request.primaryUser.firstName} ${request.primaryUser.lastName}`
+                      : request.primaryUser.name}
                   </Link>
                 </Grid>
               )}

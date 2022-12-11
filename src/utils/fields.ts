@@ -1,5 +1,6 @@
 import { WorkOrderBase } from 'src/models/owns/workOrderBase';
 import { getPriorityLabel } from './formatters';
+import { isUser } from '../models/owns/worker';
 
 export const getWOBaseFields = (t: any) => {
   return [
@@ -96,20 +97,18 @@ export const getWOBaseValues = <T extends WorkOrderBase>(t: any, entity: T) => {
       : null,
     primaryUser: entity?.primaryUser
       ? {
-          label: `${entity.primaryUser.firstName} ${entity.primaryUser.lastName}`,
+          label: isUser(entity.primaryUser)
+            ? `${entity.primaryUser.firstName} ${entity.primaryUser.lastName}`
+            : entity.primaryUser.name,
           value: entity.primaryUser.id.toString()
         }
       : null,
     assignedTo: entity?.assignedTo.map((worker) => {
       return {
-        label: `${worker.firstName} ${worker.lastName}`,
+        label: isUser(worker)
+          ? `${worker.firstName} ${worker.lastName}`
+          : worker.name,
         value: worker.id.toString()
-      };
-    }),
-    customers: entity?.customers.map((customer) => {
-      return {
-        label: customer.name,
-        value: customer.id.toString()
       };
     }),
     team: entity?.team

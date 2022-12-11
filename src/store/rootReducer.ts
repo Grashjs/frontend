@@ -30,6 +30,7 @@ import { reducer as fileReducer } from 'src/slices/file';
 import { reducer as subscriptionPlanReducer } from 'src/slices/subscriptionPlan';
 import { reducer as notificationReducer } from 'src/slices/notification';
 import { reducer as workOrderMeterTriggerReducer } from 'src/slices/workOrderMeterTrigger';
+import { reducer as workerReducer } from 'src/slices/worker';
 
 const rootReducer = combineReducers({
   calendar: calendarReducer,
@@ -62,7 +63,8 @@ const rootReducer = combineReducers({
   files: fileReducer,
   subscriptionPlans: subscriptionPlanReducer,
   notifications: notificationReducer,
-  workOrderMeterTriggers: workOrderMeterTriggerReducer
+  workOrderMeterTriggers: workOrderMeterTriggerReducer,
+  workers: workerReducer
 });
 
 export default rootReducer;

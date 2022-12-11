@@ -116,7 +116,6 @@ function WorkOrders() {
     values.team = formatSelect(values.team);
     values.asset = formatSelect(values.asset);
     values.assignedTo = formatSelectMultiple(values.assignedTo);
-    values.customers = formatSelectMultiple(values.customers);
     values.priority = values.priority?.value;
     values.requiredSignature = Array.isArray(values.requiredSignature)
       ? values?.requiredSignature.includes('on')
@@ -303,7 +302,8 @@ function WorkOrders() {
       field: 'completedOn',
       headerName: t('Completed On'),
       description: t('Completed On'),
-      width: 150
+      width: 150,
+      valueGetter: (params) => getFormattedDate(params.value)
     },
     {
       field: 'updatedAt',
@@ -369,20 +369,13 @@ function WorkOrders() {
       name: 'primaryUser',
       type: 'select',
       label: t('Primary Worker'),
-      type2: 'user'
+      type2: 'worker'
     },
     {
       name: 'assignedTo',
       type: 'select',
       label: t('Additional Workers'),
-      type2: 'user',
-      multiple: true
-    },
-    {
-      name: 'customers',
-      type: 'select',
-      label: t('Customers'),
-      type2: 'customer',
+      type2: 'worker',
       multiple: true
     },
     {

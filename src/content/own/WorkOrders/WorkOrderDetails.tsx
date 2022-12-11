@@ -64,10 +64,17 @@ import { CustomSnackBarContext } from '../../../contexts/CustomSnackBarContext';
 import { deleteRelation, getRelations } from '../../../slices/relation';
 import Relation, { relationTypes } from '../../../models/owns/relation';
 import { CompanySettingsContext } from '../../../contexts/CompanySettingsContext';
-import { getAssetUrl, getUserUrl } from '../../../utils/urlPaths';
+import {
+  getAssetUrl,
+  getCustomerUrl,
+  getUserUrl
+} from '../../../utils/urlPaths';
 import SignatureModal from './SignatureModal';
 import useAuth from '../../../hooks/useAuth';
 import { PermissionEntity } from '../../../models/owns/role';
+import { isCustomer, isUser } from '../../../models/owns/worker';
+import { Customer } from '../../../models/owns/customer';
+import { OwnUser } from '../../../models/user';
 
 interface WorkOrderDetailsProps {
   workOrder: WorkOrder;
@@ -563,56 +570,58 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
                   id={field.id}
                 />
               ))}
-              <Grid item xs={12} lg={6}>
-                <Typography
-                  variant="h6"
-                  sx={{ color: theme.colors.alpha.black[70] }}
-                >
-                  {t('Time')}
-                </Typography>
-                {openEditPrimaryTime ? (
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <TextField
-                      value={primaryTimeHours}
-                      type="number"
-                      onChange={(event) =>
-                        setPrimaryTimeHours(Number(event.target.value))
-                      }
-                    />
-                    <Typography variant="h6">h</Typography>
-                    <TextField
-                      value={primaryTimeMinutes}
-                      type="number"
-                      InputProps={{ inputProps: { min: 0, max: 59 } }}
-                      onChange={(event) =>
-                        setPrimaryTimeMinutes(Number(event.target.value))
-                      }
-                    />
-                    <Typography variant="h6">m</Typography>
-                    <Button
-                      startIcon={
-                        savingPrimaryTime ? (
-                          <CircularProgress size="1rem" />
-                        ) : null
-                      }
-                      disabled={savingPrimaryTime}
-                      variant="contained"
-                      onClick={onSavePrimaryTime}
-                    >
-                      {t('Save')}
-                    </Button>
-                  </Stack>
-                ) : (
+              {primaryTime && (
+                <Grid item xs={12} lg={6}>
                   <Typography
                     variant="h6"
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => setOpenEditPrimaryTime(true)}
-                    color="primary"
+                    sx={{ color: theme.colors.alpha.black[70] }}
                   >
-                    {durationToHours(primaryTime?.duration)}
+                    {t('Time')}
                   </Typography>
-                )}
-              </Grid>
+                  {openEditPrimaryTime ? (
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <TextField
+                        value={primaryTimeHours}
+                        type="number"
+                        onChange={(event) =>
+                          setPrimaryTimeHours(Number(event.target.value))
+                        }
+                      />
+                      <Typography variant="h6">h</Typography>
+                      <TextField
+                        value={primaryTimeMinutes}
+                        type="number"
+                        InputProps={{ inputProps: { min: 0, max: 59 } }}
+                        onChange={(event) =>
+                          setPrimaryTimeMinutes(Number(event.target.value))
+                        }
+                      />
+                      <Typography variant="h6">m</Typography>
+                      <Button
+                        startIcon={
+                          savingPrimaryTime ? (
+                            <CircularProgress size="1rem" />
+                          ) : null
+                        }
+                        disabled={savingPrimaryTime}
+                        variant="contained"
+                        onClick={onSavePrimaryTime}
+                      >
+                        {t('Save')}
+                      </Button>
+                    </Stack>
+                  ) : (
+                    <Typography
+                      variant="h6"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => setOpenEditPrimaryTime(true)}
+                      color="primary"
+                    >
+                      {durationToHours(primaryTime?.duration)}
+                    </Typography>
+                  )}
+                </Grid>
+              )}
               {!!workOrder.assignedTo.length && (
                 <Grid item xs={12} lg={6}>
                   <Typography
@@ -621,18 +630,21 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
                   >
                     Assigned To
                   </Typography>
-                  {workOrder.assignedTo.map((user, index) => (
-                    <Box key={user.id}>
-                      <Link
-                        href={getUserUrl(user.id)}
-                        variant="h6"
-                        fontWeight="bold"
-                      >{`${user.firstName} ${user.lastName}`}</Link>
-                    </Box>
-                  ))}
+                  {workOrder.assignedTo
+                    .filter((worker) => isUser(worker))
+                    .map((user: OwnUser, index) => (
+                      <Box key={user.id}>
+                        <Link
+                          href={getUserUrl(user.id)}
+                          variant="h6"
+                          fontWeight="bold"
+                        >{`${user.firstName} ${user.lastName}`}</Link>
+                      </Box>
+                    ))}
                 </Grid>
               )}
-              {!!workOrder.customers.length && (
+              {!!workOrder.assignedTo.filter((worker) => isCustomer(worker))
+                .length && (
                 <Grid item xs={12} lg={6}>
                   <Typography
                     variant="h6"
@@ -640,17 +652,19 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
                   >
                     {t('Customers')}
                   </Typography>
-                  {workOrder.customers.map((customer, index) => (
-                    <Box key={customer.id}>
-                      <Link
-                        href={`/app/vendors-customers/customers/${customer.id}`}
-                        variant="h6"
-                        fontWeight="bold"
-                      >
-                        {customer.name}
-                      </Link>
-                    </Box>
-                  ))}
+                  {workOrder.assignedTo
+                    .filter((worker) => isCustomer(worker))
+                    .map((customer: Customer, index) => (
+                      <Box key={customer.id}>
+                        <Link
+                          href={getCustomerUrl(customer.id)}
+                          variant="h6"
+                          fontWeight="bold"
+                        >
+                          {customer.name}
+                        </Link>
+                      </Box>
+                    ))}
                 </Grid>
               )}
             </Grid>

@@ -121,7 +121,15 @@ const ShowAsset = ({}: PropsType) => {
       name: 'model',
       type: 'text',
       label: t('Model'),
-      placeholder: t('Model')
+      placeholder: t('Model'),
+      midWidth: true
+    },
+    {
+      name: 'serialNumber',
+      type: 'text',
+      label: t('Serial Number'),
+      placeholder: t('Serial Number'),
+      midWidth: true
     },
     {
       name: 'category',

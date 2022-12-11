@@ -37,6 +37,8 @@ import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone';
 import { useState } from 'react';
 import { getPriorityLabel } from '../../../../utils/formatters';
 import { getCategories } from '../../../../slices/category';
+import { getWorkers } from '../../../../slices/worker';
+import { isUser } from '../../../../models/owns/worker';
 
 interface PropsType {
   fields: Array<IField>;
@@ -64,9 +66,13 @@ export default (props: PropsType) => {
   const { usersMini } = useSelector((state) => state.users);
   const { assetsMini } = useSelector((state) => state.assets);
   const { teamsMini } = useSelector((state) => state.teams);
+  const { workers } = useSelector((state) => state.workers);
 
   const fetchCustomers = async () => {
     if (!customersMini.length) dispatch(getCustomersMini());
+  };
+  const fetchWorkers = async () => {
+    if (!workers.length) dispatch(getWorkers());
   };
 
   const fetchVendors = async () => {
@@ -109,7 +115,7 @@ export default (props: PropsType) => {
     return formik.handleChange(field);
   };
 
-  const renderSelect = (formik, field) => {
+  const renderSelect = (formik, field: IField) => {
     let options = field.items;
     let loading = field.loading;
     let onOpen = field.onPress;
@@ -134,6 +140,17 @@ export default (props: PropsType) => {
           };
         });
         onOpen = fetchVendors;
+        break;
+      case 'worker':
+        options = workers.map((worker) => {
+          return {
+            label: isUser(worker)
+              ? `${worker.firstName} ${worker.lastName}`
+              : worker.name,
+            value: worker.id
+          };
+        });
+        onOpen = fetchWorkers;
         break;
       case 'user':
         options = usersMini.map((user) => {

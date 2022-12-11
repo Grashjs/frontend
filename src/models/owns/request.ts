@@ -2,11 +2,9 @@ import { assets } from './asset';
 import { files } from './file';
 import WorkOrder, { workOrders } from './workOrder';
 import { locations } from './location';
-import { users } from './user';
 import { teams } from './team';
 import { WorkOrderBase } from './workOrderBase';
 import { categories } from './category';
-import { customers } from './customer';
 
 export default interface Request extends WorkOrderBase {
   cancelled: boolean;
@@ -23,17 +21,18 @@ export const requests: Request[] = [
     files: [],
     asset: assets[0],
     location: locations[0],
-    primaryUser: users[0],
+    primaryUser: null,
     dueDate: 'dsds',
     category: categories[0],
     team: teams[0],
     assignedTo: [],
-    customers: customers,
     description: 'jvjhbh',
     priority: 'HIGH',
     createdAt: 'fghb',
     createdBy: 1,
     updatedAt: 'string',
-    updatedBy: 1
+    updatedBy: 1,
+    estimatedDuration: 4,
+    requiredSignature: false
   }
 ];

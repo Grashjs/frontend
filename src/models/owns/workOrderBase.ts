@@ -1,10 +1,9 @@
 import File from './file';
 import { AssetMiniDTO } from './asset';
 import { LocationMiniDTO } from './location';
-import { UserMiniDTO } from '../user';
 import Team from './team';
 import { Audit } from './audit';
-import { CustomerMiniDTO } from './customer';
+import { Worker } from './worker';
 import Category from './category';
 
 export interface WorkOrderBase extends Audit {
@@ -15,11 +14,12 @@ export interface WorkOrderBase extends Audit {
   image: File;
   asset: AssetMiniDTO;
   location: LocationMiniDTO;
-  primaryUser: UserMiniDTO;
-  assignedTo: UserMiniDTO[];
-  customers: CustomerMiniDTO[];
+  estimatedDuration: number;
+  primaryUser: Worker;
+  assignedTo: Worker[];
   dueDate: string;
   category: Category | null;
   team: Team;
   files: File[];
+  requiredSignature: boolean;
 }

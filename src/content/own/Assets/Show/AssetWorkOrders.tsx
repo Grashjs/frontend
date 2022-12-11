@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { getAssetWorkOrders } from '../../../../slices/asset';
 import { getStatusLabel } from '../../../../utils/formatters';
 import { useNavigate } from 'react-router-dom';
+import { isUser } from '../../../../models/owns/worker';
 
 interface PropsType {
   asset: Asset;
@@ -57,7 +58,9 @@ const AssetWorkOrders = ({ asset }: PropsType) => {
                   </Typography>
                   <Typography variant="h6">
                     {workOrder.primaryUser
-                      ? `${workOrder.primaryUser.firstName} ${workOrder.primaryUser.lastName}`
+                      ? isUser(workOrder.primaryUser)
+                        ? `${workOrder.primaryUser.firstName} ${workOrder.primaryUser.lastName}`
+                        : workOrder.primaryUser.name
                       : t('No primary User')}
                   </Typography>
                   <Typography variant="h6">
