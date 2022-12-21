@@ -28,3 +28,9 @@ export const googleMapsConfig = {
   apiKey: 'AIzaSyBGk5a8ivYnqF3jFQQONB2OfCaroDGnNwM'
 };
 export const apiUrl = process.env.REACT_APP_API_URL;
+export const frontendUrl = 'http://localhost:3000';
+export const OAUTH2_REDIRECT_URI = `${frontendUrl}/oauth2/redirect`;
+export const googleAuthUrl =
+  apiUrl + 'oauth2/authorize/google?redirect_uri=' + OAUTH2_REDIRECT_URI;
+export const wso2AuthUrl =
+  apiUrl + 'oauth2/authorize/wso2?redirect_uri=' + OAUTH2_REDIRECT_URI;

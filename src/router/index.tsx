@@ -21,6 +21,8 @@ import managementRoutes from './management';
 import documentationRoutes from './documentation';
 import accountRoutes from './account';
 import baseRoutes from './base';
+import Oauth2RedirectHandler from '../content/own/Oauth2/Oauth2RedirectHandler';
+import Guest from 'src/components/Guest';
 
 const router: RouteObject[] = [
   {
@@ -47,6 +49,14 @@ const router: RouteObject[] = [
     path: 'docs',
     element: <DocsLayout />,
     children: documentationRoutes
+  },
+  {
+    path: 'oauth2/redirect',
+    element: (
+      <Guest>
+        <Oauth2RedirectHandler />
+      </Guest>
+    )
   },
 
   // Boxed Sidebar Layout

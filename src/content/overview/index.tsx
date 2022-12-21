@@ -1,11 +1,12 @@
 import { Box, Button, Card, Container, styled } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import Logo from 'src/components/LogoSign';
 import Hero from './Hero';
 import Highlights from './Highlights';
 import LanguageSwitcher from 'src/layouts/BoxedSidebarLayout/Header/Buttons/LanguageSwitcher';
+import { wso2AuthUrl } from '../../config';
 
 const HeaderWrapper = styled(Card)(
   ({ theme }) => `
@@ -28,6 +29,7 @@ const OverviewWrapper = styled(Box)(
 
 function Overview() {
   const { t }: { t: any } = useTranslation();
+  const navigate = useNavigate();
 
   return (
     <OverviewWrapper>
@@ -58,8 +60,9 @@ function Overview() {
                   {t('Log In')}
                 </Button>
                 <Button
-                  component={RouterLink}
-                  to="/account/register"
+                  onClick={() => {
+                    window.location.href = wso2AuthUrl;
+                  }}
                   variant="contained"
                   sx={{
                     ml: 2

@@ -470,17 +470,11 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     dispatch({ type: 'LOGOUT' });
   };
 
-  const register = async (values): Promise<boolean> => {
-    const response = await api.post<{ message: string; success: boolean }>(
-      'auth/signup',
-      values,
-      { headers: authHeader(true) }
-    );
-    const { message, success } = response;
-    if (message.startsWith('Successful')) {
+  const register = async (token): Promise<boolean> => {
+    if (!token) {
       return false;
     } else {
-      setSession(message);
+      setSession(token);
       const user = await updateUserInfos();
       const company = await api.get<Company>(`companies/${user.companyId}`);
       await setupUser(company.companySettings);
