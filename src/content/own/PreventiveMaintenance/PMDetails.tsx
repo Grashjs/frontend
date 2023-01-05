@@ -92,7 +92,7 @@ export default function PMDetails({
     },
     {
       label: t('Category'),
-      value: preventiveMaintenance?.category.name
+      value: preventiveMaintenance?.category?.name
     }
   ];
   return (

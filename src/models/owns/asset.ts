@@ -14,6 +14,7 @@ export default interface Asset extends Audit {
   description: string;
 }
 
+export type AssetStatus = 'OPERATIONAL' | 'DOWN';
 export interface AssetDTO extends Audit {
   id: number;
   name: string;
@@ -22,7 +23,7 @@ export interface AssetDTO extends Audit {
   area: string;
   model: string;
   serialNumber: string;
-  status: 'OPERATIONAL' | 'DOWN';
+  status: AssetStatus;
   barCode: string;
   category: Category;
   description: string;

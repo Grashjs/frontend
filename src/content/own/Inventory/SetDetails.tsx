@@ -30,8 +30,8 @@ export default function SetDetails(props: PartDetailsProps) {
   const { set, handleOpenUpdate, handleOpenDelete } = props;
   const { t }: { t: any } = useTranslation();
   const theme = useTheme();
-  const { hasEditPermission, hasDeletePermission, companySettings } = useAuth();
-  const { generalPreferences } = companySettings;
+  const { hasEditPermission, hasDeletePermission } = useAuth();
+  const { getFormattedCurrency } = useContext(CompanySettingsContext);
   const { getFormattedDate } = useContext(CompanySettingsContext);
 
   return (
@@ -81,7 +81,7 @@ export default function SetDetails(props: PartDetailsProps) {
             <ListItemButton key={part.id} divider>
               <ListItem
                 secondaryAction={
-                  <Typography>{`${part.cost} ${generalPreferences.currency.code}`}</Typography>
+                  <Typography>{getFormattedCurrency(part.cost)}</Typography>
                 }
               >
                 <ListItemText
@@ -100,8 +100,9 @@ export default function SetDetails(props: PartDetailsProps) {
             </Typography>
           </Box>
           <Typography variant="h6" sx={{ pr: 2 }}>
-            {set?.parts.reduce((acc, part) => acc + part.cost, 0)}{' '}
-            {generalPreferences.currency.code}
+            {getFormattedCurrency(
+              set?.parts.reduce((acc, part) => acc + part.cost, 0)
+            )}
           </Typography>
         </Box>
       </Grid>

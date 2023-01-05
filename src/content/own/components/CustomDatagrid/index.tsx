@@ -3,7 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { Stack, Typography, useTheme } from '@mui/material';
 import gridLocaleText from './GridLocaleText';
 
-interface CustomDatagridProps extends DataGridProProps {}
+interface CustomDatagridProps extends DataGridProProps {
+  notClickable?: boolean;
+}
 
 function CustomDataGrid(props: CustomDatagridProps) {
   const { t }: { t: any } = useTranslation();
@@ -26,7 +28,7 @@ function CustomDataGrid(props: CustomDatagridProps) {
           backgroundColor: theme.colors.alpha.black[10]
         },
         '.MuiDataGrid-row': {
-          cursor: 'pointer'
+          cursor: props.notClickable ? 'auto' : 'pointer'
         }
       }}
       components={{

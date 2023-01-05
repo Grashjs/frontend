@@ -85,9 +85,17 @@ export const durationToHours = (duration: number) => {
   ret += '' + secs;
   return ret;
 };
-export const getHoursAndMinutes = (duration: number): [number, number] => {
+export const getHoursAndMinutesAndSeconds = (
+  duration: number
+): [number, number, number] => {
   // Hours, minutes and seconds
   const hrs = ~~(duration / 3600);
   const mins = ~~((duration % 3600) / 60);
-  return [hrs, mins];
+  var secs = ~~duration % 60;
+  return [hrs, mins, secs];
+};
+
+export const getHMSString = (duration: number): string => {
+  const [hrs, mins, secs] = getHoursAndMinutesAndSeconds(duration);
+  return `${hrs}h ${mins}m ${secs}s`;
 };

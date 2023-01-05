@@ -19,6 +19,7 @@ type CompanySettingsContext = {
     defaultFields: Array<IField>,
     defaultShape: { [key: string]: any }
   ) => [Array<IField>, { [key: string]: any }];
+  getFormattedCurrency: (amount: number | string) => string;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
@@ -29,7 +30,10 @@ export const CompanySettingsContext = createContext<CompanySettingsContext>(
 export const CompanySettingsProvider: FC = ({ children }) => {
   const { companySettings, getFilteredFields } = useAuth();
   const dispatch = useDispatch();
-  const { generalPreferences } = companySettings ?? { dateFormat: 'DDMMYY' };
+  const { generalPreferences } = companySettings ?? {
+    dateFormat: 'DDMMYY',
+    currency: { code: '$' }
+  };
   const { usersMini } = useSelector((state) => state.users);
   const { workOrderConfiguration } = companySettings ?? {
     workOrderFieldConfigurations: []
@@ -51,7 +55,13 @@ export const CompanySettingsProvider: FC = ({ children }) => {
       return month + '/' + day + '/' + year + ' ' + time;
     } else return day + '/' + month + '/' + year + ' ' + time;
   };
-
+  const getFormattedCurrency = (amount: number): string => {
+    const code = generalPreferences.currency.code;
+    const currenciesToReverse = ['$'];
+    return currenciesToReverse.includes(code)
+      ? `${code} ${amount} `
+      : `${amount} ${code}`;
+  };
   const uploadFiles = async (
     files: [],
     images: []
@@ -163,7 +173,8 @@ export const CompanySettingsProvider: FC = ({ children }) => {
         getFormattedDate,
         uploadFiles,
         getUserNameById,
-        getWOFieldsAndShapes
+        getWOFieldsAndShapes,
+        getFormattedCurrency
       }}
     >
       {children}

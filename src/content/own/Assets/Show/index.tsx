@@ -35,6 +35,7 @@ import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import ConfirmDialog from '../../components/ConfirmDialog';
 import AssetMeters from './AssetMeters';
 import { getImageAndFiles } from '../../../../utils/overall';
+import AssetDowntimes from './AssetDowntimes';
 
 interface PropsType {}
 
@@ -81,7 +82,8 @@ const ShowAsset = ({}: PropsType) => {
     { value: 'details', label: t('Details') },
     { value: 'parts', label: t('Parts') },
     { value: 'files', label: t('Files') },
-    { value: 'meters', label: t('Meters') }
+    { value: 'meters', label: t('Meters') },
+    { value: 'downtimes', label: t('Downtimes') }
   ];
   const tabIndex = tabs.findIndex((tab) => tab.value === arr[arr.length - 1]);
   const onDeleteSuccess = () => {
@@ -401,8 +403,10 @@ const ShowAsset = ({}: PropsType) => {
             <AssetParts asset={asset} />
           ) : tabIndex === 3 ? (
             <AssetFiles asset={asset} />
+          ) : tabIndex === 4 ? (
+            <AssetMeters asset={asset} />
           ) : (
-            tabIndex === 4 && <AssetMeters asset={asset} />
+            tabIndex === 5 && <AssetDowntimes asset={asset} />
           )
         ) : null}
         <ConfirmDialog

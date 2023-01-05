@@ -18,7 +18,7 @@ import { reducer as categoryReducer } from 'src/slices/category';
 import { reducer as multiPartsReducer } from 'src/slices/multipart';
 import { reducer as checklistReducer } from 'src/slices/checklist';
 import { reducer as partQuantityReducer } from 'src/slices/partQuantity';
-import { reducer as additionalTimeReducer } from 'src/slices/additionalTime';
+import { reducer as laborReducer } from 'src/slices/labor';
 import { reducer as additionalCostReducer } from 'src/slices/additionalCost';
 import { reducer as taskReducer } from 'src/slices/task';
 import { reducer as floorPlanReducer } from 'src/slices/floorPlan';
@@ -31,6 +31,9 @@ import { reducer as subscriptionPlanReducer } from 'src/slices/subscriptionPlan'
 import { reducer as notificationReducer } from 'src/slices/notification';
 import { reducer as workOrderMeterTriggerReducer } from 'src/slices/workOrderMeterTrigger';
 import { reducer as preventiveMaintenanceReducer } from 'src/slices/preventiveMaintenance';
+import { reducer as assetDowntimeReducer } from 'src/slices/assetDowntime';
+import { reducer as woAnalyticsReducer } from 'src/slices/analytics/workOrder';
+import { reducer as assetAnalyticsReducer } from 'src/slices/analytics/asset';
 
 const rootReducer = combineReducers({
   calendar: calendarReducer,
@@ -52,7 +55,7 @@ const rootReducer = combineReducers({
   multiParts: multiPartsReducer,
   checklists: checklistReducer,
   partQuantities: partQuantityReducer,
-  additionalTimes: additionalTimeReducer,
+  labors: laborReducer,
   additionalCosts: additionalCostReducer,
   tasks: taskReducer,
   floorPlans: floorPlanReducer,
@@ -64,7 +67,10 @@ const rootReducer = combineReducers({
   subscriptionPlans: subscriptionPlanReducer,
   notifications: notificationReducer,
   workOrderMeterTriggers: workOrderMeterTriggerReducer,
-  preventiveMaintenances: preventiveMaintenanceReducer
+  preventiveMaintenances: preventiveMaintenanceReducer,
+  downtimes: assetDowntimeReducer,
+  woAnalytics: woAnalyticsReducer,
+  assetAnalytics: assetAnalyticsReducer
 });
 
 export default rootReducer;

@@ -51,9 +51,8 @@ import Category from '../../../models/owns/category';
 function PurchaseOrders() {
   const { t }: { t: any } = useTranslation();
   const { setTitle } = useContext(TitleContext);
-  const { getFormattedDate, getUserNameById } = useContext(
-    CompanySettingsContext
-  );
+  const { getFormattedDate, getUserNameById, getFormattedCurrency } =
+    useContext(CompanySettingsContext);
   const navigate = useNavigate();
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
@@ -61,13 +60,7 @@ function PurchaseOrders() {
     (state) => state.partQuantities
   );
   const { purchaseOrderId } = useParams();
-  const {
-    hasViewPermission,
-    hasCreatePermission,
-    hasFeature,
-    companySettings
-  } = useAuth();
-  const { generalPreferences } = companySettings;
+  const { hasViewPermission, hasCreatePermission, hasFeature } = useAuth();
   const dispatch = useDispatch();
   const [openDelete, setOpenDelete] = useState<boolean>(false);
   const { purchaseOrders, loadingGet } = useSelector(
@@ -171,10 +164,12 @@ function PurchaseOrders() {
       headerName: t('Total Cost'),
       description: t('Total Cost'),
       width: 150,
-      valueGetter: (params: GridRenderCellParams<null, PurchaseOrder>) => `
-        ${params.row.partQuantities.reduce((acc, partQuantity) => {
-          return acc + partQuantity.part.cost * partQuantity.quantity;
-        }, 0)} ${generalPreferences.currency.code}`
+      valueGetter: (params: GridRenderCellParams<null, PurchaseOrder>) =>
+        getFormattedCurrency(
+          params.row.partQuantities.reduce((acc, partQuantity) => {
+            return acc + partQuantity.part.cost * partQuantity.quantity;
+          }, 0)
+        )
     },
     {
       field: 'totalQuantity',

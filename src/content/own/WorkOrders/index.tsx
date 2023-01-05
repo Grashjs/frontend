@@ -197,13 +197,6 @@ function WorkOrders() {
   const onDeleteFailure = (err) =>
     showSnackBar(t("The Work Order couldn't be deleted"), 'error');
 
-  const workOrderStatuses = [
-    { label: t('Open'), value: 'OPEN' },
-    { label: t('In Progress'), value: 'IN_PROGRESS' },
-    { label: t('On Hold'), value: 'ON_HOLD' },
-    { label: t('Complete'), value: 'COMPLETE' }
-  ];
-
   const columns: GridEnrichedColDef[] = [
     {
       field: 'id',
@@ -229,13 +222,7 @@ function WorkOrders() {
                 : 'secondary'
             }
           />
-          <Typography sx={{ ml: 1 }}>
-            {
-              workOrderStatuses.find(
-                (workOrderStatus) => workOrderStatus.value === params.value
-              ).label
-            }
-          </Typography>
+          <Typography sx={{ ml: 1 }}>{t(params.value)}</Typography>
         </Box>
       )
     },
@@ -391,7 +378,7 @@ function WorkOrders() {
     {
       name: 'estimatedDuration',
       type: 'number',
-      label: t('Estimated Duration'),
+      label: t('Estimated Duration in Hours'),
       placeholder: t('Hours')
     },
     {

@@ -140,7 +140,7 @@ export const addAsset =
     dispatch(slice.actions.addAsset({ asset: assetResponse }));
   };
 export const editAsset =
-  (id: number, asset): AppThunk =>
+  (id: number, asset: Partial<AssetDTO>): AppThunk =>
   async (dispatch) => {
     const assetResponse = await api.patch<AssetDTO>(`${basePath}/${id}`, asset);
     dispatch(slice.actions.editAsset({ asset: assetResponse }));

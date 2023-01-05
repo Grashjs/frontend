@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import { IField } from '../type';
 import { formatSelect } from '../../../utils/formatters';
 import { useDispatch } from '../../../store';
-import { createAdditionalTime } from '../../../slices/additionalTime';
+import { createLabor } from '../../../slices/labor';
 import useAuth from '../../../hooks/useAuth';
 import FeatureErrorMessage from '../components/FeatureErrorMessage';
 import { PlanFeature } from '../../../models/owns/subscriptionPlan';
@@ -116,8 +116,10 @@ export default function AddTimeModal({
               formattedValues.timeCategory = formatSelect(
                 formattedValues.timeCategory
               );
+              formattedValues.duration =
+                values.hours * 3600 + values.minutes * 60;
               return dispatch(
-                createAdditionalTime(workOrderId, formattedValues)
+                createLabor(workOrderId, formattedValues)
               ).finally(() => onClose());
             }}
           />

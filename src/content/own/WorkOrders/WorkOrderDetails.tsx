@@ -44,14 +44,17 @@ import {
   editWOPartQuantities,
   getPartQuantitiesByWorkOrder
 } from '../../../slices/partQuantity';
-import AdditionalTime from '../../../models/owns/additionalTime';
+import Labor from '../../../models/owns/labor';
 import {
   controlTimer,
-  deleteAdditionalTime,
-  editAdditionalTime,
-  getAdditionalTimes
-} from '../../../slices/additionalTime';
-import { durationToHours, getHoursAndMinutes } from '../../../utils/formatters';
+  deleteLabor,
+  editLabor,
+  getLabors
+} from '../../../slices/labor';
+import {
+  durationToHours,
+  getHoursAndMinutesAndSeconds
+} from '../../../utils/formatters';
 import {
   deleteAdditionalCost,
   getAdditionalCosts
@@ -83,9 +86,8 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
   const { workOrder, onEdit, tasks, onDelete } = props;
   const theme = useTheme();
   const { showSnackBar } = useContext(CustomSnackBarContext);
-  const { getFormattedDate, getUserNameById } = useContext(
-    CompanySettingsContext
-  );
+  const { getFormattedDate, getUserNameById, getFormattedCurrency } =
+    useContext(CompanySettingsContext);
   const { t }: { t: any } = useTranslation();
   const { user, hasEditPermission, hasDeletePermission } = useAuth();
 
@@ -100,17 +102,16 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
   );
   const partQuantities = partQuantitiesByWorkOrder[workOrder.id] ?? [];
   const [controllingTime, setControllingTime] = useState<boolean>(false);
-  const { timesByWorkOrder } = useSelector((state) => state.additionalTimes);
+  const { timesByWorkOrder } = useSelector((state) => state.labors);
   const { workOrderHistories } = useSelector(
     (state) => state.workOrderHistories
   );
   const { relationsByWorkOrder } = useSelector((state) => state.relations);
   const currentWorkOrderHistories = workOrderHistories[workOrder.id] ?? [];
   const currentWorkOrderRelations = relationsByWorkOrder[workOrder.id] ?? [];
-  const additionalTimes = timesByWorkOrder[workOrder.id] ?? [];
-  const primaryTime = additionalTimes.find(
-    (additionalTime) =>
-      additionalTime.primaryTime && additionalTime.assignedTo.id === user.id
+  const labors = timesByWorkOrder[workOrder.id] ?? [];
+  const primaryTime = labors.find(
+    (labor) => labor.logged && labor.assignedTo.id === user.id
   );
   const runningTimer = primaryTime?.status === 'RUNNING';
   const { costsByWorkOrder } = useSelector((state) => state.additionalCosts);
@@ -167,13 +168,15 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
   };
   useEffect(() => {
     dispatch(getPartQuantitiesByWorkOrder(workOrder.id));
-    dispatch(getAdditionalTimes(workOrder.id));
+    dispatch(getLabors(workOrder.id));
     dispatch(getAdditionalCosts(workOrder.id));
     dispatch(getTasks(workOrder.id));
     dispatch(getRelations(workOrder.id));
   }, []);
   useEffect(() => {
-    const [hours, minutes] = getHoursAndMinutes(primaryTime?.duration);
+    const [hours, minutes] = getHoursAndMinutesAndSeconds(
+      primaryTime?.duration
+    );
     setPrimaryTimeHours(hours);
     setPrimaryTimeMinutes(minutes);
   }, [primaryTime]);
@@ -198,9 +201,9 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
       },
       {
         name: 'completeTime',
-        condition: additionalTimes
-          .filter((additionalTime) => additionalTime.primaryTime)
-          .some((additionalTime) => !additionalTime.duration),
+        condition: labors
+          .filter((labor) => labor.logged)
+          .some((labor) => !labor.duration),
         message: 'You must log time'
       },
       {
@@ -315,13 +318,9 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
 
     return result;
   };
-  const getAdditionalTimeCost = (additionalTime: AdditionalTime): number => {
-    return Number(
-      (
-        additionalTime.hourlyRate *
-        (additionalTime.hours + additionalTime.minutes / 60)
-      ).toFixed(2)
-    );
+  const getLaborCost = (labor: Labor): number => {
+    const [hours, minutes] = getHoursAndMinutesAndSeconds(labor.duration);
+    return Number((labor.hourlyRate * (hours + minutes / 60)).toFixed(2));
   };
   const workOrderStatuses = [
     { label: t('Open'), value: 'OPEN' },
@@ -348,7 +347,7 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
     setSavingPrimaryTime(true);
     const duration = primaryTimeHours * 3600 + primaryTimeMinutes * 60;
     dispatch(
-      editAdditionalTime(primaryTime.id, workOrder.id, {
+      editLabor(primaryTime.id, workOrder.id, {
         ...primaryTime,
         duration
       })
@@ -835,9 +834,7 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
               <Typography sx={{ mt: 2, mb: 1 }} variant="h3">
                 Labors
               </Typography>
-              {!additionalTimes.filter(
-                (additionalTime) => !additionalTime.primaryTime
-              ).length ? (
+              {!labors.filter((labor) => !labor.logged).length ? (
                 <Typography sx={{ color: theme.colors.alpha.black[70] }}>
                   {t(
                     "No labor costs have been added yet. They'll show up here when a user logs time and has an hourly rate stored in Grash."
@@ -845,11 +842,11 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
                 </Typography>
               ) : (
                 <List>
-                  {additionalTimes
-                    .filter((additionalTime) => !additionalTime.primaryTime)
-                    .map((additionalTime) => (
+                  {labors
+                    .filter((labor) => !labor.logged)
+                    .map((labor) => (
                       <ListItem
-                        key={additionalTime.id}
+                        key={labor.id}
                         secondaryAction={
                           <Box
                             sx={{
@@ -860,7 +857,7 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
                             }}
                           >
                             <Typography variant="h6">
-                              {getAdditionalTimeCost(additionalTime)} $
+                              {getFormattedCurrency(getLaborCost(labor))}
                             </Typography>
                             {hasEditPermission(
                               PermissionEntity.WORK_ORDERS,
@@ -869,12 +866,7 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
                               <IconButton
                                 sx={{ ml: 1 }}
                                 onClick={() =>
-                                  dispatch(
-                                    deleteAdditionalTime(
-                                      workOrder.id,
-                                      additionalTime.id
-                                    )
-                                  )
+                                  dispatch(deleteLabor(workOrder.id, labor.id))
                                 }
                               >
                                 <DeleteTwoToneIcon
@@ -889,21 +881,23 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
                         <ListItemText
                           primary={
                             <>
-                              {additionalTime.assignedTo ? (
+                              {labor.assignedTo ? (
                                 <Link
-                                  href={getUserUrl(
-                                    additionalTime.assignedTo.id
-                                  )}
+                                  href={getUserUrl(labor.assignedTo.id)}
                                   variant="h6"
                                 >
-                                  {`${additionalTime.assignedTo.firstName} ${additionalTime.assignedTo.lastName}`}
+                                  {`${labor.assignedTo.firstName} ${labor.assignedTo.lastName}`}
                                 </Link>
                               ) : (
                                 <Typography>{t('Not Assigned')}</Typography>
                               )}
                             </>
                           }
-                          secondary={`${additionalTime.hours}h ${additionalTime.minutes}m`}
+                          secondary={`${
+                            getHoursAndMinutesAndSeconds(labor.duration)[0]
+                          }h ${
+                            getHoursAndMinutesAndSeconds(labor.duration)[1]
+                          }m`}
                         />
                       </ListItem>
                     ))}
@@ -911,14 +905,12 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
                     secondaryAction={
                       <Box>
                         <Typography variant="h6" fontWeight="bold">
-                          {additionalTimes
-                            .filter(
-                              (additionalTime) => !additionalTime.primaryTime
-                            )
+                          {labors
+                            .filter((labor) => !labor.logged)
                             .reduce(
-                              (acc, additionalTime) =>
-                                additionalTime.includeToTotalTime
-                                  ? acc + getAdditionalTimeCost(additionalTime)
+                              (acc, labor) =>
+                                labor.includeToTotalTime
+                                  ? acc + getLaborCost(labor)
                                   : acc,
                               0
                             )}{' '}
@@ -971,7 +963,7 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
                           }}
                         >
                           <Typography variant="h6">
-                            {`${additionalCost.cost} ${generalPreferences.currency.code}`}
+                            {getFormattedCurrency(additionalCost.cost)}
                           </Typography>
                           {hasEditPermission(
                             PermissionEntity.WORK_ORDERS,
@@ -1010,14 +1002,15 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
                   <ListItem
                     secondaryAction={
                       <Typography variant="h6" fontWeight="bold">
-                        {additionalCosts.reduce(
-                          (acc, additionalCost) =>
-                            additionalCost.includeToTotalCost
-                              ? acc + additionalCost.cost
-                              : acc,
-                          0
-                        )}{' '}
-                        {generalPreferences.currency.code}
+                        {getFormattedCurrency(
+                          additionalCosts.reduce(
+                            (acc, additionalCost) =>
+                              additionalCost.includeToTotalCost
+                                ? acc + additionalCost.cost
+                                : acc,
+                            0
+                          )
+                        )}
                       </Typography>
                     }
                   >

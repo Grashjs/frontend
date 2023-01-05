@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 
 import SuspenseLoader from 'src/components/SuspenseLoader';
+import analyticsRoutes from './analytics';
 
 const Loader = (Component) => (props) =>
   (
@@ -63,6 +64,7 @@ const WorkOrders = Loader(lazy(() => import('../content/own/WorkOrders')));
 const VendorsAndCustomers = Loader(
   lazy(() => import('../content/own/VendorsAndCustomers'))
 );
+
 const Assets = Loader(lazy(() => import('../content/own/Assets')));
 const ShowAsset = Loader(lazy(() => import('../content/own/Assets/Show')));
 const Inventory = Loader(lazy(() => import('../content/own/Inventory')));
@@ -227,10 +229,15 @@ const appRoutes = [
           { path: 'details', element: <ShowAsset /> },
           { path: 'parts', element: <ShowAsset /> },
           { path: 'files', element: <ShowAsset /> },
-          { path: 'meters', element: <ShowAsset /> }
+          { path: 'meters', element: <ShowAsset /> },
+          { path: 'downtimes', element: <ShowAsset /> }
         ]
       }
     ]
+  },
+  {
+    path: 'analytics',
+    children: analyticsRoutes
   },
   {
     path: 'categories',

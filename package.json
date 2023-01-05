@@ -75,6 +75,7 @@
     "react-simple-maps": "2.3.0",
     "react-sparklines": "1.7.0",
     "react-syntax-highlighter": "15.5.0",
+    "recharts": "^2.2.0",
     "redux": "4.2.0",
     "redux-devtools-extension": "2.13.9",
     "redux-thunk": "2.4.1",

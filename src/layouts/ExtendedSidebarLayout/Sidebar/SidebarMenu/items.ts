@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 import AnalyticsTwoToneIcon from '@mui/icons-material/AnalyticsTwoTone';
+import InsertChartTwoToneIcon from '@mui/icons-material/InsertChartTwoTone';
 import HealthAndSafetyTwoToneIcon from '@mui/icons-material/HealthAndSafetyTwoTone';
 import AssignmentIndTwoToneIcon from '@mui/icons-material/AssignmentIndTwoTone';
 import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
@@ -61,6 +62,54 @@ const ownMenuItems: MenuItems[] = [
         link: '/app/preventive-maintenances',
         icon: PendingActionsTwoToneIcon,
         permission: PermissionEntity.PREVENTIVE_MAINTENANCES
+      },
+      {
+        name: 'Analytics',
+        icon: InsertChartTwoToneIcon,
+        permission: PermissionEntity.ANALYTICS,
+        planFeature: PlanFeature.ANALYTICS,
+        items: [
+          {
+            name: 'Work Orders',
+            icon: AssignmentTwoToneIcon,
+            items: [
+              {
+                name: 'Status Report',
+                link: '/app/analytics/work-orders/status'
+              },
+              {
+                name: 'Work Order analysis',
+                link: '/app/analytics/work-orders/analysis'
+              },
+              {
+                name: 'Work Order Aging',
+                link: '/app/analytics/work-orders/aging'
+              },
+              {
+                name: 'Time and Cost',
+                link: '/app/analytics/work-orders/time-cost'
+              }
+            ]
+          },
+          {
+            name: 'Assets',
+            icon: Inventory2TwoToneIcon,
+            items: [
+              {
+                name: 'Reliability Dashboard',
+                link: '/app/analytics/assets/reliability'
+              },
+              {
+                name: 'Total Maintenance Cost',
+                link: '/app/analytics/assets/cost'
+              },
+              {
+                name: 'Useful life',
+                link: '/app/analytics/assets/useful-life'
+              }
+            ]
+          }
+        ]
       },
       {
         name: 'Requests',

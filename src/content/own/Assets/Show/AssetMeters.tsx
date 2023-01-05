@@ -164,8 +164,7 @@ const AssetMeters = ({ asset }: PropsType) => {
                   >
                     <Typography variant="h5">{t('Select Meter')}</Typography>
                     <Select
-                      value={selectedMeter?.id}
-                      displayEmpty
+                      value={selectedMeter?.id ?? ''}
                       onChange={(event) => {
                         setSelectedMeter(
                           meters.find(
@@ -174,6 +173,7 @@ const AssetMeters = ({ asset }: PropsType) => {
                         );
                       }}
                     >
+                      <MenuItem value={''}>{t('Select a Meter')}</MenuItem>
                       {meters.map((meter) => (
                         <MenuItem key={meter.id} value={meter.id}>
                           {meter.name}

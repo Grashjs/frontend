@@ -32,7 +32,7 @@ const AssetDetails = ({ asset }: PropsType) => {
   const informationFields = [
     { label: t('Name'), value: asset?.name },
     { label: t('Description'), value: asset?.description },
-    { label: t('Category'), value: asset?.category.name },
+    { label: t('Category'), value: asset?.category?.name },
     { label: t('Model'), value: asset?.model },
     { label: t('Serial Number'), value: asset?.serialNumber },
     {

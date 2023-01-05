@@ -9,7 +9,8 @@ import {
 } from '@mui/material';
 import PartQuantity from '../../../models/owns/partQuantity';
 import { useTranslation } from 'react-i18next';
-import useAuth from '../../../hooks/useAuth';
+import { useContext } from 'react';
+import { CompanySettingsContext } from '../../../contexts/CompanySettingsContext';
 
 interface PartQuantityListProps {
   partQuantities: PartQuantity[];
@@ -22,8 +23,7 @@ export default function PartQuantitiesList({
   disabled
 }: PartQuantityListProps) {
   const { t }: { t: any } = useTranslation();
-  const { companySettings } = useAuth();
-  const { generalPreferences } = companySettings;
+  const { getFormattedCurrency } = useContext(CompanySettingsContext);
 
   return (
     <List>
@@ -47,7 +47,7 @@ export default function PartQuantitiesList({
               />
               <Typography variant="h6">
                 {' * '}
-                {`${partQuantity.part.cost} ${generalPreferences.currency.code}`}
+                {getFormattedCurrency(partQuantity.part.cost)}
               </Typography>
             </Box>
           }
@@ -71,12 +71,13 @@ export default function PartQuantitiesList({
       <ListItem
         secondaryAction={
           <Typography variant="h6" fontWeight="bold">
-            {partQuantities.reduce(
-              (acc, partQuantity) =>
-                acc + partQuantity.part.cost * partQuantity.quantity,
-              0
-            )}{' '}
-            {generalPreferences.currency.code}
+            {getFormattedCurrency(
+              partQuantities.reduce(
+                (acc, partQuantity) =>
+                  acc + partQuantity.part.cost * partQuantity.quantity,
+                0
+              )
+            )}
           </Typography>
         }
       >
