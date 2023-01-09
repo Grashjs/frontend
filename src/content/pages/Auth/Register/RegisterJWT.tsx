@@ -18,6 +18,7 @@ import { phoneRegExp } from '../../../../utils/validators';
 import { useContext } from 'react';
 import { CustomSnackBarContext } from '../../../../contexts/CustomSnackBarContext';
 import { useNavigate } from 'react-router-dom';
+import { IS_LOCALHOST } from '../../../../config';
 
 function RegisterJWT({
   email,
@@ -93,8 +94,8 @@ function RegisterJWT({
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         setSubmitting(true);
         return register(role ? { ...values, role: { id: role } } : values)
-          .then((isLocalhost) => {
-            if (!isLocalhost) {
+          .then(() => {
+            if (!IS_LOCALHOST) {
               showSnackBar(
                 t('Please check your email to verify your account'),
                 'success'

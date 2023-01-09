@@ -29,8 +29,11 @@ export const googleMapsConfig = {
 };
 export const apiUrl = process.env.REACT_APP_API_URL;
 export const frontendUrl = process.env.REACT_APP_FRONT_URL;
-export const OAUTH2_REDIRECT_URI = `${frontendUrl}oauth2/redirect`;
-export const googleAuthUrl =
-  apiUrl + 'oauth2/authorize/google?redirect_uri=' + OAUTH2_REDIRECT_URI;
-export const wso2AuthUrl =
-  apiUrl + 'oauth2/authorize/wso2?redirect_uri=' + OAUTH2_REDIRECT_URI;
+export const OAUTH2_CONFIG = {
+  authUrl: 'https://apim.grash-cmms.com:9443/authenticationendpoint/login.do',
+  clientId: 'dtOqKH0UEQX2osVr_dYtfvp4_b4a',
+  callbackUrl: `${frontendUrl}oauth2/redirect`,
+  tenantDomain: 'carbon.super'
+};
+export const googleTrackingId = 'UA-153570456-5';
+export const IS_LOCALHOST = apiUrl === 'http://localhost:8080/';

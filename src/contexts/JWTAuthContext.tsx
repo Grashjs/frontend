@@ -470,9 +470,9 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     dispatch({ type: 'LOGOUT' });
   };
 
-  const register = async (token): Promise<boolean> => {
+  const register = async (token): Promise<void> => {
     if (!token) {
-      return false;
+      return;
     } else {
       setSession(token);
       const user = await updateUserInfos();
@@ -486,7 +486,6 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
           company
         }
       });
-      return true;
     }
   };
 

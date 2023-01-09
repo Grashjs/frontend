@@ -1,4 +1,4 @@
-import { useRoutes } from 'react-router-dom';
+import { useLocation, useRoutes } from 'react-router-dom';
 import router from 'src/router';
 
 import { SnackbarProvider } from 'notistack';
@@ -10,11 +10,18 @@ import { CssBaseline } from '@mui/material';
 import ThemeProvider from './theme/ThemeProvider';
 import AppInit from './components/AppInit';
 import { CustomSnackBarProvider } from './contexts/CustomSnackBarContext';
+import ReactGA from 'react-ga';
+import { googleTrackingId, IS_LOCALHOST } from './config';
+import { useEffect } from 'react';
 
+ReactGA.initialize(googleTrackingId);
 function App() {
   const content = useRoutes(router);
   const auth = useAuth();
-
+  let location = useLocation();
+  useEffect(() => {
+    if (!IS_LOCALHOST) ReactGA.pageview(location.pathname + location.search);
+  }, [location]);
   return (
     <ThemeProvider>
       <LocalizationProvider dateAdapter={AdapterDateFns}>

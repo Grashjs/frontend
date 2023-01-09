@@ -26,7 +26,7 @@ import AssignmentTwoToneIcon from '@mui/icons-material/AssignmentTwoTone';
 import PendingActionsTwoToneIcon from '@mui/icons-material/PendingActionsTwoTone';
 import { PermissionEntity } from '../../../../models/owns/role';
 import { PlanFeature } from '../../../../models/owns/subscriptionPlan';
-import { apiUrl } from '../../../../config';
+import { IS_LOCALHOST } from '../../../../config';
 
 export interface MenuItem {
   link?: string;
@@ -46,7 +46,6 @@ export interface MenuItems {
   hidden?: PermissionEntity;
 }
 
-const isLocalhost = apiUrl === 'http://localhost:8080/';
 const ownMenuItems: MenuItems[] = [
   {
     heading: '',
@@ -590,7 +589,7 @@ const templateItems = [
   }
 ];
 
-const menuItems = isLocalhost
+const menuItems = IS_LOCALHOST
   ? ownMenuItems.concat(templateItems)
   : ownMenuItems;
 export default menuItems;

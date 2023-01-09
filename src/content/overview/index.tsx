@@ -6,7 +6,7 @@ import Logo from 'src/components/LogoSign';
 import Hero from './Hero';
 import Highlights from './Highlights';
 import LanguageSwitcher from 'src/layouts/BoxedSidebarLayout/Header/Buttons/LanguageSwitcher';
-import { wso2AuthUrl } from '../../config';
+import { OAUTH2_CONFIG } from '../../config';
 
 const HeaderWrapper = styled(Card)(
   ({ theme }) => `
@@ -61,7 +61,7 @@ function Overview() {
                 </Button>
                 <Button
                   onClick={() => {
-                    window.location.href = wso2AuthUrl;
+                    window.location.href = `${OAUTH2_CONFIG.authUrl}?response_type=id_token&client_id=${OAUTH2_CONFIG.clientId}&scope=openid&authenticators=BasicAuthenticator:LOCAL&redirect_uri=${OAUTH2_CONFIG.callbackUrl}&sessionDataKey=ed248d67-7fb7-4542-ab63-d794d0b2e48c&relyingParty=${OAUTH2_CONFIG.clientId}&tenantDomain=${OAUTH2_CONFIG.tenantDomain}`;
                   }}
                   variant="contained"
                   sx={{
