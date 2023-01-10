@@ -45,7 +45,7 @@ interface AuthContextValue extends AuthState {
     phone: string,
     password: string,
     role: number | undefined
-  ) => Promise<boolean>;
+  ) => Promise<void>;
   getInfos: () => void;
   patchUserSettings: (values: Partial<UserSettings>) => Promise<void>;
   patchUser: (values: Partial<OwnUser>) => Promise<void>;
