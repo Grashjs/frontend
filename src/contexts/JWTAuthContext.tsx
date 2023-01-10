@@ -363,7 +363,7 @@ const AuthContext = createContext<AuthContextValue>({
   method: 'JWT',
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
-  register: () => Promise.resolve(false),
+  register: () => Promise.resolve(),
   getInfos: () => Promise.resolve(),
   patchUserSettings: () => Promise.resolve(),
   patchCompany: () => Promise.resolve(),
