@@ -35,7 +35,7 @@ Instructions on _how_ to contribute can be found in [CONTRIBUTING](CONTRIBUTING.
 ## Stars History
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=grashjs/frontend&type=Date&theme=dark" />
+  <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=grashjs/frontend&type=Date" />
   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=grashjs/frontend&type=Date" />
   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=grashjs/frontend&type=Date" />
 </picture>
