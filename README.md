@@ -43,5 +43,4 @@ Instructions on _how_ to contribute can be found in [CONTRIBUTING](CONTRIBUTING.
 ----
 
 ## Open source licensing info
-1. [TERMS](TERMS.md)
-2. [LICENSE](LICENSE)
+1. [LICENSE](LICENSE)
