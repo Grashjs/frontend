@@ -32,7 +32,7 @@ function Overview() {
   return (
     <OverviewWrapper>
       <Helmet>
-        <title>Grash</title>
+        <title>Atlas</title>
       </Helmet>
       <HeaderWrapper>
         <Container maxWidth="lg">

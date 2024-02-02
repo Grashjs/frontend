@@ -14,8 +14,8 @@ const enJSON = {
   COMPLETE: 'Complete',
   'home.built': 'Built to Make Managing Maintenance Easier',
   home_description:
-    "When whiteboards and sticky notes are chaos, and you need a CMMS software that's easy enough for your team to actually use - try Grash",
-  try_grash: 'Try Grash',
+    "When whiteboards and sticky notes are chaos, and you need a CMMS software that's easy enough for your team to actually use - try Atlas",
+  try_grash: 'Try Atlas',
   login: 'Log In',
   start_trial: 'Start a Free trial',
   'home.what': 'What',
@@ -24,7 +24,7 @@ const enJSON = {
     'Build efficient, reliable workflows that put you in control of maintenance. Generate, assign, and track work orders. Control inventory. And get reliable automated reports that improve visibility and create accountability.',
   key_features: 'Key Features',
   key_features_description:
-    'Some of the features that make Grash one of the best CMMS available today',
+    'Some of the features that make Atlas one of the best CMMS available today',
   contribute: 'Contribute',
   work_orders: 'Work Orders',
   request_system: 'Work Request System',
@@ -38,7 +38,7 @@ const enJSON = {
   'work-orders.descriptions.0':
     'Sick of the reams of paperwork and lost Work Orders? All of those lost items directly affect the bottom line and your reputation.',
   'work-orders.descriptions.1':
-    'With Grash you can easily and quickly organize all of your Work Orders, PMs and other Tasks throughout your team in a centralized database that can be accessed anywhere on any device.',
+    'With Atlas you can easily and quickly organize all of your Work Orders, PMs and other Tasks throughout your team in a centralized database that can be accessed anywhere on any device.',
   'work-orders.checks.0':
     'View all of your Tasks including WOs, PMs, and Work Requests',
   'work-orders.checks.1':
@@ -53,7 +53,7 @@ const enJSON = {
   'work-requests.descriptions.0':
     'Sick of using the old phone and email system that result in LOST tickets, constant daily interruptions, and duplicated work?',
   'work-requests.descriptions.1':
-    'Grash’s maintenance management solution allows anyone you authorize to submit a problem to your maintenance department by simply scanning a QR code (bar code) or visiting a URL and typing in their request through their mobile devices.',
+    'Atlas’s maintenance management solution allows anyone you authorize to submit a problem to your maintenance department by simply scanning a QR code (bar code) or visiting a URL and typing in their request through their mobile devices.',
   'work-requests.checks.0': 'Never lose Work again.',
   'work-requests.checks.1':
     'Reduce time spent handling Work Requests by up to 34%.',
@@ -80,7 +80,7 @@ const enJSON = {
   'eam.descriptions.0':
     'Frustrated with trying to organize the chaotic mess of company’s equipment, wondering if the equipment has been properly taken care of, not knowing what they cost to maintain and all the other headaches that come with managing assets?',
   'eam.descriptions.1':
-    'Grash CMMS’s Enterprise Asset Management module can be used for anywhere between 10 to 1,000,000 Assets, allowing you to track exactly what you want, the way you want to, in an easy-to-use and searchable tree structure.',
+    'Atlas CMMS’s Enterprise Asset Management module can be used for anywhere between 10 to 1,000,000 Assets, allowing you to track exactly what you want, the way you want to, in an easy-to-use and searchable tree structure.',
   'eam.checks.0':
     'Know the health of your assets at every point of time and what they are costing you',
   'eam.checks.1': 'View complete and detailed Maintenance Logs.',
@@ -94,7 +94,7 @@ const enJSON = {
   'pm.descriptions.0':
     'Stop wasting precious hours manually distributing PM checklists and following up with your team to make sure the work is done.',
   'pm.descriptions.1':
-    'Grash allows you to easily automate PM scheduling so the right work is automatically delivered at the right time to the right technician for the right Asset.',
+    'Atlas allows you to easily automate PM scheduling so the right work is automatically delivered at the right time to the right technician for the right Asset.',
   'pm.checks.0':
     'Automate PM scheduling to be daily, weekly, monthly, yearly, or based on events or meter readings.',
   'pm.checks.1':
@@ -111,7 +111,7 @@ const enJSON = {
   'part.descriptions.0':
     'Not sure what parts you have in stock or where they are being used? Don’t know when your parts will run out or if your technicians will have the necessary parts to do their jobs?',
   'part.descriptions.1':
-    'We designed Grash’s parts management to solve those problems and more:',
+    'We designed Atlas’s parts management to solve those problems and more:',
   'part.checks.0':
     'Get instant push and email notifications when a part’s quantity is low. Keep the right number of parts in stock by receiving instant and automatic push/email notifications when the quantity of a part is below a custom set threshold.',
   'part.checks.1':
@@ -132,20 +132,20 @@ const enJSON = {
   'dashboard.descriptions.0':
     'Let’s face it, the first step to improving your operations is to know the good, the bad and the ugly.',
   'dashboard.descriptions.1':
-    'With Grash’s Custom Dashboards you can finally start to understand that nefarious “black hole of maintenance” and begin putting data-backed plans into action, resulting in reduced labor costs, decreased downtime and more.',
-  'dashboard.descriptions.2': 'With Grash’s Custom Dashboards you’ll get to …',
+    'With Atlas’s Custom Dashboards you can finally start to understand that nefarious “black hole of maintenance” and begin putting data-backed plans into action, resulting in reduced labor costs, decreased downtime and more.',
+  'dashboard.descriptions.2': 'With Atlas’s Custom Dashboards you’ll get to …',
   'dashboard.checks.0': 'Know where your money is being spent and why',
   'dashboard.checks.1': 'Know which asset is costing the most and why',
   'dashboard.checks.2': 'Create your own custom KPIs.',
   'dashboard.checks.3':
     'View reports that are automatically generated and updated based on your metric',
   'dashboard.checks.4':
-    'View reports that are easily shared via Excel sheets, PDFs or within Grash',
+    'View reports that are easily shared via Excel sheets, PDFs or within Atlas',
   'dashboard.checks.5': 'And so much more ...',
   'home.smarter': 'Smarter',
   'home.work': 'Work',
   'home.smarter_description':
-    'Grash makes it incredibly easy for technicians to work efficiently by giving them access to the tools and data they need to get work done — all from the palm of their hand.',
+    'Atlas makes it incredibly easy for technicians to work efficiently by giving them access to the tools and data they need to get work done — all from the palm of their hand.',
   leading_maintenance:
     'Leading the Way to a Better Future for Maintenance and Reliability',
   //register
@@ -280,7 +280,7 @@ const enJSON = {
   save: 'Save',
   customers: 'Contractors',
   no_labor:
-    "No labor costs have been added yet. They'll show up here when a user logs time and has an hourly rate stored in Grash.",
+    "No labor costs have been added yet. They'll show up here when a user logs time and has an hourly rate stored in Atlas.",
   not_assigned: 'Not Assigned',
   no_additional_cost: 'No Additional costs have been added yet',
   parts: 'Parts',
@@ -841,7 +841,7 @@ const enJSON = {
   external_id: 'External ID',
   permissions: 'Permissions',
   create_role_description:
-    'This role can do everything an Administrator can do in Grash, but you can customize some important permissions below.',
+    'This role can do everything an Administrator can do in Atlas, but you can customize some important permissions below.',
   create_and_edit: 'Create/Edit',
   to_access: 'Access',
   role_delete_success: 'The Role has been deleted successfully',
@@ -1053,7 +1053,7 @@ const enJSON = {
   your_payment_secure: 'Your payment data is encrypted and secure.',
   plan: 'Plan',
   current_plan: 'Current Plan',
-  number_users_who_will_use_grash: 'Number of users who will use Grash',
+  number_users_who_will_use_grash: 'Number of users who will use Atlas',
   admin_role: 'Admin',
   technical_role: 'Technical',
   limited_technical_role: 'Limited Technical',
@@ -1214,7 +1214,7 @@ const enJSON = {
   and_optional: 'And(Optional)',
   then: 'Then',
   workflow_description:
-    'Create custom workflows as easy as If, And, Then. Save time and easily assign your work orders automatically through workflows to customize Grash for the way your team operates.\nAll plans can create up to 1 custom workflow. To add additional workflows, upgrade to our Business plan',
+    'Create custom workflows as easy as If, And, Then. Save time and easily assign your work orders automatically through workflows to customize Atlas for the way your team operates.\nAll plans can create up to 1 custom workflow. To add additional workflows, upgrade to our Business plan',
   CREATE_PURCHASE_ORDER: 'Create a Purchase Order',
   PART_IS: 'The Part is',
   QUANTITY_INFERIOR: 'The quantity is inferior to',
@@ -1277,7 +1277,7 @@ const enJSON = {
   upgrade: 'Upgrade',
   downgrade: 'Downgrade',
   upgrade_description:
-    'You just upgraded your subscription plan. You need to enable the disabled users who might use Grash. You can only do this once for the current subscription. Please choose carefully',
+    'You just upgraded your subscription plan. You need to enable the disabled users who might use Atlas. You can only do this once for the current subscription. Please choose carefully',
   enable_users: 'Enable users',
   max_users_description: 'You can enable up to {{maxUsers}} users',
   downgrade_description:

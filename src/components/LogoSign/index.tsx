@@ -55,7 +55,7 @@ function Logo({ white }: OwnProps) {
   const height = 26;
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   return (
-    <TooltipWrapper title="Grash" arrow>
+    <TooltipWrapper title="Atlas" arrow>
       <LogoWrapper to="/overview">
         <LogoSignWrapper>
           <img

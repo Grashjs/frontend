@@ -188,7 +188,7 @@ function Hero() {
             <RouterLink to="/app/work-orders">
               <ImgWrapper>
                 <img
-                  alt="Grash"
+                  alt="Atlas"
                   src="/static/images/overview/work_orders_screenshot.png"
                 />
               </ImgWrapper>

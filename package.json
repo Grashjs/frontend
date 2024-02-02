@@ -1,7 +1,7 @@
 {
   "name": "grash",
   "version": "0.1.0",
-  "title": "Grash CMMS",
+  "title": "Atlas CMMS",
   "description": "High performance CMMS.",
   "private": true,
   "dependencies": {

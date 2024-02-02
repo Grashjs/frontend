@@ -140,7 +140,7 @@ function Status500() {
                     my: 2
                   }}
                 >
-                  Grash
+                  Atlas
                 </TypographyPrimary>
                 <TypographySecondary
                   variant="h4"

@@ -497,7 +497,7 @@ function Highlights() {
             <Blob1 />
             <Blob2 />
             <CardImageWrapper>
-              <img src={image} alt="Grash" />
+              <img src={image} alt="Atlas" />
             </CardImageWrapper>
           </BlowWrapper>
         </Grid>

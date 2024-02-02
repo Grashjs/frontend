@@ -174,7 +174,7 @@ const Vendors = ({ openModal, handleCloseModal }: PropsType) => {
       name: 'companyName',
       type: 'text',
       label: t('company_name'),
-      placeholder: 'Grash',
+      placeholder: 'Atlas',
       required: true
     },
     {

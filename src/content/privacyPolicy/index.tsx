@@ -85,8 +85,8 @@ function Overview() {
       <Card sx={{ mx: 10, padding: 2 }}>
         <Typography>
           In order to provide you and your employer with personalized workflow
-          software solutions (the “Grash Service”), Grash Inc. and its
-          subsidiaries and affiliates (collectively, “Grash”) need you to
+          software solutions (the “Atlas Service”), Atlas Inc. and its
+          subsidiaries and affiliates (collectively, “Atlas”) need you to
           provide us with certain Personal Information (defined below) about
           yourself. We take the privacy of this Personal Information very
           seriously. We provide this policy (“Privacy Policy”) so that you can
@@ -96,10 +96,10 @@ function Overview() {
         </Typography>
 
         <Typography variant="h2" sx={{ my: 2 }}>
-          Grash Privacy principles
+          Atlas Privacy principles
         </Typography>
         <Typography>
-          Grash follows these principles in order to protect your privacy:
+          Atlas follows these principles in order to protect your privacy:
           <Typography>
             We do not collect any more Personal Information about you than is
             necessary
@@ -126,18 +126,18 @@ function Overview() {
           </Typography>{' '}
           We collect Personal Information by asking you questions about yourself
           as an employee, service repair person, or contractor, as well as your
-          contact information. We will use this information to create your Grash
-          profile (“Grash Profile”). You may also provide us with Personal
+          contact information. We will use this information to create your Atlas
+          profile (“Atlas Profile”). You may also provide us with Personal
           Information through any website mobile application provided to you by
-          Grash. In addition to this information, we also collect certain
-          Personal Information for administration of the Grash Service,
+          Atlas. In addition to this information, we also collect certain
+          Personal Information for administration of the Atlas Service,
           including account credentials and payment information, although please
           note that payment card information is stored and maintained by our
           third-party payment processors.{' '}
           <Typography fontWeight={'bold'}>
             (b) Personal Information automatically collected.
           </Typography>{' '}
-          While you use the Grash Service, we automatically record information
+          While you use the Atlas Service, we automatically record information
           that your browser sends whenever you visit our website or mobile
           software application. For example, we may receive: the name of the
           domain and host from which you access the Internet, the Internet
@@ -169,7 +169,7 @@ function Overview() {
         </Typography>
         <Typography>
           Protecting the privacy and security of your Personal Information is a
-          priority at Grash. EXCEPT AS OTHERWISE DESCRIBED IN THIS PRIVACY
+          priority at Atlas. EXCEPT AS OTHERWISE DESCRIBED IN THIS PRIVACY
           POLICY, GRASH DOES NOT SELL OR RENT YOUR PERSONAL INFORMATION TO THIRD
           PARTIES.
         </Typography>
@@ -183,7 +183,7 @@ function Overview() {
           disclosure. In addition, we use industry-standard technology, such as
           edge-protection devices and encryption in the transmission of certain
           sensitive Personal Information, designed to prevent unauthorized
-          persons from gaining access to your Personal Information and Grash
+          persons from gaining access to your Personal Information and Atlas
           Profile, and, as technology develops, we intend to take additional
           measures to improve security. No method of transmission over the
           Internet, or method of electronic storage, however, is 100% secure.
