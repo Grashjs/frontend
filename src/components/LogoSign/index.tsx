@@ -51,8 +51,8 @@ interface OwnProps {
 function Logo({ white }: OwnProps) {
   const { t }: { t: any } = useTranslation();
   const theme = useTheme();
-  const width = 104;
-  const height = 26;
+  const width = 30;
+  const height = 30;
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   return (
     <TooltipWrapper title="Atlas" arrow>
