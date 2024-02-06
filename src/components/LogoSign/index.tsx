@@ -25,7 +25,7 @@ const LogoWrapper = styled(Link)(
 const LogoSignWrapper = styled(Box)(
   () => `
         width: 52px;
-        height: 38px;
+        height: 52px;
 `
 );
 
@@ -51,8 +51,8 @@ interface OwnProps {
 function Logo({ white }: OwnProps) {
   const { t }: { t: any } = useTranslation();
   const theme = useTheme();
-  const width = 30;
-  const height = 30;
+  const width = 60;
+  const height = 60;
   const mobile = useMediaQuery(theme.breakpoints.down('sm'));
   return (
     <TooltipWrapper title="Atlas" arrow>
