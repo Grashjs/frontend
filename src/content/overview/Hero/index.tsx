@@ -176,7 +176,7 @@ function Hero() {
               ml: 2
             }}
             component="a"
-            href="mailto:admin@grash-cmms.com"
+            href="mailto:admin@atlascmms.com"
             size="medium"
             variant="text"
           >
