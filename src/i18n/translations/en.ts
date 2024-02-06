@@ -1337,7 +1337,7 @@ const enJSON = {
   contact_us: 'Contact Us',
   simplify_wo: 'Simplify Work Orders in the mobile app',
   simplify_wo_description:
-    'Hide time controls, costs and parts in the Work Order details while using the mobile app'
-};
+    'Hide time controls, costs and parts in the Work Order details while using the mobile app',
+account_deletion: 'Account deletion'};
 
 export default enJSON;

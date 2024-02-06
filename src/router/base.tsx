@@ -29,6 +29,8 @@ const StatusMaintenance = Loader(
   lazy(() => import('../content/pages/Status/Maintenance'))
 );
 const PrivacyPolicy = Loader(lazy(() => import('../content/privacyPolicy')));
+const DeletionPolicy = Loader(lazy(() => import('../content/own/deletionPolicy')));
+
 const baseRoutes = [
   {
     path: '/',
@@ -37,6 +39,10 @@ const baseRoutes = [
   {
     path: 'privacy-policy',
     element: <PrivacyPolicy />
+  },
+  {
+    path: 'deletion-policy',
+    element: <DeletionPolicy />
   },
   {
     path: 'overview',
