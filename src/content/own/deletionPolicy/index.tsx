@@ -80,7 +80,7 @@ function DeletionPolicy() {
         </Container>
       </HeaderWrapper>
       <Box sx={{ mx: 10, padding: 2 }}>
-        <Typography variant={'h1'}>{t('privacy_policy')}</Typography>
+        <Typography variant={'h1'}>{t('account_deletion')}</Typography>
       </Box>
       <Card sx={{ mx: 10, padding: 2 }}>
         <Typography>
