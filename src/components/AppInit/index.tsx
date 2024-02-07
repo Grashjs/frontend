@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import Logo from 'src/components/LogoSign';
 
@@ -18,7 +18,10 @@ function AppInit() {
       alignItems="center"
       justifyContent="center"
     >
-      <Logo />
+      <Box>
+        <Logo />
+        <Typography style={{cursor: 'pointer'}} fontSize={13} onClick={()=>{ window.open("https://www.intel-loop.com/",'_blank')}}>Powered by Intelloop</Typography>
+      </Box>
     </Box>
   );
 }

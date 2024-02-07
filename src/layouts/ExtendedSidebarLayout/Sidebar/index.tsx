@@ -9,7 +9,7 @@ import {
   Divider,
   Drawer,
   lighten,
-  styled,
+  styled, Typography,
   useTheme
 } from '@mui/material';
 import SidebarMenu from './SidebarMenu';
@@ -61,7 +61,10 @@ function Sidebar() {
                 flexDirection: 'row'
               }}
             >
-              <Logo white />
+              <Box>
+                <Logo white />
+                <Typography style={{cursor: 'pointer', color: 'white'}} fontSize={13} onClick={()=>{ window.open("https://www.intel-loop.com/",'_blank')}}>Powered by Intelloop</Typography>
+              </Box>
             </Box>
           </Box>
           <Divider

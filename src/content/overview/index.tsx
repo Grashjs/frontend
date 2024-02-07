@@ -1,4 +1,4 @@
-import { Box, Button, Card, Container, Stack, styled } from '@mui/material';
+import { Box, Button, Card, Container, Stack, styled, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
@@ -37,7 +37,10 @@ function Overview() {
       <HeaderWrapper>
         <Container maxWidth="lg">
           <Stack direction="row" alignItems="center">
+            <Box alignItems={'center'}>
             <Logo />
+              <Typography style={{cursor: 'pointer'}} fontSize={13} onClick={()=>{ window.open("https://www.intel-loop.com/",'_blank')}}>Powered by Intelloop</Typography>
+            </Box>
             <Stack
               direction="row"
               alignItems="center"
