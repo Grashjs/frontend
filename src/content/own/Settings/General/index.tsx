@@ -129,6 +129,7 @@ function GeneralSettings() {
                         >
                           <MenuItem value="EN">English</MenuItem>
                           <MenuItem value="FR">Français</MenuItem>
+                          <MenuItem value="TR">Turkish</MenuItem>
                         </Field>
                       </Grid>
                       <Grid item xs={12}>

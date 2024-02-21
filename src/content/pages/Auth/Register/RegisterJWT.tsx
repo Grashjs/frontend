@@ -19,6 +19,7 @@ import { useContext } from 'react';
 import { CustomSnackBarContext } from '../../../../contexts/CustomSnackBarContext';
 import { useNavigate } from 'react-router-dom';
 import { IS_LOCALHOST } from '../../../../config';
+import i18n from 'i18next';
 
 function RegisterJWT({
   email,
@@ -32,6 +33,7 @@ function RegisterJWT({
   const { t }: { t: any } = useTranslation();
   const { showSnackBar } = useContext(CustomSnackBarContext);
   const navigate = useNavigate();
+  const getLanguage = i18n.language;
 
   const getFieldsAndShapes = (): [
     { [key: string]: any },
@@ -78,6 +80,7 @@ function RegisterJWT({
       validationSchema={Yup.object().shape(getFieldsAndShapes()[1])}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         setSubmitting(true);
+        values.language = getLanguage.toUpperCase();
         return register(role ? { ...values, role: { id: role } } : values)
           .then(() => {
             if (!IS_LOCALHOST) {

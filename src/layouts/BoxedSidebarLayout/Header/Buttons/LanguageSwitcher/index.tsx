@@ -14,7 +14,7 @@ import {
 import internationalization from 'src/i18n/i18n';
 import { useTranslation } from 'react-i18next';
 
-import { AE, CN, DE, ES, FR, US } from 'country-flag-icons/react/3x2';
+import { AE, CN, DE, ES, FR, US, TR } from 'country-flag-icons/react/3x2';
 
 const SectionHeading = styled(Typography)(
   ({ theme }) => `
@@ -67,6 +67,7 @@ function LanguageSwitcher() {
           {getLanguage === 'es' && <ES title="Spanish" />}
           {getLanguage === 'cn' && <CN title="Chinese" />}
           {getLanguage === 'ae' && <AE title="Arabic" />}
+          {getLanguage === 'tr' && <TR title="Turkish" />}
         </IconButtonWrapper>
       </Tooltip>
       <Popover
@@ -133,6 +134,24 @@ function LanguageSwitcher() {
                   pl: 1
                 }}
                 primary="English"
+              />
+            </ListItem>
+            <ListItem
+              className={
+                getLanguage === 'tr' || getLanguage === 'tr' ? 'active' : ''
+              }
+              button
+              onClick={() => {
+                switchLanguage({ lng: 'tr' });
+                handleClose();
+              }}
+            >
+              <TR title="Turkish" />
+              <ListItemText
+                sx={{
+                  pl: 1
+                }}
+                primary="Turkish"
               />
             </ListItem>
             {/* <ListItem
