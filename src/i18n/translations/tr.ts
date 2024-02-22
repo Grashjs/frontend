@@ -1178,6 +1178,9 @@ const trJSON={
   "contact_us": "Bize Ulaşın",
   "simplify_wo": "Mobil uygulamada İş Emirlerini Basitleştirin",
   "simplify_wo_description": "Mobil uygulamayı kullanırken İş Emri ayrıntılarındaki zaman kontrollerini, maliyetleri ve parçaları gizleyin",
-  "account_deletion": "Hesap silme"
+  "account_deletion": "Hesap silme",
+  switch_account: 'Hesap değiştir',
+  switch_to_super_user: 'Süper yöneticiye geç',
+  switch_account_description: 'Devam etmek için lütfen bir hesap seçin'
 };
 export default trJSON;

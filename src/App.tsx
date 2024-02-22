@@ -41,6 +41,18 @@ function App() {
       }
   }, [company, isInitialized, isAuthenticated, location]);
 
+  useEffect(() => {
+    const arr = location.pathname.split('/');
+    if (
+      !['switch-account'].includes(arr[arr.length - 1]) &&
+      isInitialized &&
+      isAuthenticated
+    )
+      if (user.superAccountRelations.length) {
+        navigate('/app/switch-account');
+      }
+  }, [user, isInitialized, isAuthenticated, location]);
+
   return (
     <ThemeProvider>
       <LocalizationProvider dateAdapter={AdapterDateFns}>

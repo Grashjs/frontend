@@ -44,4 +44,12 @@ export interface UserMiniDTO {
 export interface UserResponseDTO extends OwnUser {
   companySettingsId: number;
   userSettingsId: number;
+  superAccountRelations: SuperAccountRelation[];
+  parentSuperAccount: SuperAccountRelation;
+}
+export interface SuperAccountRelation{
+  childCompanyName: string;
+  childCompanyLogo: File;
+  childUserId: number;
+  superUserId:number;
 }

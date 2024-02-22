@@ -1485,7 +1485,10 @@ const frJSON = {
   contact_us: 'Nous Contacter',
   simplify_wo: "Simplifier les Ordres de Travail dans l'application mobile",
   simplify_wo_description:
-    "Cacher le compteur de temps, les coûts et pièces dans les details d'un Ordre de travail en utilisant l'application mobile"
+    "Cacher le compteur de temps, les coûts et pièces dans les details d'un Ordre de travail en utilisant l'application mobile",
+  switch_account: 'Changer de compte',
+  switch_to_super_user: 'Passer en super administrateur',
+  switch_account_description: 'Veuillez choisir un compte pour continuer'
 };
 
 export default frJSON;

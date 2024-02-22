@@ -15,7 +15,8 @@ import {
   Popover,
   styled,
   Typography,
-  useTheme
+  useTheme,
+  CircularProgress
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
@@ -114,7 +115,8 @@ function HeaderUserbox() {
 
   const navigate = useNavigate();
 
-  const { user, logout } = useAuth();
+  const { user, logout, switchAccount } = useAuth();
+  const [switchingAccount, setSwitchingAccount] = useState<boolean>(false);
 
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
@@ -187,7 +189,7 @@ function HeaderUserbox() {
       },
       y: {
         title: {
-          formatter: function () {
+          formatter: function() {
             return 'Orders:';
           }
         }
@@ -268,7 +270,28 @@ function HeaderUserbox() {
                 opacity: 0.8
               }}
             />
-          </MenuItem>
+          </MenuItem>{
+          user.parentSuperAccount && (<MenuItem
+            onClick={() => {
+              setSwitchingAccount(true);
+              switchAccount(user.parentSuperAccount.superUserId).then(() => navigate('/app/switch-account'))
+                .finally(() => setSwitchingAccount(false));
+            }}
+          >
+            <ListItemText
+              primaryTypographyProps={{
+                variant: 'h5'
+              }}
+              primary={t('switch_to_super_user')}
+            />
+            {switchingAccount ? <CircularProgress size="1rem" /> : <ChevronRightTwoToneIcon
+              sx={{
+                color: `${theme.colors.alpha.black[30]}`,
+                opacity: 0.8
+              }}
+            />}
+          </MenuItem>)
+        }
           <MenuItem
             onClick={() => {
               handleClose();
