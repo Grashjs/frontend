@@ -3,6 +3,7 @@ import { Audit } from './audit';
 export default interface Category extends Audit {
   id: number;
   name: string;
+  description: string;
 }
 export interface CategoryMiniDTO {
   id: number;
@@ -15,7 +16,8 @@ export const categories: Category[] = [
     createdBy: 1,
     updatedBy: 4,
     createdAt: 'sd',
-    updatedAt: 'sdd'
+    updatedAt: 'sdd',
+    description: ''
   },
   {
     id: 7,
@@ -23,6 +25,7 @@ export const categories: Category[] = [
     createdBy: 1,
     updatedBy: 4,
     createdAt: 'sd',
-    updatedAt: 'sdd'
+    updatedAt: 'sdd',
+    description: ''
   }
 ];

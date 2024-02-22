@@ -148,9 +148,9 @@ function CategoriesLayout(props: CategoriesLayoutProps) {
         </Typography>
       </DialogTitle>
       <Formik
-        initialValues={{ name: '' }}
+        initialValues={{ name: '', description: null }}
         validationSchema={Yup.object().shape({
-          name: Yup.string().max(30).required(t('required_name'))
+          name: Yup.string().max(30).required(t('required_name')),
         })}
         onSubmit={async (
           values,
@@ -194,6 +194,19 @@ function CategoriesLayout(props: CategoriesLayoutProps) {
                         onBlur={handleBlur}
                         onChange={handleChange}
                         value={values.name}
+                        variant="outlined"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        label={t('description')}
+                        multiline
+                        rows={3}
+                        name="description"
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        value={values.description}
                         variant="outlined"
                       />
                     </Grid>
@@ -245,7 +258,7 @@ function CategoriesLayout(props: CategoriesLayoutProps) {
         </Typography>
       </DialogTitle>
       <Formik
-        initialValues={{ name: currentCategory?.name }}
+        initialValues={{ name: currentCategory?.name, description: currentCategory?.description }}
         validationSchema={Yup.object().shape({
           name: Yup.string().max(30).required(t('required_name'))
         })}
@@ -293,6 +306,19 @@ function CategoriesLayout(props: CategoriesLayoutProps) {
                         onBlur={handleBlur}
                         onChange={handleChange}
                         value={values.name}
+                        variant="outlined"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        label={t('description')}
+                        multiline
+                        rows={3}
+                        name="description"
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        value={values.description}
                         variant="outlined"
                       />
                     </Grid>
@@ -367,6 +393,17 @@ function CategoriesLayout(props: CategoriesLayoutProps) {
                             variant="h6"
                           >
                             {item.name}
+                          </Typography>
+                        }
+                        secondary={
+                          <Typography
+                            sx={{
+                              display: 'block',
+                              mb: 1
+                            }}
+                            variant="subtitle1"
+                          >
+                            {item.description}
                           </Typography>
                         }
                       />
