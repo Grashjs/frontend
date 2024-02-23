@@ -179,7 +179,7 @@ const Teams = ({ openModal, handleCloseModal }: PropsType) => {
     {
       field: 'description',
       headerName: t('description'),
-      width: 150
+      width: 300
     },
     {
       field: 'users',

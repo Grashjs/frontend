@@ -384,7 +384,7 @@ function WorkOrders() {
       field: 'description',
       headerName: t('description'),
       description: t('description'),
-      width: 150
+      width: 300
     },
     {
       field: 'primaryUser',
