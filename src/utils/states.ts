@@ -92,6 +92,11 @@ export const getOwnHeadersConfig = (
         keyName: 'teamsNames',
         formatter: arrayFormatter
       },
+      {
+        label: t('parts'),
+        keyName: 'partsNames',
+        formatter: arrayFormatter
+      },
       { label: t('status'), keyName: 'status' },
       { label: t('acquisition_cost'), keyName: 'acquisitionCost' }
     ],

@@ -50,6 +50,7 @@ interface AssetImportDTO {
   acquisitionCost: number;
   customersNames: string[];
   vendorsNames: string[];
+  partsNames: string[];
 }
 interface LocationImportDTO {
   id: number;
