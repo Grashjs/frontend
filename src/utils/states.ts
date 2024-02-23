@@ -67,6 +67,7 @@ export const getOwnHeadersConfig = (
       },
       { label: t('name'), keyName: 'name', required: true },
       { label: t('archived'), keyName: 'archived' },
+      { label: t('description'), keyName: 'description' },
       { label: t('location_name'), keyName: 'locationName' },
       { label: t('parent_asset'), keyName: 'parentAssetName' },
       { label: t('area'), keyName: 'area' },
