@@ -274,7 +274,10 @@ function HeaderUserbox() {
           user.parentSuperAccount && (<MenuItem
             onClick={() => {
               setSwitchingAccount(true);
-              switchAccount(user.parentSuperAccount.superUserId).then(() => navigate('/app/switch-account'))
+              switchAccount(user.parentSuperAccount.superUserId).then(() => {
+                handleClose();
+                navigate('/app/switch-account');
+              })
                 .finally(() => setSwitchingAccount(false));
             }}
           >
