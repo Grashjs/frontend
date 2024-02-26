@@ -1,34 +1,25 @@
-name: Docker Build and Push
+name: Build and Push Docker Image
 
 on:
   push:
     branches:
-      - master
+      - main  # adjust the branch as per your setup
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '21.6.1'  # adjust Node.js version as needed
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-    - name: Install dependencies
-      run: npm install
-
-    - name: Build React app
-      run: npm run build
-
-    - name: Build & push Docker image
-      uses: mr-smithers-excellent/docker-build-push@v6
-      with:
-        image: amb0u/atlas-web
-        tags: latest
-        registry: docker.io
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Build and push Docker image
+        run: |
+          docker build -t amb0u/atlas-web:latest .
+          docker push amb0u/atlas-web:latest
