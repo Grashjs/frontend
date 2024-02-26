@@ -416,7 +416,7 @@ const Customers = ({ openModal, handleCloseModal }: PropsType) => {
         columns={columns}
         loading={loadingGet}
         components={{
-          Toolbar: GridToolbar,
+          
           NoRowsOverlay: () => (
             <NoRowsMessageWrapper
               message={t('noRows.customer.message')}

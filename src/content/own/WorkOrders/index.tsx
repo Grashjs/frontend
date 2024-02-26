@@ -932,7 +932,7 @@ function WorkOrders() {
                     onPageChange={onPageChange}
                     rowsPerPageOptions={[10, 20, 50]}
                     components={{
-                      Toolbar: GridToolbar,
+                      
                       NoRowsOverlay: () => (
                         <NoRowsMessageWrapper
                           message={t('noRows.wo.message')}

@@ -231,7 +231,7 @@ export default function WOModal({
             rows={[]}
             loading={false}
             components={{
-              Toolbar: GridToolbar,
+              
               NoRowsOverlay: () => (
                 <NoRowsMessageWrapper
                   message={t('No Work Order found')}

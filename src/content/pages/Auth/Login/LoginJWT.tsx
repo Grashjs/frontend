@@ -1,14 +1,15 @@
 import * as Yup from 'yup';
 import type { FC } from 'react';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Formik } from 'formik';
 import { Link as RouterLink, useSearchParams } from 'react-router-dom';
 
-import { Box, Button, CircularProgress, Link, TextField } from '@mui/material';
+import { Box, Button, CircularProgress, IconButton, InputAdornment, Link, TextField } from "@mui/material";
 import useAuth from 'src/hooks/useAuth';
 import useRefMounted from 'src/hooks/useRefMounted';
 import { useTranslation } from 'react-i18next';
 import { CustomSnackBarContext } from '../../../../contexts/CustomSnackBarContext';
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const LoginJWT: FC = () => {
   const { login } = useAuth() as any;
@@ -16,6 +17,7 @@ const LoginJWT: FC = () => {
   const { t }: { t: any } = useTranslation();
   const { showSnackBar } = useContext(CustomSnackBarContext);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [showPassword, setShowPassword] = useState<boolean>(false)
 
   return (
     <Formik
@@ -81,9 +83,18 @@ const LoginJWT: FC = () => {
             name="password"
             onBlur={handleBlur}
             onChange={handleChange}
-            type="password"
+            type={showPassword?"text":"password"}
             value={values.password}
             variant="outlined"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <IconButton onClick={()=>setShowPassword(!showPassword)}>
+                    <VisibilityIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           <Box
             alignItems="center"

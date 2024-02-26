@@ -331,7 +331,7 @@ const Sets = ({ setAction }: PropsType) => {
             rows={multiParts}
             loading={loadingGet}
             components={{
-              Toolbar: GridToolbar,
+              
               NoRowsOverlay: () => (
                 <NoRowsMessageWrapper
                   message={t(

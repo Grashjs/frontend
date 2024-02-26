@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from '../../../../store';
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import { getPartsMini } from '../../../../slices/part';
+import { getMultiParts } from "../../../../slices/multipart";
 
 interface SelectPartsProps {
   onChange: (parts: PartMiniDTO[]) => void;
@@ -62,6 +63,7 @@ export default function SelectParts({ onChange, selected }: SelectPartsProps) {
 
   useEffect(() => {
     dispatch(getPartsMini());
+    dispatch(getMultiParts());
   }, []);
 
   const onSelect = (ids: number[]) => {

@@ -74,32 +74,32 @@ export default (props: PropsType) => {
   const { currencies } = useSelector((state) => state.currencies);
 
   const fetchCustomers = async () => {
-    if (!customersMini.length) dispatch(getCustomersMini());
+    dispatch(getCustomersMini());
   };
 
   const fetchVendors = async () => {
-    if (!vendorsMini.length) dispatch(getVendorsMini());
+    dispatch(getVendorsMini());
   };
   const fetchUsers = async () => {
-    if (!usersMini.length) dispatch(getUsersMini());
+    dispatch(getUsersMini());
   };
   const fetchLocations = async () => {
-    if (!locationsMini.length) dispatch(getLocationsMini());
+    dispatch(getLocationsMini());
   };
   const fetchRoles = async () => {
-    if (!roles.length) dispatch(getRoles());
+    dispatch(getRoles());
   };
   const fetchRootLocations = async () => {
     dispatch(getLocationChildren(0, []));
   };
   const fetchCategories = async (category: string) => {
-    if (!categories[category]) dispatch(getCategories(category));
+    dispatch(getCategories(category));
   };
   const fetchAssets = async () => {
-    if (!assetsMini.length) dispatch(getAssetsMini());
+    dispatch(getAssetsMini());
   };
   const fetchTeams = async () => {
-    if (!teamsMini.length) dispatch(getTeamsMini());
+    dispatch(getTeamsMini());
   };
   const fetchCurrencies = async () => {
     if (!currencies.length) dispatch(getCurrencies());

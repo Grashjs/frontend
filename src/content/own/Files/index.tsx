@@ -357,7 +357,7 @@ function Files() {
                     rowsPerPageOptions={[10, 20, 50]}
                     loading={loadingGet}
                     components={{
-                      Toolbar: GridToolbar,
+                      
                       NoRowsOverlay: () => (
                         <NoRowsMessageWrapper
                           message={t('noRows.file.message')}

@@ -12,13 +12,16 @@ import {
   Typography,
   Stack,
   Autocomplete,
+  InputAdornment,
+  IconButton,
   Box
 } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import useAuth from 'src/hooks/useAuth';
 import useRefMounted from 'src/hooks/useRefMounted';
 import { useTranslation } from 'react-i18next';
 import { phoneRegExp } from '../../../../utils/validators';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { CustomSnackBarContext } from '../../../../contexts/CustomSnackBarContext';
 import { useNavigate } from 'react-router-dom';
 import { IS_LOCALHOST } from '../../../../config';
@@ -38,7 +41,7 @@ function RegisterJWT({
   const { showSnackBar } = useContext(CustomSnackBarContext);
   const navigate = useNavigate();
   const getLanguage = i18n.language;
-
+const [showPassword, setShowPassword] = useState(false);
   const getFieldsAndShapes = (): [
     { [key: string]: any },
     { [key: string]: any }
@@ -216,9 +219,18 @@ function RegisterJWT({
             name="password"
             onBlur={handleBlur}
             onChange={handleChange}
-            type="password"
+            type={showPassword?"text":"password"}
             value={values.password}
             variant="outlined"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <IconButton onClick={()=>setShowPassword(!showPassword)}>
+                  <VisibilityIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           {!role && (
             <>

@@ -707,7 +707,7 @@ function Assets() {
                     view === 'list' ? [10, 20, 50] : undefined
                   }
                   components={{
-                    Toolbar: GridToolbar,
+                    
                     NoRowsOverlay: () => (
                       <NoRowsMessageWrapper
                         message={t('noRows.asset.message')}

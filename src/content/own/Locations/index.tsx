@@ -665,7 +665,7 @@ function Locations() {
                     }
                     groupingColDef={groupingColDef}
                     components={{
-                      Toolbar: GridToolbar,
+                      
                       NoRowsOverlay: () => (
                         <NoRowsMessageWrapper
                           message={t('noRows.location.message')}

@@ -458,7 +458,7 @@ function Files() {
                   rowsPerPageOptions={[10, 20, 50]}
                   onRowClick={({ id }) => handleOpenDetails(Number(id))}
                   components={{
-                    Toolbar: GridToolbar,
+                    
                     NoRowsOverlay: () => (
                       <NoRowsMessageWrapper
                         message={t('noRows.request.message')}
