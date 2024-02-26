@@ -16,7 +16,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '14'  # adjust Node.js version as needed
+        node-version: '21.6.1'  # adjust Node.js version as needed
 
     - name: Install dependencies
       run: npm install
@@ -33,5 +33,5 @@ jobs:
     - name: Build Docker image
       run: |
         docker build -t amb0u/web-atlas:latest .
-        docker push amb0/web-atlas:latest
+        docker push amb0u/web-atlas:latest
 
