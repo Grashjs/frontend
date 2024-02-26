@@ -13,6 +13,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKERHUB_USERNAME }}" | docker login -u "${{ secrets.DOCKERHUB_PASSWORD }}" --password-stdin
+
+      - name: Build Docker image
+        run: docker build -t docker.io/***/atlas-web:latest .
+
       - name: Build & push Docker image
         uses: mr-smithers-excellent/docker-build-push@v6
         with:
