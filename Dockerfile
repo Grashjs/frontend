@@ -7,7 +7,7 @@ FROM nginx:latest AS build
 FROM nginx:latest
 
 # Copy build files from the previous stage
-COPY --from=build /app/build /usr/share/nginx/html
+SUDO COPY --from=build /app/build /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
