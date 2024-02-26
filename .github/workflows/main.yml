@@ -16,7 +16,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '14-alpine'  # adjust Node.js version as needed
+        node-version: '21.6.1'  # adjust Node.js version as needed
 
     - name: Install dependencies
       run: npm install
