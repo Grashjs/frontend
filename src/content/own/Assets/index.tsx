@@ -125,6 +125,7 @@ function Assets() {
     newCriteria.filterFields = newFilters;
     setCriteria(newCriteria);
   };
+  const [deployedAssets, setDeployedAssets] = useState<{ id: number; hierarchy: number[] }[]>([{id: 0, hierarchy:[]}]);
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -515,6 +516,7 @@ function Assets() {
             hierarchy: [...row.hierarchy, ""]
           }
         ]);
+        if (!deployedAssets.find(deployedAsset => deployedAsset.id === row.id)) setDeployedAssets(deployedAssets.concat({ id: row.id, hierarchy: row.hierarchy }))
         dispatch(getAssetChildren(row.id, row.hierarchy));
       };
       /**
@@ -608,7 +610,7 @@ function Assets() {
                     dispatch(addAsset(formattedValues))
                       .then(onCreationSuccess)
                       .then(() => {
-                        dispatch(getAssetChildren(0, []));
+                        deployedAssets.forEach(deployedAsset => dispatch(getAssetChildren(deployedAsset.id, deployedAsset.hierarchy)))
                       })
                       .catch(onCreationFailure)
                       .finally(resolve);

@@ -77,6 +77,8 @@ function Locations() {
   const { locationsHierarchy, locations, loadingGet } = useSelector(
     (state) => state.locations
   );
+  const [deployedLocations, setDeployedLocations] = useState<{ id: number; hierarchy: number[] }[]>([{id: 0, hierarchy:[]}]);
+
   const { loadingExport } = useSelector((state) => state.exports);
   const apiRef = useGridApiRef();
   const tabs = [
@@ -179,6 +181,7 @@ function Locations() {
             hierarchy: [...row.hierarchy, '']
           }
         ]);
+        if (!deployedLocations.find(deployedLocation => deployedLocation.id === row.id)) setDeployedLocations(deployedLocations.concat({ id: row.id, hierarchy: row.hierarchy }))
         dispatch(getLocationChildren(row.id, row.hierarchy));
       };
       /**
@@ -432,7 +435,7 @@ function Locations() {
                       .then(onCreationSuccess)
                       .then(() => {
                         resolve();
-                        dispatch(getLocationChildren(0, []));
+                        deployedLocations.forEach(deployedLocation=>dispatch(getLocationChildren(deployedLocation.id, deployedLocation.hierarchy)));
                       })
                       .catch((err) => {
                         onCreationFailure(err);
