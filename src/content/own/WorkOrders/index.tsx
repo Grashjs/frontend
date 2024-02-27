@@ -81,6 +81,7 @@ import CircleTwoToneIcon from '@mui/icons-material/CircleTwoTone';
 import _ from 'lodash';
 import SearchInput from '../components/SearchInput';
 import { PlanFeature } from '../../../models/owns/subscriptionPlan';
+import { getPreventiveMaintenanceUrl } from 'src/utils/urlPaths';
 
 function WorkOrders() {
   const { t }: { t: any } = useTranslation();
@@ -351,10 +352,10 @@ function WorkOrders() {
               params.value === 'IN_PROGRESS'
                 ? 'success'
                 : params.value === 'ON_HOLD'
-                ? 'warning'
-                : params.value === 'COMPLETE'
-                ? 'info'
-                : 'secondary'
+                  ? 'warning'
+                  : params.value === 'COMPLETE'
+                    ? 'info'
+                    : 'secondary'
             }
           />
           <Typography sx={{ ml: 1 }}>{t(params.value)}</Typography>
@@ -632,12 +633,12 @@ function WorkOrders() {
                 : null,
               location: locationParamObject
                 ? {
-                    label: locationParamObject.name,
-                    value: locationParamObject.id
-                  }
+                  label: locationParamObject.name,
+                  value: locationParamObject.id
+                }
                 : null
             }}
-            onChange={({ field, e }) => {}}
+            onChange={({ field, e }) => { }}
             onSubmit={async (values) => {
               let formattedValues = formatValues(values);
               return new Promise<void>((resolve, rej) => {
@@ -705,7 +706,7 @@ function WorkOrders() {
               tasks,
               ...getWOBaseValues(t, currentWorkOrder)
             }}
-            onChange={({ field, e }) => {}}
+            onChange={({ field, e }) => { }}
             onSubmit={async (values) => {
               let formattedValues = formatValues(values);
               return new Promise<void>((resolve, rej) => {
@@ -932,7 +933,7 @@ function WorkOrders() {
                     onPageChange={onPageChange}
                     rowsPerPageOptions={[10, 20, 50]}
                     components={{
-                      
+
                       NoRowsOverlay: () => (
                         <NoRowsMessageWrapper
                           message={t('noRows.wo.message')}
@@ -955,7 +956,10 @@ function WorkOrders() {
                       setInitialDueDate(date);
                       setOpenAddModal(true);
                     }}
-                    handleOpenDetails={handleOpenDetails}
+                    handleOpenDetails={(id, type) => {
+                      if (type === 'WORK_ORDER') handleOpenDetails(id);
+                      else navigate(getPreventiveMaintenanceUrl(id))
+                    }}
                   />
                 )}
               </Box>

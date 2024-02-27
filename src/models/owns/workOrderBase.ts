@@ -6,12 +6,13 @@ import Team from './team';
 import { Audit } from './audit';
 import { CustomerMiniDTO } from './customer';
 import Category from './category';
+import { Priority } from './workOrder';
 
 export interface WorkOrderBase extends Audit {
   title: string;
   id: number;
   description: string;
-  priority: string;
+  priority: Priority;
   image: File;
   asset: AssetMiniDTO;
   location: LocationMiniDTO;

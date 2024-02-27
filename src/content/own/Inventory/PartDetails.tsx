@@ -105,6 +105,10 @@ export default function PartDetails(props: PartDetailsProps) {
       value: part.description
     },
     {
+      label: t('category'),
+      value: part.category?.name
+    },
+    {
       label: t('additional_information'),
       value: part.additionalInfos
     },

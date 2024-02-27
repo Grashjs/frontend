@@ -45,7 +45,7 @@ import { IField } from '../type';
 import PartDetails from './PartDetails';
 import { useNavigate, useParams } from 'react-router-dom';
 import { isNumeric } from '../../../utils/validators';
-import { formatSelectMultiple } from '../../../utils/formatters';
+import { formatSelect, formatSelectMultiple } from '../../../utils/formatters';
 import { UserMiniDTO } from '../../../models/user';
 import UserAvatars from '../components/UserAvatars';
 import { CustomSnackBarContext } from '../../../contexts/CustomSnackBarContext';
@@ -211,6 +211,7 @@ const Parts = ({ setAction }: PropsType) => {
     newValues.teams = formatSelectMultiple(newValues.teams);
     newValues.customers = formatSelectMultiple(newValues.customers);
     newValues.vendors = formatSelectMultiple(newValues.vendors);
+    newValues.category = formatSelect(newValues.category)
     // values.image = formatSelect(values.image);
     // values.files = formatSelect(values.files);
     return newValues;
@@ -308,7 +309,9 @@ const Parts = ({ setAction }: PropsType) => {
     },
     {
       name: 'category',
-      type: 'text',
+      type: 'select',
+      type2: 'category',
+      category:'part-categories',
       label: t('category'),
       placeholder: t('enter_part_category')
     },
@@ -484,7 +487,7 @@ const Parts = ({ setAction }: PropsType) => {
     },
     {
       label: t('category'),
-      value: part.category
+      value: part.category?.name
     },
     {
       label: t('quantity'),

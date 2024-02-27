@@ -22,9 +22,10 @@ import type { View } from 'src/models/calendar';
 import { useDispatch, useSelector } from 'src/store';
 import { selectEvent } from 'src/slices/calendar';
 import WorkOrder, { Priority } from 'src/models/owns/workOrder';
-import { getWorkOrderEvents } from 'src/slices/workOrder';
+import { CalendarEvent, getWorkOrderEvents } from 'src/slices/workOrder';
 import Actions from './Actions';
 import i18n from 'i18next';
+import PreventiveMaintenance from 'src/models/owns/preventiveMaintenance';
 
 const FullCalendarWrapper = styled(Box)(
   ({ theme }) => `
@@ -119,10 +120,11 @@ interface Event {
   end: Date;
   start: Date;
   title: string;
+  extendedProps: {type: string};
 }
 interface OwnProps {
   handleAddWorkOrder: (date: Date) => void;
-  handleOpenDetails: (id: number) => void;
+  handleOpenDetails: (id: number, type: string) => void;
 }
 function ApplicationsCalendar({
   handleAddWorkOrder,
@@ -135,7 +137,7 @@ function ApplicationsCalendar({
   const dispatch = useDispatch();
   const { calendar, loadingGet } = useSelector((state) => state.workOrders);
   const [date, setDate] = useState<Date>(new Date());
-  const [view, setView] = useState<View>(mobile ? 'listWeek' : 'dayGridMonth');
+  const [view, setView] = useState<View>('timeGridWeek');
   const getLanguage = i18n.language;
 
   const getColor = (priority: Priority) => {
@@ -152,15 +154,16 @@ function ApplicationsCalendar({
         break;
     }
   };
-  const getEventFromWO = (workOrder: WorkOrder): Event => {
+  const getEventFromWO = (eventPayload: CalendarEvent<WorkOrder|PreventiveMaintenance>): Event => {
     return {
-      id: workOrder.id.toString(),
+      id: eventPayload.event.id.toString(),
       allDay: true,
-      color: getColor(workOrder.priority),
-      description: workOrder?.description,
-      end: new Date(workOrder.dueDate),
-      start: new Date(workOrder.dueDate),
-      title: workOrder.title
+      color: getColor(eventPayload.event.priority),
+      description: eventPayload.event?.description,
+      end: new Date(eventPayload.date),
+      start: new Date(eventPayload.date),
+      title: eventPayload.event.title,
+      extendedProps: {type: eventPayload.type}
     };
   };
   const handleDateToday = (): void => {
@@ -256,10 +259,10 @@ function ApplicationsCalendar({
             locale={getLanguage === 'fr' ? frLocale : enLocale}
             droppable
             eventDisplay="block"
-            eventClick={(arg) => handleOpenDetails(Number(arg.event.id))}
+            eventClick={(arg) => handleOpenDetails(Number(arg.event.id), arg.event.extendedProps.type)}
             dateClick={(event) => handleAddWorkOrder(event.date)}
             dayMaxEventRows={4}
-            events={calendar.events.map((wo) => getEventFromWO(wo))}
+            events={calendar.events.map((eventPayload) => getEventFromWO(eventPayload))}
             headerToolbar={false}
             height={660}
             ref={calendarRef}

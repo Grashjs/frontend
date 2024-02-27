@@ -12,6 +12,7 @@ const TabsContainerWrapper = styled(Box)(
       margin-top: 2px;
       position: relative;
       bottom: -1px;
+      max-width: 82%;
 
       .MuiTabs-root {
         height: 44px;

@@ -4,6 +4,7 @@ import { VendorMiniDTO } from './vendor';
 import { CustomerMiniDTO } from './customer';
 import { TeamMiniDTO } from './team';
 import File from './file';
+import Category from './category';
 
 export default interface Part extends Audit {
   files: File[];
@@ -14,7 +15,7 @@ export default interface Part extends Audit {
   minQuantity: number;
   barcode: string;
   area: string;
-  category: string;
+  category: Category;
   nonStock: boolean;
   additionalInfos: string;
   image: File | null;

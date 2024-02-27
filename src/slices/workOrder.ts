@@ -5,8 +5,16 @@ import WorkOrder from '../models/owns/workOrder';
 import api from '../utils/api';
 import { Task } from '../models/owns/tasks';
 import { getInitialPage, Page, SearchCriteria } from '../models/owns/page';
+import { WorkOrderBase } from 'src/models/owns/workOrderBase';
+import PreventiveMaintenance from 'src/models/owns/preventiveMaintenance';
 
 const basePath = 'work-orders';
+
+export interface CalendarEvent<T extends WorkOrderBase> {
+  type: string;
+  date: Date;
+  event: T;
+}
 interface WorkOrderState {
   workOrders: Page<WorkOrder>;
   workOrdersByLocation: { [key: number]: WorkOrder[] };
@@ -14,7 +22,7 @@ interface WorkOrderState {
   singleWorkOrder: WorkOrder;
   loadingGet: boolean;
   calendar: {
-    events: WorkOrder[];
+    events: CalendarEvent<WorkOrder|PreventiveMaintenance>[];
   };
 }
 
@@ -105,7 +113,7 @@ const slice = createSlice({
     },
     getEvents(
       state: WorkOrderState,
-      action: PayloadAction<{ events: WorkOrder[] }>
+      action: PayloadAction<{ events: CalendarEvent<WorkOrder|PreventiveMaintenance>[] }>
     ) {
       const { events } = action.payload;
       state.calendar.events = events;
@@ -222,7 +230,7 @@ export const getWorkOrderEvents =
   (start: Date, end: Date): AppThunk =>
   async (dispatch) => {
     dispatch(slice.actions.setLoadingGet({ loading: true }));
-    const response = await api.post<WorkOrder[]>(`${basePath}/events`, {
+    const response = await api.post<CalendarEvent<WorkOrder|PreventiveMaintenance>[]>(`${basePath}/events`, {
       start,
       end
     });
