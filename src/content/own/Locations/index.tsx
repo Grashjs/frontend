@@ -15,8 +15,8 @@ import {
   Stack,
   Tab,
   Tabs,
-  Typography
-} from '@mui/material';
+  Typography, useTheme
+} from "@mui/material";
 import { useTranslation } from 'react-i18next';
 import { IField } from '../type';
 import Location from '../../../models/owns/location';
@@ -39,11 +39,11 @@ import CustomDataGrid from '../components/CustomDatagrid';
 import {
   GridActionsCellItem,
   GridEventListener,
-  GridRenderCellParams,
+  GridRenderCellParams, GridRow,
   GridRowParams,
   GridToolbar,
   GridValueGetterParams
-} from '@mui/x-data-grid';
+} from "@mui/x-data-grid";
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import Form from '../components/form';
 import * as Yup from 'yup';
@@ -454,6 +454,17 @@ function Locations() {
     headerName: t('hierarchy'),
     renderCell: (params) => <GroupingCellWithLazyLoading {...params} />
   };
+  const CustomRow = (props: React.ComponentProps<typeof GridRow>) => {
+    const rowNode = apiRef.current.getRowNode(props.rowId);
+    const theme = useTheme();
+
+    return (
+      <GridRow
+        {...props}
+        style={(rowNode?.depth ?? 0) > 0 ? { backgroundColor: rowNode.depth % 2 === 0 ? theme.colors.primary.light : theme.colors.success.light } : undefined}
+      />
+    );
+  };
   const renderMenu = () => (
     <Menu
       id="basic-menu"
@@ -665,7 +676,7 @@ function Locations() {
                     }
                     groupingColDef={groupingColDef}
                     components={{
-                      
+                      Row: CustomRow,
                       NoRowsOverlay: () => (
                         <NoRowsMessageWrapper
                           message={t('noRows.location.message')}
