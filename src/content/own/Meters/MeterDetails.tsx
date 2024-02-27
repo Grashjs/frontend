@@ -108,6 +108,10 @@ export default function MeterDetails(props: MeterDetailsProps) {
       value: t('every_frequency_days', { frequency: meter.updateFrequency })
     },
     {
+      label: t('category'),
+      value: meter.meterCategory?.name
+    },
+    {
       label: t('assigned_to'),
       value: meter.users.reduce(
         (acc, user, index) =>

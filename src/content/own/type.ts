@@ -45,6 +45,7 @@ export interface IField {
     | 'cost-categories'
     | 'time-categories'
     | 'work-order-categories'
+    | 'meter-categories'
     | 'asset-categories';
   name?: string;
   placeholder?: string;

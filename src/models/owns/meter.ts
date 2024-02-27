@@ -3,13 +3,14 @@ import { AssetMiniDTO } from './asset';
 import { LocationMiniDTO } from './location';
 import { UserMiniDTO } from '../user';
 import File from './file';
+import Category from './category';
 
 export default interface Meter extends Audit {
   name: string;
   id: number;
   unit: string;
   updateFrequency: number;
-  category: string;
+  meterCategory: Category;
   image: File | null;
   users: UserMiniDTO[];
   location?: LocationMiniDTO;

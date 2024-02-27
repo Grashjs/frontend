@@ -169,6 +169,7 @@ function Meters() {
     const newValues = { ...values };
     newValues.users = formatSelectMultiple(newValues.users);
     //values.teams = formatSelectMultiple(values.teams);
+    newValues.meterCategory = formatSelect(newValues.category);
     newValues.location = formatSelect(newValues.location);
     newValues.asset = formatSelect(newValues.asset);
     newValues.updateFrequency = Number(newValues.updateFrequency);
@@ -314,7 +315,9 @@ function Meters() {
     },
     {
       name: 'category',
-      type: 'text',
+      type: 'select',
+      type2: 'category',
+      category:'meter-categories',
       label: t('category'),
       placeholder: t('category')
     },
@@ -456,7 +459,11 @@ function Meters() {
               asset: {
                 label: currentMeter?.asset.name,
                 value: currentMeter?.asset.id
-              }
+              },
+              category: currentMeter?.meterCategory?{
+                label: currentMeter?.meterCategory.name,
+                value: currentMeter?.meterCategory.id
+              }:null
             }}
             onChange={({ field, e }) => {}}
             onSubmit={async (values) => {
