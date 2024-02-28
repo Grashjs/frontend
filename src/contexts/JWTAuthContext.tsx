@@ -23,6 +23,8 @@ import OwnSubscription from '../models/owns/ownSubscription';
 import { PlanFeature } from '../models/owns/subscriptionPlan';
 import { IField } from '../content/own/type';
 import WorkOrder from '../models/owns/workOrder';
+import { useDispatch } from 'react-redux';
+import { revertAll } from 'src/utils/redux';
 
 interface AuthState {
   isInitialized: boolean;
@@ -453,6 +455,7 @@ const AuthContext = createContext<AuthContextValue>({
 });
 
 export const AuthProvider: FC<AuthProviderProps> = (props) => {
+  const globalDispatch = useDispatch();
   const { children } = props;
   const [state, dispatch] = useReducer(reducer, initialAuthState);
   const switchLanguage = ({ lng }: { lng: any }) => {
@@ -524,6 +527,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
    return loginInternal(accessToken);
   };
   const loginInternal= async (accessToken: string)=>{
+    globalDispatch(revertAll())
     setSession(accessToken);
     const user = await updateUserInfos();
     const company = await api.get<Company>(`companies/${user.companyId}`);

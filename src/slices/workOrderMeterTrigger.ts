@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { AppThunk } from 'src/store';
 import WorkOrderMeterTrigger from '../models/owns/workOrderMeterTrigger';
 import api from '../utils/api';
+import { revertAll } from 'src/utils/redux';
 
 const basePath = 'work-order-meter-triggers';
 interface WorkOrderMeterTriggerState {
@@ -16,6 +17,7 @@ const initialState: WorkOrderMeterTriggerState = {
 const slice = createSlice({
   name: 'workOrderMeterTriggers',
   initialState,
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
   reducers: {
     getWorkOrderMeterTriggers(
       state: WorkOrderMeterTriggerState,

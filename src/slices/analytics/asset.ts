@@ -13,6 +13,7 @@ import {
   RepairTimeByAsset,
   TimeCostByAsset
 } from '../../models/owns/analytics/asset';
+import { revertAll } from 'src/utils/redux';
 
 const basePath = 'analytics/assets';
 interface AssetStatstate {
@@ -63,6 +64,7 @@ const initialState: AssetStatstate = {
 const slice = createSlice({
   name: 'overviewStats',
   initialState,
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
   reducers: {
     getWOTimeCostByAsset(
       state: AssetStatstate,

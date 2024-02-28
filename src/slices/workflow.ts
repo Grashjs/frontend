@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { AppThunk } from 'src/store';
 import { Workflow } from '../models/owns/workflow';
 import api from '../utils/api';
+import { revertAll } from 'src/utils/redux';
 
 const basePath = 'workflows';
 interface WorkflowState {
@@ -18,6 +19,7 @@ const initialState: WorkflowState = {
 const slice = createSlice({
   name: 'workflows',
   initialState,
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
   reducers: {
     getWorkflows(
       state: WorkflowState,

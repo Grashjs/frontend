@@ -4,6 +4,7 @@ import type { AppThunk } from 'src/store';
 import File, { FileType } from '../models/owns/file';
 import api, { authHeader } from '../utils/api';
 import { getInitialPage, Page, SearchCriteria } from '../models/owns/page';
+import { revertAll } from 'src/utils/redux';
 
 const basePath = 'files';
 interface FileState {
@@ -21,6 +22,7 @@ const initialState: FileState = {
 const slice = createSlice({
   name: 'files',
   initialState,
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
   reducers: {
     getFiles(state: FileState, action: PayloadAction<{ files: Page<File> }>) {
       const { files } = action.payload;

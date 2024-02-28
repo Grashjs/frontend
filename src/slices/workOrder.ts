@@ -7,6 +7,7 @@ import { Task } from '../models/owns/tasks';
 import { getInitialPage, Page, SearchCriteria } from '../models/owns/page';
 import { WorkOrderBase } from 'src/models/owns/workOrderBase';
 import PreventiveMaintenance from 'src/models/owns/preventiveMaintenance';
+import { revertAll } from 'src/utils/redux';
 
 const basePath = 'work-orders';
 
@@ -40,6 +41,7 @@ const initialState: WorkOrderState = {
 const slice = createSlice({
   name: 'workOrders',
   initialState,
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
   reducers: {
     getWorkOrders(
       state: WorkOrderState,

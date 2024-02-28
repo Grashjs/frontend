@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { AppThunk } from 'src/store';
 import AssetDowntime from '../models/owns/assetDowntime';
 import api from '../utils/api';
+import { revertAll } from 'src/utils/redux';
 
 const basePath = 'asset-downtimes';
 interface AssetDowntimeState {
@@ -16,6 +17,7 @@ const initialState: AssetDowntimeState = {
 const slice = createSlice({
   name: 'AssetDowntimes',
   initialState,
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
   reducers: {
     getAssetDowntimes(
       state: AssetDowntimeState,

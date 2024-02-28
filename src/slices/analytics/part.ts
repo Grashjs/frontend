@@ -6,6 +6,7 @@ import {
   PartConsumptionsByMonth,
   PartStats
 } from '../../models/owns/analytics/part';
+import { revertAll } from 'src/utils/redux';
 
 const basePath = 'analytics/parts';
 interface PartStatstate {
@@ -30,6 +31,7 @@ const initialState: PartStatstate = {
 const slice = createSlice({
   name: 'overviewStats',
   initialState,
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
   reducers: {
     getOverview(
       state: PartStatstate,

@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { AppThunk } from 'src/store';
 import { Role } from '../models/owns/role';
 import api from '../utils/api';
+import { revertAll } from 'src/utils/redux';
 
 interface RoleState {
   roles: Role[];
@@ -17,6 +18,7 @@ const initialState: RoleState = {
 const slice = createSlice({
   name: 'roles',
   initialState,
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
   reducers: {
     getRoles(state: RoleState, action: PayloadAction<{ roles: Role[] }>) {
       const { roles } = action.payload;

@@ -5,6 +5,7 @@ import Request from '../models/owns/request';
 import api from '../utils/api';
 import WorkOrder from '../models/owns/workOrder';
 import { getInitialPage, Page, SearchCriteria } from 'src/models/owns/page';
+import { revertAll } from 'src/utils/redux';
 
 const basePath = 'requests';
 interface RequestState {
@@ -22,6 +23,7 @@ const initialState: RequestState = {
 const slice = createSlice({
   name: 'requests',
   initialState,
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
   reducers: {
     getRequests(
       state: RequestState,

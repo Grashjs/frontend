@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { AppThunk } from 'src/store';
 import { Checklist } from '../models/owns/checklists';
 import api from '../utils/api';
+import { revertAll } from 'src/utils/redux';
 
 interface ChecklistState {
   checklists: Checklist[];
@@ -17,6 +18,7 @@ const initialState: ChecklistState = {
 const slice = createSlice({
   name: 'checklists',
   initialState,
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
   reducers: {
     getChecklists(
       state: ChecklistState,

@@ -7,6 +7,7 @@ import {
   RequestStats,
   RequestStatsByPriority
 } from '../../models/owns/analytics/request';
+import { revertAll } from 'src/utils/redux';
 
 const basePath = 'analytics/requests';
 interface RequestStatstate {
@@ -41,6 +42,7 @@ const initialState: RequestStatstate = {
 const slice = createSlice({
   name: 'overviewStats',
   initialState,
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
   reducers: {
     getOverview(
       state: RequestStatstate,

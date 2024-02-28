@@ -4,6 +4,7 @@ import type { AppThunk } from 'src/store';
 import Team, { TeamMiniDTO } from '../models/owns/team';
 import api from '../utils/api';
 import { getInitialPage, Page, SearchCriteria } from '../models/owns/page';
+import { revertAll } from 'src/utils/redux';
 
 const basePath = 'teams';
 interface TeamState {
@@ -23,6 +24,7 @@ const initialState: TeamState = {
 const slice = createSlice({
   name: 'teams',
   initialState,
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
   reducers: {
     getTeams(state: TeamState, action: PayloadAction<{ teams: Page<Team> }>) {
       const { teams } = action.payload;

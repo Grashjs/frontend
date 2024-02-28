@@ -2,6 +2,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import type { AppThunk } from 'src/store';
 import api from '../utils/api';
+import { revertAll } from 'src/utils/redux';
 
 const basePath = 'export';
 type EntityType = 'work-orders' | 'assets' | 'locations' | 'parts' | 'meters';
@@ -22,6 +23,7 @@ const initialState: ExportsState = {
 const slice = createSlice({
   name: 'exports',
   initialState,
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
   reducers: {
     setLoading(
       state: ExportsState,

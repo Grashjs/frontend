@@ -5,7 +5,7 @@ import {
 } from 'react-redux';
 import type { ThunkAction } from 'redux-thunk';
 import type { Action } from '@reduxjs/toolkit';
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, createAction } from '@reduxjs/toolkit';
 import rootReducer from './rootReducer';
 import { ImportResponse } from '../models/owns/imports';
 

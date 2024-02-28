@@ -4,6 +4,7 @@ import type { AppThunk } from 'src/store';
 import { Customer, CustomerMiniDTO } from '../models/owns/customer';
 import api from '../utils/api';
 import { getInitialPage, Page, SearchCriteria } from '../models/owns/page';
+import { revertAll } from 'src/utils/redux';
 
 const basePath = 'customers';
 interface CustomerState {
@@ -23,6 +24,7 @@ const initialState: CustomerState = {
 const slice = createSlice({
   name: 'customers',
   initialState,
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
   reducers: {
     getCustomers(
       state: CustomerState,

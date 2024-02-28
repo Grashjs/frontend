@@ -6,6 +6,7 @@ import Location, {
   LocationRow
 } from '../models/owns/location';
 import api from '../utils/api';
+import { revertAll } from 'src/utils/redux';
 
 interface LocationState {
   locations: Location[];
@@ -24,6 +25,7 @@ const initialState: LocationState = {
 const slice = createSlice({
   name: 'locations',
   initialState,
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
   reducers: {
     getLocations(
       state: LocationState,

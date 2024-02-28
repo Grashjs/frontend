@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { AppThunk } from 'src/store';
 import FloorPlan from '../models/owns/floorPlan';
 import api from '../utils/api';
+import { revertAll } from 'src/utils/redux';
 
 const basePath = 'floor-plans';
 interface FloorPlanState {
@@ -16,6 +17,7 @@ const initialState: FloorPlanState = {
 const slice = createSlice({
   name: 'floorPlans',
   initialState,
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
   reducers: {
     getFloorPlans(
       state: FloorPlanState,

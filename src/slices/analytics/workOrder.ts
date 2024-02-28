@@ -17,6 +17,7 @@ import {
   WOStatsByStatus,
   WOTimeByWeek
 } from '../../models/owns/analytics/workOrder';
+import { revertAll } from 'src/utils/redux';
 
 const basePath = 'analytics/work-orders';
 interface WOStatstate {
@@ -117,6 +118,7 @@ const initialState: WOStatstate = {
 const slice = createSlice({
   name: 'overviewStats',
   initialState,
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
   reducers: {
     getStats(
       state: WOStatstate,

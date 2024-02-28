@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { AppThunk } from 'src/store';
 import Category from '../models/owns/category';
 import api from '../utils/api';
+import { revertAll } from 'src/utils/redux';
 
 interface CategoryState {
   categories: { [basePath: string]: Category[] };
@@ -15,6 +16,7 @@ const initialState: CategoryState = {
 const slice = createSlice({
   name: 'categories',
   initialState,
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
   reducers: {
     getCategories(
       state: CategoryState,

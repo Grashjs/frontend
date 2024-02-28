@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { AppThunk } from 'src/store';
 import api from '../../utils/api';
 import { UserWOStats, WOStatsByDay } from '../../models/owns/analytics/user';
+import { revertAll } from 'src/utils/redux';
 
 const basePath = 'analytics/users';
 interface UserStatstate {
@@ -27,6 +28,7 @@ const initialState: UserStatstate = {
 const slice = createSlice({
   name: 'userStats',
   initialState,
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
   reducers: {
     getWorkOrdersOverview(
       state: UserStatstate,
