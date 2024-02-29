@@ -1,23 +1,19 @@
-# Use an official Node.js runtime as a parent image
-FROM node:14
+# Fetching the latest node image on alpine linux
+FROM node:alpine AS development
 
-# Set the working directory in the container
-WORKDIR /app
+# Declaring env
+ENV NODE_ENV development
 
-# Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+# Setting up the work directory
+WORKDIR /react-app
 
-# Install project dependencies
+# Installing dependencies
+COPY ./package*.json /react-app
+
 RUN npm install
 
-# Copy the rest of the application code to the working directory
+# Copying all the files in our project
 COPY . .
 
-# Build the React application
-RUN npm run build
-
-# Expose the port on which your React app will run (default is 3000)
-EXPOSE 3000
-
-# Start the React app
-CMD [“npm”, “start”]
+# Starting our application
+CMD ["npm","start]
