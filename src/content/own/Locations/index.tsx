@@ -377,10 +377,6 @@ function Locations() {
 
   const getEditFields = () => {
     const fieldsClone = [...fields];
-    const parentLocationIndex = fieldsClone.findIndex(
-      (field) => field.name === 'parentLocation'
-    );
-    fieldsClone.splice(parentLocationIndex, 1);
     return fieldsClone;
   };
   const shape = {
@@ -564,6 +560,12 @@ function Locations() {
                 ? {
                     lng: currentLocation.longitude,
                     lat: currentLocation.latitude
+                  }
+                : null,
+                parentLocation: currentLocation?.parentLocation
+                ? {
+                    label: currentLocation.parentLocation.name,
+                    value: currentLocation.parentLocation.id
                   }
                 : null
             }}
