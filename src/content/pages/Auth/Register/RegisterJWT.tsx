@@ -94,7 +94,7 @@ const [showPassword, setShowPassword] = useState(false);
         return register(role ? { ...values, role: { id: role } } : values)
           .then(() => {
             if (!IS_LOCALHOST) {
-              showSnackBar(t('verify_email'), 'success');
+              if(!role) showSnackBar(t('verify_email'), 'success');
               navigate(role ? '/account/login' : '/account/verify');
             }
           })

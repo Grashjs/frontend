@@ -120,7 +120,8 @@ function WorkOrders() {
     hasViewPermission,
     hasViewOtherPermission,
     hasCreatePermission,
-    hasFeature
+    hasFeature,
+    user
   } = useAuth();
   const [currentWorkOrder, setCurrentWorkOrder] = useState<WorkOrder>();
   const [openDelete, setOpenDelete] = useState<boolean>(false);
@@ -203,6 +204,7 @@ function WorkOrders() {
     );
     setOpenDrawer(true);
   };
+
   const handleOpenDetails = (id: number) => {
     const foundWorkOrder = workOrders.content.find(
       (workOrder) => workOrder.id === id
@@ -223,6 +225,7 @@ function WorkOrders() {
   const handleCloseFilterDrawer = () => setOpenFilterDrawer(false);
   useEffect(() => {
     setTitle(t('work_orders'));
+    if(user.role.code==='REQUESTER') navigate('/app/requests')
   }, []);
 
   const onFilterChange = (newFilters: FilterField[]) => {
