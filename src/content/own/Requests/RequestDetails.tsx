@@ -112,6 +112,10 @@ export default function RequestDetails({
       {
         label: t('category'),
         value: request.category?.name
+      },
+      {
+        label: t('feedback'),
+        value: request.cancellationReason
       }
     ];
   return (
