@@ -35,6 +35,7 @@ import { PermissionEntity } from '../../../models/owns/role';
 import ImageViewer from 'react-simple-image-viewer';
 import { CompanySettingsContext } from '../../../contexts/CompanySettingsContext';
 import FilesList from '../components/FilesList';
+import RequestCancellationModal from './RequestCancellationModal';
 
 interface RequestDetailsProps {
   request: Request;
@@ -49,7 +50,6 @@ export default function RequestDetails({
   onClose
 }: RequestDetailsProps) {
   const [approving, setApproving] = useState<boolean>(false);
-  const [cancelling, setCancelling] = useState<boolean>(false);
   const { t }: { t: any } = useTranslation();
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -60,7 +60,7 @@ export default function RequestDetails({
     CompanySettingsContext
   );
   const [isImageViewerOpen, setIsImageViewerOpen] = useState<boolean>(false);
-
+  const [openCancellationModal, setOpenCancellationModal] = useState<boolean>(false)
   const onApprove = () => {
     setApproving(true);
     dispatch(approveRequest(request.id))
@@ -70,12 +70,6 @@ export default function RequestDetails({
       .finally(() => setApproving(false));
   };
 
-  const onCancel = () => {
-    setCancelling(true);
-    dispatch(cancelRequest(request.id))
-      .then(onClose)
-      .finally(() => setCancelling(false));
-  };
   const BasicField = ({
     label,
     value,
@@ -99,27 +93,27 @@ export default function RequestDetails({
   const fieldsToRender = (
     request: Request
   ): { label: string; value: string | number }[] => [
-    {
-      label: t('description'),
-      value: request.description
-    },
-    {
-      label: t('id'),
-      value: request.id
-    },
-    {
-      label: t('priority'),
-      value: request.priority
-    },
-    {
-      label: t('due_date'),
-      value: getFormattedDate(request.dueDate)
-    },
-    {
-      label: t('category'),
-      value: request.category?.name
-    }
-  ];
+      {
+        label: t('description'),
+        value: request.description
+      },
+      {
+        label: t('id'),
+        value: request.id
+      },
+      {
+        label: t('priority'),
+        value: request.priority
+      },
+      {
+        label: t('due_date'),
+        value: getFormattedDate(request.dueDate)
+      },
+      {
+        label: t('category'),
+        value: request.category?.name
+      }
+    ];
   return (
     <Grid
       container
@@ -174,13 +168,9 @@ export default function RequestDetails({
             >
               <Button
                 startIcon={
-                  cancelling ? (
-                    <CircularProgress size="1rem" />
-                  ) : (
-                    <ClearTwoToneIcon />
-                  )
+                  <ClearTwoToneIcon />
                 }
-                onClick={onCancel}
+                onClick={() => setOpenCancellationModal(true)}
                 variant="outlined"
               >
                 {t('reject')}
@@ -342,6 +332,14 @@ export default function RequestDetails({
           />
         </div>
       )}
+      <RequestCancellationModal
+        requestId={request.id}
+        open={openCancellationModal}
+        onClose={() => setOpenCancellationModal(false)}
+        onCancel={() => {
+          setOpenCancellationModal(false);
+          onClose();
+        }} />
     </Grid>
   );
 }
