@@ -101,6 +101,12 @@ const slice = createSlice({
     ) {
       const { loading } = action.payload;
       state.loadingGet = loading;
+    },
+    resetHierarchy(
+      state: LocationState,
+      action: PayloadAction<{ }>
+    ) {
+      state.locationsHierarchy = [];
     }
   }
 });
@@ -163,4 +169,14 @@ export const getLocationChildren =
     );
     dispatch(slice.actions.setLoadingGet({ loading: false }));
   };
+
+  export const resetLocationsHierarchy =
+  (): AppThunk =>
+  async (dispatch) => {
+    dispatch(
+      slice.actions.resetHierarchy({
+      }));
+      dispatch(getLocationChildren(0,[]))
+  };
+
 export default slice;

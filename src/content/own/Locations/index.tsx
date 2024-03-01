@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import { useTranslation } from 'react-i18next';
 import { IField } from '../type';
+import ReplayTwoToneIcon from '@mui/icons-material/ReplayTwoTone';
 import Location from '../../../models/owns/location';
 import * as React from 'react';
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
@@ -28,7 +29,8 @@ import {
   deleteLocation,
   editLocation,
   getLocationChildren,
-  getLocations
+  getLocations,
+  resetLocationsHierarchy
 } from '../../../slices/location';
 import ConfirmDialog from '../components/ConfirmDialog';
 import { useDispatch, useSelector } from '../../../store';
@@ -379,6 +381,9 @@ function Locations() {
     const fieldsClone = [...fields];
     return fieldsClone;
   };
+  const handleReset =()=>{
+    dispatch(resetLocationsHierarchy());
+  }
   const shape = {
     name: Yup.string().required(t('required_location_name')),
     address: Yup.string().required(t('required_location_address'))
@@ -643,6 +648,9 @@ function Locations() {
               ))}
             </Tabs>
             <Stack direction={'row'} alignItems="center" spacing={1}>
+            <IconButton onClick={handleReset} color="primary">
+                <ReplayTwoToneIcon />
+              </IconButton>
               <IconButton onClick={handleOpenMenu} color="primary">
                 <MoreVertTwoToneIcon />
               </IconButton>

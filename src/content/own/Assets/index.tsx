@@ -18,9 +18,10 @@ import {
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { IField } from "../type";
-import { addAsset, getAssetChildren, getAssets } from "../../../slices/asset";
+import { addAsset, getAssetChildren, getAssets, resetAssetsHierarchy } from "../../../slices/asset";
 import { useDispatch, useSelector } from "../../../store";
 import * as React from "react";
+import ReplayTwoToneIcon from '@mui/icons-material/ReplayTwoTone';
 import { useContext, useEffect, useMemo, useState } from "react";
 import { TitleContext } from "../../../contexts/TitleContext";
 import { GridEnrichedColDef } from "@mui/x-data-grid/models/colDef/gridColDef";
@@ -500,7 +501,9 @@ function Assets() {
   const shape = {
     name: Yup.string().required(t("required_asset_name"))
   };
-
+  const handleReset =()=>{
+    dispatch(resetAssetsHierarchy());
+  }
   useEffect(() => {
     if (apiRef.current.getRow) {
       const handleRowExpansionChange: GridEventListener<
@@ -666,6 +669,9 @@ function Assets() {
           >
             <SearchInput onChange={debouncedQueryChange} />
             <Stack direction="row" spacing={1}>
+            <IconButton onClick={handleReset} color="primary">
+                <ReplayTwoToneIcon />
+              </IconButton>
               <IconButton onClick={handleOpenMenu} color="primary">
                 <MoreVertTwoToneIcon />
               </IconButton>

@@ -124,6 +124,12 @@ const slice = createSlice({
     ) {
       const { assets, id } = action.payload;
       state.assetsByPart[id] = assets;
+    },
+    resetHierarchy(
+      state: AssetState,
+      action: PayloadAction<{ }>
+    ) {
+      state.assetsHierarchy = [];
     }
   }
 });
@@ -240,4 +246,14 @@ export const getAssetsByPart =
       })
     );
   };
+
+  
+export const resetAssetsHierarchy =
+(): AppThunk =>
+async (dispatch) => {
+  dispatch(
+    slice.actions.resetHierarchy({
+    }));
+    dispatch(getAssetChildren(0,[]))
+};
 export default slice;
