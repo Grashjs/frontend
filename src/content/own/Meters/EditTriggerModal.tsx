@@ -80,6 +80,7 @@ export default function EditTriggerModal({
     newValues.primaryUser = formatSelect(newValues.primaryUser);
     newValues.location = formatSelect(newValues.location);
     newValues.team = formatSelect(newValues.team);
+    newValues.category = formatSelect(newValues.category);
     newValues.asset = formatSelect(newValues.asset);
     newValues.assignedTo = formatSelectMultiple(newValues.assignedTo);
     newValues.priority = newValues.priority?.value;

@@ -71,6 +71,7 @@ export default function AddTriggerModal({
     newValues.location = formatSelect(newValues.location);
     newValues.team = formatSelect(newValues.team);
     newValues.asset = formatSelect(newValues.asset);
+    newValues.category = formatSelect(newValues.category);
     newValues.assignedTo = formatSelectMultiple(newValues.assignedTo);
     newValues.priority = newValues.priority?.value;
     newValues.triggerCondition = newValues.triggerCondition.value;
