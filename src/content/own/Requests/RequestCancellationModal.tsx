@@ -43,7 +43,7 @@ export default function CompleteWOModal({
                 }}
             >
                 <Typography variant="h4" gutterBottom>
-                    {t('close')}
+                    {t('reject')}
                 </Typography>
             </DialogTitle>
             <DialogContent
@@ -55,7 +55,7 @@ export default function CompleteWOModal({
                 <Form
                     fields={fields}
                     validation={Yup.object().shape(shape)}
-                    submitText={t('close')}
+                    submitText={t('reject')}
                     values={{}}
                     onChange={({ field, e }) => { }}
                     onSubmit={async (values) => {
