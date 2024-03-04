@@ -157,7 +157,7 @@ function ApplicationsCalendar({
   const getEventFromWO = (eventPayload: CalendarEvent<WorkOrder|PreventiveMaintenance>): Event => {
     return {
       id: eventPayload.event.id.toString(),
-      allDay: true,
+      allDay: false,
       color: getColor(eventPayload.event.priority),
       description: eventPayload.event?.description,
       end: new Date(eventPayload.date),
@@ -220,17 +220,6 @@ function ApplicationsCalendar({
     dispatch(selectEvent(arg.event.id));
   };
 
-  useEffect(() => {
-    const calItem = calendarRef.current;
-
-    if (calItem) {
-      const calApi = calItem.getApi();
-      const changedView = mobile ? 'listWeek' : 'dayGridMonth';
-
-      calApi.changeView(changedView);
-      setView(changedView);
-    }
-  }, [mobile]);
 
   return (
     <Grid item xs={12}>
