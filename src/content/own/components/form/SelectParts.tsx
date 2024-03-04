@@ -2,6 +2,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Autocomplete,
   Box,
   Button,
   Checkbox,
@@ -13,6 +14,7 @@ import {
   FormGroup,
   Tab,
   Tabs,
+  TextField,
   Typography
 } from '@mui/material';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -37,6 +39,7 @@ export default function SelectParts({ onChange, selected }: SelectPartsProps) {
   const [currentTab, setCurrentTab] = useState<string>('parts');
   const [selectedParts, setSelectedParts] = useState<PartMiniDTO[]>([]);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [searchString, setSearchString] = useState<string>('');
   const [openModal, setOpenModal] = useState<boolean>(false);
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
     setCurrentTab(value);
@@ -110,20 +113,23 @@ export default function SelectParts({ onChange, selected }: SelectPartsProps) {
             ))}
           </Tabs>
           {currentTab === 'parts' && (
-            <FormGroup>
-              {partsMini.map((part) => (
-                <FormControlLabel
-                  onChange={(event, checked) => {
-                    if (checked) {
-                      onSelect([part.id]);
-                    } else onUnSelect([part.id]);
-                  }}
-                  key={part.id}
-                  control={<Checkbox checked={selectedIds.includes(part.id)} />}
-                  label={part.name}
-                />
-              ))}
-            </FormGroup>
+            <Box>
+              <TextField sx={{mb:1}} value={searchString} onChange={(event)=>setSearchString(event.target.value)} placeholder={t('search')} label={t('search')}/>
+              <FormGroup>
+                {partsMini.filter(part=>part.name.includes(searchString)).map((part) => (
+                  <FormControlLabel
+                    onChange={(event, checked) => {
+                      if (checked) {
+                        onSelect([part.id]);
+                      } else onUnSelect([part.id]);
+                    }}
+                    key={part.id}
+                    control={<Checkbox checked={selectedIds.includes(part.id)} />}
+                    label={part.name}
+                  />
+                ))}
+              </FormGroup>
+            </Box>
           )}
           {currentTab === 'sets' && (
             <FormGroup>
