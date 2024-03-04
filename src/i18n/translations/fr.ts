@@ -1488,7 +1488,8 @@ const frJSON = {
     "Cacher le compteur de temps, les coûts et pièces dans les details d'un Ordre de travail en utilisant l'application mobile",
   switch_account: 'Changer de compte',
   switch_to_super_user: 'Passer en super administrateur',
-  switch_account_description: 'Veuillez choisir un compte pour continuer'
+  switch_account_description: 'Veuillez choisir un compte pour continuer',
+  put_location_in_map: "Placer l'emplacement sur une carte"
 };
 
 export default frJSON;

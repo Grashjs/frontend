@@ -238,17 +238,17 @@ export default (props: PropsType) => {
             <Box display="flex" flexDirection="column">
               {values?.length
                 ? values.map(({ label, value }) => (
-                    <Link
-                      sx={{ mb: 1 }}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href={`/app/inventory/parts/${value}`}
-                      key={value}
-                      variant="h4"
-                    >
-                      {label}
-                    </Link>
-                  ))
+                  <Link
+                    sx={{ mb: 1 }}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`/app/inventory/parts/${value}`}
+                    key={value}
+                    variant="h4"
+                  >
+                    {label}
+                  </Link>
+                ))
                 : null}
             </Box>
             <SelectParts
@@ -331,7 +331,23 @@ export default (props: PropsType) => {
       />
     );
   };
-
+  const filterRelatedFields = (fields: IField[], formik): IField[] => {
+    const fieldsClone = [...fields];
+    const withRelatedFields = fields.filter(field => field.relatedFields?.length);
+    withRelatedFields.forEach(({ relatedFields, name, type }) => {
+      relatedFields.forEach(relatedField => {
+        if (formik.values[name] === relatedField.value 
+          ||(type === 'switch' && (formik.values[name] && (formik.values[name][0] === 'on') === relatedField.value)) 
+          || (formik.values[name] === undefined && !relatedField.value)) {
+          if (relatedField.hide) {
+            const fieldToDeleteIndex = fieldsClone.findIndex(field => field.name === relatedField.field);
+            fieldsClone.splice(fieldToDeleteIndex, 1);
+          }
+        }
+      })
+    })
+    return fieldsClone;
+  }
   return (
     <>
       <Formik<IHash<any>>
@@ -353,7 +369,7 @@ export default (props: PropsType) => {
       >
         {(formik) => (
           <Grid container spacing={2}>
-            {props.fields.map((field, index) => {
+            {filterRelatedFields(props.fields, formik).map((field, index) => {
               return (
                 <Grid item xs={12} lg={field.midWidth ? 6 : 12} key={index}>
                   {field.type === 'select' ? (

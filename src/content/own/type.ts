@@ -65,6 +65,7 @@ export interface IField {
   checked?: boolean;
   loading?: boolean;
   excluded?: number;
+  relatedFields?: { field: string; value: any; hide: boolean }[];
 }
 
 export interface IHash<E> {

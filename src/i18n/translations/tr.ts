@@ -1281,7 +1281,8 @@ const trJSON = {
   'Some of the features that make Tokyo one of the best admin templates available today': 'Tokyo\'yu günümüzün en iyi yönetici şablonlarından biri yapan özelliklerden bazıları',
   'Design Source Files': 'Kaynak dosyalarını tasarlayın',
   'Start working on your project directly from one of the included starter kits or use the Figma/Sketch files to create a prototype first': 'Birlikte verilen başlangıç ​​kitlerinden birinden doğrudan projeniz üzerinde çalışmaya başlayın veya önce bir prototip oluşturmak için Figma/Sketch dosyalarını kullanın',
-  'We only translated a small part of the template, for demonstration purposes': 'Gösterim amacıyla modelin yalnızca küçük bir kısmını tercüme ettik.'
+  'We only translated a small part of the template, for demonstration purposes': 'Gösterim amacıyla modelin yalnızca küçük bir kısmını tercüme ettik.',
+  put_location_in_map: "konumu haritaya koy"
 };
 
 

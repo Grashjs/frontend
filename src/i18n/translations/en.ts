@@ -1341,7 +1341,8 @@ const enJSON = {
   account_deletion: 'Account deletion',
   switch_account: 'Switch account',
   switch_to_super_user: 'Switch to super admin',
-  switch_account_description: 'Please choose an account to proceed'
+  switch_account_description: 'Please choose an account to proceed',
+  put_location_in_map: 'Put location in map'
 };
 
 export default enJSON;
