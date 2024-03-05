@@ -317,7 +317,7 @@ function Meters() {
       name: 'category',
       type: 'select',
       type2: 'category',
-      category:'meter-categories',
+      category: 'meter-categories',
       label: t('category'),
       placeholder: t('category')
     },
@@ -328,10 +328,17 @@ function Meters() {
       label: t('image')
     },
     {
+      name: 'location',
+      type: 'select',
+      type2: 'location',
+      label: t('location')
+    },
+    {
       name: 'asset',
       type: 'select',
       type2: 'asset',
       label: t('asset'),
+      relatedFields: [{ field: 'location' }],
       required: true
     },
     {
@@ -340,12 +347,6 @@ function Meters() {
       type2: 'user',
       label: t('workers'),
       multiple: true
-    },
-    {
-      name: 'location',
-      type: 'select',
-      type2: 'location',
-      label: t('location')
     }
   ];
   const shape = {
@@ -387,7 +388,7 @@ function Meters() {
             validation={Yup.object().shape(shape)}
             submitText={t('add')}
             values={{}}
-            onChange={({ field, e }) => {}}
+            onChange={({ field, e }) => { }}
             onSubmit={async (values) => {
               let formattedValues = formatValues(values);
               return new Promise<void>((resolve, rej) => {
@@ -452,20 +453,20 @@ function Meters() {
               }),
               location: currentMeter?.location
                 ? {
-                    label: currentMeter?.location.name,
-                    value: currentMeter?.location.id
-                  }
+                  label: currentMeter?.location.name,
+                  value: currentMeter?.location.id
+                }
                 : null,
               asset: {
                 label: currentMeter?.asset.name,
                 value: currentMeter?.asset.id
               },
-              category: currentMeter?.meterCategory?{
+              category: currentMeter?.meterCategory ? {
                 label: currentMeter?.meterCategory.name,
                 value: currentMeter?.meterCategory.id
-              }:null
+              } : null
             }}
-            onChange={({ field, e }) => {}}
+            onChange={({ field, e }) => { }}
             onSubmit={async (values) => {
               let formattedValues = formatValues(values);
               return new Promise<void>((resolve, rej) => {
@@ -598,7 +599,7 @@ function Meters() {
                     rowsPerPageOptions={[10, 20, 50]}
                     onRowClick={({ id }) => handleOpenDetails(Number(id))}
                     components={{
-                      
+
                       NoRowsOverlay: () => (
                         <NoRowsMessageWrapper
                           message={t('noRows.meter.message')}
