@@ -641,7 +641,7 @@ function Assets() {
     return (
       <GridRow
         {...props}
-        style={(rowNode?.depth ?? 0) > 0 ? { backgroundColor: rowNode.depth % 2 === 0 ? theme.colors.primary.light : theme.colors.success.light } : undefined}
+        style={(rowNode?.depth ?? 0) > 0 ? { backgroundColor: rowNode.depth % 2 === 0 ? theme.colors.primary.light : theme.colors.primary.main, color: 'white' } : undefined}
       />
     );
   };

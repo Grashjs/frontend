@@ -116,7 +116,7 @@ export default function SelectParts({ onChange, selected }: SelectPartsProps) {
             <Box>
               <TextField sx={{mb:1}} value={searchString} onChange={(event)=>setSearchString(event.target.value)} placeholder={t('search')} label={t('search')}/>
               <FormGroup>
-                {partsMini.filter(part=>part.name.includes(searchString)).map((part) => (
+                {partsMini.filter(part=>part.name.toLowerCase().includes(searchString.toLowerCase())).map((part) => (
                   <FormControlLabel
                     onChange={(event, checked) => {
                       if (checked) {
