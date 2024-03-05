@@ -1489,7 +1489,10 @@ const frJSON = {
   switch_account: 'Changer de compte',
   switch_to_super_user: 'Passer en super administrateur',
   switch_account_description: 'Veuillez choisir un compte pour continuer',
-  put_location_in_map: "Placer l'emplacement sur une carte"
+  put_location_in_map: "Placer l'emplacement sur une carte",
+  confirm_disable_user: "Etes-vous sûr de désactiver {{user}}? Vous ne pourrez l'activer que dans un mois",
+  user_disabled_success: "Utilisateur désactivé",
+  disable: 'Désactiver'
 };
 
 export default frJSON;

@@ -1342,7 +1342,10 @@ const enJSON = {
   switch_account: 'Switch account',
   switch_to_super_user: 'Switch to super admin',
   switch_account_description: 'Please choose an account to proceed',
-  put_location_in_map: 'Put location in map'
+  put_location_in_map: 'Put location in map',
+  confirm_disable_user: 'Are you sure you want to disable {{user}}? You will only be able to enable it after one month',
+  user_disabled_success: "User disabled successfully",
+  disable: 'Disable'
 };
 
 export default enJSON;

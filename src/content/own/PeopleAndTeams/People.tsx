@@ -39,6 +39,7 @@ import { useDispatch, useSelector } from '../../../store';
 import { CustomSnackBarContext } from '../../../contexts/CustomSnackBarContext';
 import {
   clearSingleUser,
+  disableUser,
   editUser,
   editUserRole,
   getSingleUser,
@@ -57,6 +58,8 @@ import { CompanySettingsContext } from '../../../contexts/CompanySettingsContext
 import { SearchCriteria } from '../../../models/owns/page';
 import { onSearchQueryChange } from '../../../utils/overall';
 import SearchInput from '../components/SearchInput';
+import CancelIcon from '@mui/icons-material/Cancel';
+import ConfirmDialog from '../components/ConfirmDialog';
 
 interface PropsType {
   values?: any;
@@ -86,6 +89,7 @@ const People = ({ openModal, handleCloseModal }: PropsType) => {
   );
   const [emails, setEmails] = useState<string[]>([]);
   const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
+  const [openDisableModal, setOpenDisableModal] = useState<boolean>(false);
   const [currentEmail, setCurrentEmail] = useState<string>('');
   const [isInviteSubmitting, setIsInviteSubmitting] = useState(false);
   const [roleId, setRoleId] = useState<number>();
@@ -128,6 +132,13 @@ const People = ({ openModal, handleCloseModal }: PropsType) => {
     if (foundUser) {
       setCurrentUser(foundUser);
       setOpenUpdateModal(true);
+    }
+  };
+  const handleOpenDisable = (id: number) => {
+    const foundUser = users.content.find((user) => user.id === id);
+    if (foundUser) {
+      setCurrentUser(foundUser);
+      setOpenDisableModal(true);
     }
   };
   const handleCloseDetails = () => {
@@ -189,15 +200,15 @@ const People = ({ openModal, handleCloseModal }: PropsType) => {
               rate: currentUser?.rate,
               role: currentUser
                 ? {
-                    label:
-                      currentUser.role.code === 'USER_CREATED'
-                        ? currentUser.role.name
-                        : t(`${currentUser.role.code}_name`),
-                    value: currentUser.role.id
-                  }
+                  label:
+                    currentUser.role.code === 'USER_CREATED'
+                      ? currentUser.role.name
+                      : t(`${currentUser.role.code}_name`),
+                  value: currentUser.role.id
+                }
                 : null
             }}
-            onChange={({ field, e }) => {}}
+            onChange={({ field, e }) => { }}
             onSubmit={async (values) => {
               return dispatch(
                 editUser(currentUser.id, {
@@ -348,7 +359,14 @@ const People = ({ openModal, handleCloseModal }: PropsType) => {
             icon={<EditTwoToneIcon fontSize="small" color={'primary'} />}
             onClick={() => handleOpenUpdate(Number(params.id))}
             label={t('edit')}
-          />
+          />,
+          ...(params.row.enabled ?
+            [<GridActionsCellItem
+              key="disable"
+              icon={<CancelIcon fontSize="small" color={'error'} />}
+              onClick={() => handleOpenDisable(Number(params.id))}
+              label={t('disable')}
+            />] : [])
         ];
         if (!hasEditPermission(PermissionEntity.PEOPLE_AND_TEAMS, params.row))
           actions = [];
@@ -545,6 +563,17 @@ const People = ({ openModal, handleCloseModal }: PropsType) => {
           </Box>
         </DialogContent>
       </Dialog>
+      <ConfirmDialog
+        open={openDisableModal}
+        onCancel={() => {
+          setOpenDisableModal(false);
+        }}
+        onConfirm={() => {
+          dispatch(disableUser(currentUser.id)).then(()=>{setOpenDisableModal(false); showSnackBar(t('user_disabled_success'),'success')})
+        }}
+        confirmText={t('disable')}
+        question={t('confirm_disable_user', {user: `${currentUser?.firstName} ${currentUser?.lastName}`})}
+      />
       {renderEditUserModal()}
     </Box>
   );

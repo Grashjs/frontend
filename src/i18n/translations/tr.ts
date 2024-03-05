@@ -1282,7 +1282,10 @@ const trJSON = {
   'Design Source Files': 'Kaynak dosyalarını tasarlayın',
   'Start working on your project directly from one of the included starter kits or use the Figma/Sketch files to create a prototype first': 'Birlikte verilen başlangıç ​​kitlerinden birinden doğrudan projeniz üzerinde çalışmaya başlayın veya önce bir prototip oluşturmak için Figma/Sketch dosyalarını kullanın',
   'We only translated a small part of the template, for demonstration purposes': 'Gösterim amacıyla modelin yalnızca küçük bir kısmını tercüme ettik.',
-  put_location_in_map: "konumu haritaya koy"
+  put_location_in_map: "konumu haritaya koy",
+  confirm_disable_user: "{{user}} ı devre dışı bırakmak istediğinizden emin misiniz? Yalnızca bir ay sonra etkinleştirebileceksiniz",
+  user_disabled_success: "Kullanıcı başarıyla devre dışı bırakıldı",
+  disable: 'Devre dışı bırakmak'
 };
 
 
