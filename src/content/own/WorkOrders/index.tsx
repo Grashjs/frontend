@@ -572,7 +572,8 @@ function WorkOrders() {
       type: 'select',
       type2: 'asset',
       label: t('asset'),
-      placeholder: t('select_asset')
+      placeholder: t('select_asset'),
+      relatedFields:[{field: 'location'}]
     },
     {
       name: 'tasks',

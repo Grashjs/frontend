@@ -95,8 +95,8 @@ export default (props: PropsType) => {
   const fetchCategories = async (category: string) => {
     dispatch(getCategories(category));
   };
-  const fetchAssets = async () => {
-    dispatch(getAssetsMini());
+  const fetchAssets = async (locationId: number) => {
+    dispatch(getAssetsMini(locationId));
   };
   const fetchTeams = async () => {
     dispatch(getTeamsMini());
@@ -203,7 +203,12 @@ export default (props: PropsType) => {
               value: asset.id
             };
           });
-        onOpen = fetchAssets;
+        onOpen = () => {
+          if(field.relatedFields){
+          const locationId = formik.values[field.relatedFields[0].field]?.value??null;
+          fetchAssets(locationId)}
+          else fetchAssets(null);
+        };
         break;
       case 'role':
         options = roles.map((role) => {
@@ -336,8 +341,8 @@ export default (props: PropsType) => {
     const withRelatedFields = fields.filter(field => field.relatedFields?.length);
     withRelatedFields.forEach(({ relatedFields, name, type }) => {
       relatedFields.forEach(relatedField => {
-        if (formik.values[name] === relatedField.value 
-          ||(type === 'switch' && (formik.values[name] && (formik.values[name][0] === 'on') === relatedField.value)) 
+        if (formik.values[name] === relatedField.value
+          || (type === 'switch' && (formik.values[name] && (formik.values[name][0] === 'on') === relatedField.value))
           || (formik.values[name] === undefined && !relatedField.value)) {
           if (relatedField.hide) {
             const fieldToDeleteIndex = fieldsClone.findIndex(field => field.name === relatedField.field);
