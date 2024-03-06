@@ -64,7 +64,9 @@ export default function PartQuantitiesList({
                 {partQuantity.part.name}
               </Link>
             }
-            secondary={partQuantity.part.description}
+            secondary={<div style={{overflow: "hidden", textOverflow: "ellipsis", width: '11rem'}}>
+              <Typography noWrap>{partQuantity.part.description}</Typography>
+              </div>}
           />
         </ListItem>
       ))}

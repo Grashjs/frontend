@@ -95,6 +95,13 @@ function WorkOrders() {
   const viewParam = searchParams.get('view');
   const assetParam = searchParams.get('asset');
   const dispatch = useDispatch();
+  const {
+    hasViewPermission,
+    hasViewOtherPermission,
+    hasCreatePermission,
+    hasFeature,
+    user
+  } = useAuth();
   const { uploadFiles, getWOFieldsAndShapes } = useContext(
     CompanySettingsContext
   );
@@ -103,7 +110,7 @@ function WorkOrders() {
   );
   const tabs = [
     { value: 'list', label: t('list_view'), disabled: false },
-    { value: 'calendar', label: t('calendar_view'), disabled: false },
+    { value: 'calendar', label: t('calendar_view'), disabled: !hasViewPermission(PermissionEntity.WORK_ORDERS) },
     { value: 'column', label: t('column_view'), disabled: true }
   ];
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
@@ -116,13 +123,7 @@ function WorkOrders() {
   const { setTitle } = useContext(TitleContext);
   const { workOrderId } = useParams();
   const { showSnackBar } = useContext(CustomSnackBarContext);
-  const {
-    hasViewPermission,
-    hasViewOtherPermission,
-    hasCreatePermission,
-    hasFeature,
-    user
-  } = useAuth();
+
   const [currentWorkOrder, setCurrentWorkOrder] = useState<WorkOrder>();
   const [openDelete, setOpenDelete] = useState<boolean>(false);
   const { tasksByWorkOrder } = useSelector((state) => state.tasks);
@@ -225,7 +226,6 @@ function WorkOrders() {
   const handleCloseFilterDrawer = () => setOpenFilterDrawer(false);
   useEffect(() => {
     setTitle(t('work_orders'));
-    if(user.role.code==='REQUESTER') navigate('/app/requests')
   }, []);
 
   const onFilterChange = (newFilters: FilterField[]) => {
@@ -332,8 +332,7 @@ function WorkOrders() {
   };
   const debouncedQueryChange = useMemo(() => debounce(onQueryChange, 1300), []);
   useEffect(() => {
-    if (hasViewPermission(PermissionEntity.WORK_ORDERS))
-      dispatch(getWorkOrders(criteria));
+    dispatch(getWorkOrders(criteria));
   }, [criteria]);
 
   const columns: GridEnrichedColDef[] = [
@@ -573,7 +572,7 @@ function WorkOrders() {
       type2: 'asset',
       label: t('asset'),
       placeholder: t('select_asset'),
-      relatedFields:[{field: 'location'}]
+      relatedFields: [{ field: 'location' }]
     },
     {
       name: 'tasks',
@@ -805,216 +804,214 @@ function WorkOrders() {
       )}
     </Menu>
   );
-  if (hasViewPermission(PermissionEntity.WORK_ORDERS))
-    return (
-      <>
-        <Helmet>
-          <title>{t('work_orders')}</title>
-        </Helmet>
+  return (
+    <>
+      <Helmet>
+        <title>{t('work_orders')}</title>
+      </Helmet>
+      <Grid
+        container
+        justifyContent="center"
+        alignItems="stretch"
+        spacing={1}
+        paddingX={4}
+      >
         <Grid
-          container
-          justifyContent="center"
-          alignItems="stretch"
-          spacing={1}
-          paddingX={4}
+          item
+          xs={12}
+          display="flex"
+          flexDirection="row"
+          justifyContent="space-between"
+          alignItems="center"
         >
-          <Grid
-            item
-            xs={12}
-            display="flex"
-            flexDirection="row"
-            justifyContent="space-between"
-            alignItems="center"
+          <Tabs
+            onChange={handleTabsChange}
+            value={currentTab}
+            variant="scrollable"
+            scrollButtons="auto"
+            textColor="primary"
+            indicatorColor="primary"
           >
-            <Tabs
-              onChange={handleTabsChange}
-              value={currentTab}
-              variant="scrollable"
-              scrollButtons="auto"
-              textColor="primary"
-              indicatorColor="primary"
-            >
-              {tabs.map((tab) =>
-                tab.disabled ? (
-                  <Tooltip title={t('Coming Soon')} placement="top">
-                    <span>
-                      <Tab
-                        key={tab.value}
-                        label={tab.label}
-                        value={tab.value}
-                        disabled={tab.disabled}
-                      />
-                    </span>
-                  </Tooltip>
-                ) : (
-                  <Tab key={tab.value} label={tab.label} value={tab.value} />
-                )
-              )}
-            </Tabs>
-            <Stack direction={'row'} alignItems="center" spacing={1}>
-              <IconButton onClick={handleOpenMenu} color="primary">
-                <MoreVertTwoToneIcon />
-              </IconButton>
-              {hasCreatePermission(PermissionEntity.WORK_ORDERS) && (
-                <Button
-                  onClick={() => setOpenAddModal(true)}
-                  startIcon={<AddTwoToneIcon />}
-                  sx={{ mx: 6, my: 1 }}
-                  variant="contained"
-                >
-                  {t('work_order')}
-                </Button>
-              )}
-            </Stack>
-          </Grid>
-          <Grid item xs={12}>
-            <Card
-              sx={{
-                p: 2,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center'
-              }}
-            >
-              <Stack
-                sx={{ ml: 1 }}
-                direction="row"
-                spacing={1}
-                justifyContent={'flex-start'}
-                width={'95%'}
+            {tabs.map((tab) =>
+              tab.disabled ? (
+                <Tooltip title={t('Coming Soon')} placement="top">
+                  <span>
+                    <Tab
+                      key={tab.value}
+                      label={tab.label}
+                      value={tab.value}
+                      disabled={tab.disabled}
+                    />
+                  </span>
+                </Tooltip>
+              ) : (
+                <Tab key={tab.value} label={tab.label} value={tab.value} />
+              )
+            )}
+          </Tabs>
+          <Stack direction={'row'} alignItems="center" spacing={1}>
+            <IconButton onClick={handleOpenMenu} color="primary">
+              <MoreVertTwoToneIcon />
+            </IconButton>
+            {hasCreatePermission(PermissionEntity.WORK_ORDERS) && (
+              <Button
+                onClick={() => setOpenAddModal(true)}
+                startIcon={<AddTwoToneIcon />}
+                sx={{ mx: 6, my: 1 }}
+                variant="contained"
               >
-                <Button
-                  onClick={() => setOpenFilterDrawer(true)}
-                  sx={{
-                    '& .MuiButton-startIcon': { margin: '0px' },
-                    minWidth: 0
-                  }}
-                  variant={
-                    _.isEqual(
-                      criteria.filterFields,
-                      initialCriteria.filterFields
-                    )
-                      ? 'outlined'
-                      : 'contained'
-                  }
-                  startIcon={<FilterAltTwoToneIcon />}
-                />
-                <EnumFilter
-                  filterFields={criteria.filterFields}
-                  onChange={onFilterChange}
-                  completeOptions={['NONE', 'LOW', 'MEDIUM', 'HIGH']}
-                  fieldName="priority"
-                  icon={<SignalCellularAltTwoToneIcon />}
-                />
-                <EnumFilter
-                  filterFields={criteria.filterFields}
-                  onChange={onFilterChange}
-                  completeOptions={[
-                    'OPEN',
-                    'IN_PROGRESS',
-                    'ON_HOLD',
-                    'COMPLETE'
-                  ]}
-                  fieldName="status"
-                  icon={<CircleTwoToneIcon />}
-                />
-                <SearchInput onChange={debouncedQueryChange} />
-              </Stack>
-              <Divider sx={{ mt: 1 }} />
-              <Box sx={{ width: '95%' }}>
-                {currentTab === 'list' ? (
-                  <CustomDataGrid
-                    pageSize={criteria.pageSize}
-                    page={criteria.pageNum}
-                    columns={columns}
-                    rows={workOrders.content}
-                    rowCount={workOrders.totalElements}
-                    loading={loadingGet}
-                    pagination
-                    disableColumnFilter
-                    paginationMode="server"
-                    onPageSizeChange={onPageSizeChange}
-                    onPageChange={onPageChange}
-                    rowsPerPageOptions={[10, 20, 50]}
-                    components={{
-
-                      NoRowsOverlay: () => (
-                        <NoRowsMessageWrapper
-                          message={t('noRows.wo.message')}
-                          action={t('noRows.wo.action')}
-                        />
-                      )
-                    }}
-                    onRowClick={(params) =>
-                      handleOpenDetails(Number(params.id))
-                    }
-                    initialState={{
-                      columns: {
-                        columnVisibilityModel: {}
-                      }
-                    }}
-                  />
-                ) : (
-                  <WorkOrderCalendar
-                    handleAddWorkOrder={(date: Date) => {
-                      setInitialDueDate(date);
-                      setOpenAddModal(true);
-                    }}
-                    handleOpenDetails={(id, type) => {
-                      if (type === 'WORK_ORDER') handleOpenDetails(id);
-                      else navigate(getPreventiveMaintenanceUrl(id))
-                    }}
-                  />
-                )}
-              </Box>
-            </Card>
-          </Grid>
+                {t('work_order')}
+              </Button>
+            )}
+          </Stack>
         </Grid>
-        {renderWorkOrderAddModal()}
-        {renderWorkOrderUpdateModal()}
-        <Drawer
-          anchor="right"
-          open={openDrawer}
-          onClose={handleCloseDetails}
-          PaperProps={{
-            sx: { width: '50%' }
-          }}
-        >
-          <WorkOrderDetails
-            workOrder={currentWorkOrder}
-            onEdit={handleOpenUpdate}
-            tasks={tasks}
-            onDelete={handleOpenDelete}
-          />
-        </Drawer>
-        <Drawer
-          anchor="left"
-          open={openFilterDrawer}
-          onClose={handleCloseFilterDrawer}
-          PaperProps={{
-            sx: { width: '30%' }
-          }}
-        >
-          <MoreFilters
-            filterFields={criteria.filterFields}
-            onFilterChange={onFilterChange}
-            onClose={handleCloseFilterDrawer}
-          />
-        </Drawer>
-        <ConfirmDialog
-          open={openDelete}
-          onCancel={() => {
-            setOpenDelete(false);
-            setOpenDrawer(true);
-          }}
-          onConfirm={() => handleDelete(currentWorkOrder?.id)}
-          confirmText={t('to_delete')}
-          question={t('confirm_delete_wo')}
+        <Grid item xs={12}>
+          <Card
+            sx={{
+              p: 2,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center'
+            }}
+          >
+            <Stack
+              sx={{ ml: 1 }}
+              direction="row"
+              spacing={1}
+              justifyContent={'flex-start'}
+              width={'95%'}
+            >
+              <Button
+                onClick={() => setOpenFilterDrawer(true)}
+                sx={{
+                  '& .MuiButton-startIcon': { margin: '0px' },
+                  minWidth: 0
+                }}
+                variant={
+                  _.isEqual(
+                    criteria.filterFields,
+                    initialCriteria.filterFields
+                  )
+                    ? 'outlined'
+                    : 'contained'
+                }
+                startIcon={<FilterAltTwoToneIcon />}
+              />
+              <EnumFilter
+                filterFields={criteria.filterFields}
+                onChange={onFilterChange}
+                completeOptions={['NONE', 'LOW', 'MEDIUM', 'HIGH']}
+                fieldName="priority"
+                icon={<SignalCellularAltTwoToneIcon />}
+              />
+              <EnumFilter
+                filterFields={criteria.filterFields}
+                onChange={onFilterChange}
+                completeOptions={[
+                  'OPEN',
+                  'IN_PROGRESS',
+                  'ON_HOLD',
+                  'COMPLETE'
+                ]}
+                fieldName="status"
+                icon={<CircleTwoToneIcon />}
+              />
+              <SearchInput onChange={debouncedQueryChange} />
+            </Stack>
+            <Divider sx={{ mt: 1 }} />
+            <Box sx={{ width: '95%' }}>
+              {currentTab === 'list' ? (
+                <CustomDataGrid
+                  pageSize={criteria.pageSize}
+                  page={criteria.pageNum}
+                  columns={columns}
+                  rows={workOrders.content}
+                  rowCount={workOrders.totalElements}
+                  loading={loadingGet}
+                  pagination
+                  disableColumnFilter
+                  paginationMode="server"
+                  onPageSizeChange={onPageSizeChange}
+                  onPageChange={onPageChange}
+                  rowsPerPageOptions={[10, 20, 50]}
+                  components={{
+
+                    NoRowsOverlay: () => (
+                      <NoRowsMessageWrapper
+                        message={t('noRows.wo.message')}
+                        action={t('noRows.wo.action')}
+                      />
+                    )
+                  }}
+                  onRowClick={(params) =>
+                    handleOpenDetails(Number(params.id))
+                  }
+                  initialState={{
+                    columns: {
+                      columnVisibilityModel: {}
+                    }
+                  }}
+                />
+              ) : (
+                <WorkOrderCalendar
+                  handleAddWorkOrder={(date: Date) => {
+                    setInitialDueDate(date);
+                    setOpenAddModal(true);
+                  }}
+                  handleOpenDetails={(id, type) => {
+                    if (type === 'WORK_ORDER') handleOpenDetails(id);
+                    else navigate(getPreventiveMaintenanceUrl(id))
+                  }}
+                />
+              )}
+            </Box>
+          </Card>
+        </Grid>
+      </Grid>
+      {renderWorkOrderAddModal()}
+      {renderWorkOrderUpdateModal()}
+      <Drawer
+        anchor="right"
+        open={openDrawer}
+        onClose={handleCloseDetails}
+        PaperProps={{
+          sx: { width: '50%' }
+        }}
+      >
+        <WorkOrderDetails
+          workOrder={currentWorkOrder}
+          onEdit={handleOpenUpdate}
+          tasks={tasks}
+          onDelete={handleOpenDelete}
         />
-        {renderMenu()}
-      </>
-    );
-  else return <PermissionErrorMessage message={'no_access_wo'} />;
+      </Drawer>
+      <Drawer
+        anchor="left"
+        open={openFilterDrawer}
+        onClose={handleCloseFilterDrawer}
+        PaperProps={{
+          sx: { width: '30%' }
+        }}
+      >
+        <MoreFilters
+          filterFields={criteria.filterFields}
+          onFilterChange={onFilterChange}
+          onClose={handleCloseFilterDrawer}
+        />
+      </Drawer>
+      <ConfirmDialog
+        open={openDelete}
+        onCancel={() => {
+          setOpenDelete(false);
+          setOpenDrawer(true);
+        }}
+        onConfirm={() => handleDelete(currentWorkOrder?.id)}
+        confirmText={t('to_delete')}
+        question={t('confirm_delete_wo')}
+      />
+      {renderMenu()}
+    </>
+  );
 }
 
 export default WorkOrders;
