@@ -41,6 +41,8 @@ export interface AssetDTO extends Audit {
   inServiceDate?: string;
   parts: PartMiniDTO[];
   files: FileMiniDTO[];
+  power: string;
+  manufacturer: string;
 }
 export interface AssetRow extends AssetDTO {
   hierarchy: number[];

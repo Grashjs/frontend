@@ -1492,7 +1492,9 @@ const frJSON = {
   put_location_in_map: "Placer l'emplacement sur une carte",
   confirm_disable_user: "Etes-vous sûr de désactiver {{user}}? Vous ne pourrez l'activer que dans un mois",
   user_disabled_success: "Utilisateur désactivé",
-  disable: 'Désactiver'
+  disable: 'Désactiver',
+  manufacturer: 'Fabriquant',
+  power: "Puissance"
 };
 
 export default frJSON;

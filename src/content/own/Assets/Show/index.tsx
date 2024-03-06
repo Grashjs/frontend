@@ -129,6 +129,20 @@ const ShowAsset = ({}: PropsType) => {
       multiple: true
     },
     {
+      name: "manufacturer",
+      type: "text",
+      label: t("manufacturer"),
+      placeholder: t("manufacturer"),
+      midWidth: true
+    },
+    {
+      name: "power",
+      type: "text",
+      label: t("power"),
+      placeholder: t("power"),
+      midWidth: true
+    },
+    {
       name: 'model',
       type: 'text',
       label: t('model'),

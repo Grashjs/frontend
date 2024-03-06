@@ -37,6 +37,8 @@ const AssetDetails = ({ asset }: PropsType) => {
     { label: t('category'), value: asset?.category?.name },
     { label: t('model'), value: asset?.model },
     { label: t('serial_number'), value: asset?.serialNumber },
+    { label: t('power'), value: asset?.power },
+    { label: t('manufacturer'), value: asset?.manufacturer },
     {
       label: t('status'),
       value: asset?.status === 'OPERATIONAL' ? t('operational') : t('down')

@@ -1345,7 +1345,9 @@ const enJSON = {
   put_location_in_map: 'Put location in map',
   confirm_disable_user: 'Are you sure you want to disable {{user}}? You will only be able to enable it after one month',
   user_disabled_success: "User disabled successfully",
-  disable: 'Disable'
+  disable: 'Disable',
+  manufacturer: 'Manufacturer',
+  power: "Power"
 };
 
 export default enJSON;

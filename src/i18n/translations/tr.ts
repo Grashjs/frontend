@@ -1285,7 +1285,9 @@ const trJSON = {
   put_location_in_map: "konumu haritaya koy",
   confirm_disable_user: "{{user}} ı devre dışı bırakmak istediğinizden emin misiniz? Yalnızca bir ay sonra etkinleştirebileceksiniz",
   user_disabled_success: "Kullanıcı başarıyla devre dışı bırakıldı",
-  disable: 'Devre dışı bırakmak'
+  disable: 'Devre dışı bırakmak',
+  manufacturer: 'Üretici',
+  power: "Güç"
 };
 
 
