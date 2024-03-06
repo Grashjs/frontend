@@ -33,5 +33,26 @@ jobs:
     - name: Build Docker image
       run: docker build -t amb0u/react-app:latest .
 
+    - uses: actions/checkout@v2
+      name: changing the deployment of git repo
+      with:
+        repository: 'amb0u/atlas-apps'
+        token: ${{ secrets.GIT_PASSWORD }}
+    - name: modify the image
+      run: |
+        git config --local user.email '$(echo "$EMAIL")'
+        git config --local user.name '$(echo "$GIT_USERNAME")'
+        pwd
+        sed -i 's|image: amb0u/atlas-web:.*|image: amb0u/atlas-web:'$(echo "$GITHUB_RUN_NUMBER")'|' dev/web-deployment.yml
+        ## cat dev/web-deployment.yml
+        git add .
+        git commit -m 'Update manifest version'
+        git push origin master
+      env:
+        GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
+        GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
+        RUN_NUMBER: ${{ github.run_number }}
+        EMAIL: ${{ github.MAIL }}
+
     - name: Push Docker image to Docker Hub
       run: docker push amb0u/react-app:latest
