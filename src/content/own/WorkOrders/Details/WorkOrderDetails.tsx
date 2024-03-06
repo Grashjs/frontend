@@ -279,7 +279,7 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
         feedback: feedback ?? null,
         signature: signatureId ? { id: signatureId } : null
       })
-    ).finally(() => setChangingStatus(false));
+    ).then(()=>dispatch(getLabors(workOrder?.id))).finally(() => setChangingStatus(false));
   };
   const groupRelations = (
     relations: Relation[]
