@@ -360,7 +360,7 @@ const People = ({ openModal, handleCloseModal }: PropsType) => {
             onClick={() => handleOpenUpdate(Number(params.id))}
             label={t('edit')}
           />,
-          ...(params.row.enabled ?
+          ...(params.row.enabled && !params.row.ownsCompany ?
             [<GridActionsCellItem
               key="disable"
               icon={<CancelIcon fontSize="small" color={'error'} />}
