@@ -41,7 +41,7 @@ import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveTwoTone';
 import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfTwoTone';
 import PriorityWrapper from '../../components/PriorityWrapper';
 import TimerTwoToneIcon from '@mui/icons-material/TimerTwoTone';
-import { editWorkOrder, getPDFReport } from '../../../../slices/workOrder';
+import { changeWorkOrderStatus, editWorkOrder, getPDFReport } from '../../../../slices/workOrder';
 import { useDispatch, useSelector } from '../../../../store';
 import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
 import SelectParts from '../../components/form/SelectParts';
@@ -273,8 +273,7 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
   ) => {
     setChangingStatus(true);
     return dispatch(
-      editWorkOrder(workOrder?.id, {
-        ...workOrder,
+      changeWorkOrderStatus(workOrder?.id, {
         status: 'COMPLETE',
         feedback: feedback ?? null,
         signature: signatureId ? { id: signatureId } : null
@@ -560,8 +559,7 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
                         }
                         setChangingStatus(true);
                         dispatch(
-                          editWorkOrder(workOrder?.id, {
-                            ...workOrder,
+                          changeWorkOrderStatus(workOrder?.id, {
                             status: event.target.value
                           })
                         ).finally(() => setChangingStatus(false));
