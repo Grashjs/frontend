@@ -89,9 +89,10 @@ const [showPassword, setShowPassword] = useState(false);
       validationSchema={Yup.object().shape(getFieldsAndShapes()[1])}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
         setSubmitting(true);
-        values.language = getLanguage.toUpperCase();
-        values.phone =`+${values.countryCode.phone}${values.phone}`;
-        return register(role ? { ...values, role: { id: role } } : values)
+        const valuesClone = {...values}
+        valuesClone.language = getLanguage.toUpperCase();
+        valuesClone.phone =`+${values.countryCode.phone}${values.phone}`;
+        return register(role ? { ...valuesClone, role: { id: role } } : valuesClone)
           .then(() => {
             if (!IS_LOCALHOST) {
               if(!role) showSnackBar(t('verify_email'), 'success');
