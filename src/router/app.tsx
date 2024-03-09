@@ -185,23 +185,23 @@ const appRoutes = [
       }
     ]
   },
-  {
-    path: 'purchase-orders',
-    children: [
-      {
-        path: '',
-        element: <PurchaseOrders />
-      },
-      {
-        path: ':purchaseOrderId',
-        element: <PurchaseOrders />
-      },
-      {
-        path: 'create',
-        element: <CreatePurchaseOrders />
-      }
-    ]
-  },
+  // {
+  //   path: 'purchase-orders',
+  //   children: [
+  //     {
+  //       path: '',
+  //       element: <PurchaseOrders />
+  //     },
+  //     {
+  //       path: ':purchaseOrderId',
+  //       element: <PurchaseOrders />
+  //     },
+  //     {
+  //       path: 'create',
+  //       element: <CreatePurchaseOrders />
+  //     }
+  //   ]
+  // },
   {
     path: 'locations',
     children: [
@@ -267,10 +267,10 @@ const appRoutes = [
         path: 'asset',
         element: <AssetCategories />
       },
-      {
-        path: 'purchase-order',
-        element: <PurchaseOrderCategories />
-      },
+      // {
+      //   path: 'purchase-order',
+      //   element: <PurchaseOrderCategories />
+      // },
       {
         path: 'meter',
         element: <MeterCategories />

@@ -14,12 +14,14 @@ import {
 } from '@mui/material';
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 import { SidebarContext } from 'src/contexts/SidebarContext';
+import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';
 import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
 
 import HeaderButtons from './Buttons';
 import HeaderUserbox from './Userbox';
 import { useTranslation } from 'react-i18next';
 import { TitleContext } from '../../../contexts/TitleContext';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const HeaderWrapper = styled(Box)(
   ({ theme }) => `
@@ -45,6 +47,8 @@ function Header() {
   const { title } = useContext(TitleContext);
   const theme = useTheme();
   const { t }: { t: any } = useTranslation();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <HeaderWrapper
@@ -72,6 +76,9 @@ function Header() {
         alignItems="center"
         spacing={2}
       >
+        <IconButton onClick={()=>navigate(-1)} disabled={location.key==='default'}>
+          <ArrowBackTwoToneIcon/>
+          </IconButton>
         <Typography variant="h2">{title}</Typography>
       </Stack>
       <Box display="flex" alignItems="center">
