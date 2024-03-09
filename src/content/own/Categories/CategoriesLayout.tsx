@@ -123,7 +123,6 @@ function CategoriesLayout(props: CategoriesLayoutProps) {
   const tabs = [
     { value: '', label: t('work_orders') },
     { value: 'asset', label: t('assets') },
-    { value: 'purchase-order', label: t('purchase_orders') },
     { value: 'meter', label: t('meters') },
     { value: 'time', label: t('timers') },
     { value: 'cost', label: t('costs') },
