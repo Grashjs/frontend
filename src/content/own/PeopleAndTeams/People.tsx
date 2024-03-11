@@ -549,8 +549,11 @@ const People = ({ openModal, handleCloseModal }: PropsType) => {
                     } else {
                       invite(emails);
                     }
-                  } else showSnackBar(t('please_type_emails'), 'error');
-                } else showSnackBar(t('please_select_role'), 'error');
+                  } else {
+                    showSnackBar(t('please_type_emails'), 'error');
+                    setIsInviteSubmitting(false)
+                  }
+                } else { showSnackBar(t('please_select_role'), 'error'); setIsInviteSubmitting(false) }
               }}
               variant="contained"
               startIcon={
@@ -569,10 +572,10 @@ const People = ({ openModal, handleCloseModal }: PropsType) => {
           setOpenDisableModal(false);
         }}
         onConfirm={() => {
-          dispatch(disableUser(currentUser.id)).then(()=>{setOpenDisableModal(false); showSnackBar(t('user_disabled_success'),'success')})
+          dispatch(disableUser(currentUser.id)).then(() => { setOpenDisableModal(false); showSnackBar(t('user_disabled_success'), 'success') })
         }}
         confirmText={t('disable')}
-        question={t('confirm_disable_user', {user: `${currentUser?.firstName} ${currentUser?.lastName}`})}
+        question={t('confirm_disable_user', { user: `${currentUser?.firstName} ${currentUser?.lastName}` })}
       />
       {renderEditUserModal()}
     </Box>
