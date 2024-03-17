@@ -53,7 +53,7 @@ export default function RequestDetails({
   const { t }: { t: any } = useTranslation();
   const dispatch = useDispatch();
   const theme = useTheme();
-  const { hasEditPermission, hasDeletePermission, hasViewPermission } =
+  const { hasEditPermission, hasDeletePermission, hasViewPermission, user } =
     useAuth();
   const navigate = useNavigate();
   const { getFormattedDate, getUserNameById } = useContext(
@@ -158,7 +158,7 @@ export default function RequestDetails({
       </Grid>
       {!request.workOrder &&
         !request.cancelled &&
-        hasViewPermission(PermissionEntity.SETTINGS) && (
+        (hasViewPermission(PermissionEntity.SETTINGS) || user.role.code === 'LIMITED_ADMIN') && (
           <>
             <Divider />
             <Grid

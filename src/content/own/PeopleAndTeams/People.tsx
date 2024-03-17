@@ -290,6 +290,7 @@ const People = ({ openModal, handleCloseModal }: PropsType) => {
       } else error = 'You can invite a maximum of 20 users at once';
       if (error) {
         showSnackBar(t(error), 'error');
+        setIsInviteSubmitting(false);
         return false;
       }
     }
