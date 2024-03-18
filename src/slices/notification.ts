@@ -46,6 +46,15 @@ const slice = createSlice({
       state.currentPageNum = state.currentPageNum + 1;
       state.lastPage = notifications.last;
     },
+    newReceivedNotification(
+      state: NotificationState,
+      action: PayloadAction<{ notification: Notification }>
+    ) {
+      const { notification } = action.payload;
+      state.notifications.content.unshift(
+        notification
+      );
+    },
     editNotification(
       state: NotificationState,
       action: PayloadAction<{ notification: Notification }>
@@ -113,5 +122,11 @@ export const editNotification =
       slice.actions.editNotification({ notification: notificationResponse })
     );
   };
-
+export const newReceivedNotification=
+(notification: Notification): AppThunk =>
+async (dispatch) => {
+  dispatch(
+    slice.actions.newReceivedNotification({ notification })
+  );
+};
 export default slice;

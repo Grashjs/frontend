@@ -35,7 +35,8 @@ import { useDispatch, useSelector } from '../../../../../store';
 import {
   editNotification,
   getMoreNotifications,
-  getNotifications
+  getNotifications,
+  newReceivedNotification
 } from '../../../../../slices/notification';
 import Notification, {
   NotificationType
@@ -60,6 +61,10 @@ import SpeedTwoToneIcon from '@mui/icons-material/SpeedTwoTone';
 import { People } from '@mui/icons-material';
 import ReceiptTwoToneIcon from '@mui/icons-material/ReceiptTwoTone';
 import { SearchCriteria } from '../../../../../models/owns/page';
+import SockJS from "sockjs-client";
+import { apiUrl } from 'src/config';
+import useAuth from 'src/hooks/useAuth';
+import {Stomp} from "@stomp/stompjs";
 
 const BoxComposed = styled(Box)(
   () => `
@@ -135,11 +140,30 @@ function HeaderNotifications() {
     direction: 'DESC'
   };
   const [criteria, setCriteria] = useState<SearchCriteria>(initialCriteria);
-
+  const [stompHomeClient, setStompHomeClient] = useState(null);
+  const {user} = useAuth();
   useEffect(() => {
     dispatch(getNotifications(criteria));
   }, []);
-
+  useEffect(() => {
+    const socket = new SockJS(`${apiUrl}ws`);
+    const client = Stomp.over(socket);
+    client.connect({ token: localStorage.getItem("accessToken") }, function (frame) {
+      const subscription = client.subscribe(
+        `/notifications/${user.id}`,
+        function (message) {
+          const notification: Notification = JSON.parse(message.body);
+              dispatch(
+                newReceivedNotification(notification),
+              );
+        },
+      );
+      setStompHomeClient(client);
+    });
+    return () => {
+      if (stompHomeClient) stompHomeClient.disconnect();
+    };
+  }, []);
   const handleOpen = (): void => {
     setOpen(true);
   };
