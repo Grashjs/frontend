@@ -61,10 +61,10 @@ import SpeedTwoToneIcon from '@mui/icons-material/SpeedTwoTone';
 import { People } from '@mui/icons-material';
 import ReceiptTwoToneIcon from '@mui/icons-material/ReceiptTwoTone';
 import { SearchCriteria } from '../../../../../models/owns/page';
-import SockJS from "sockjs-client";
+import SockJS from 'sockjs-client';
 import { apiUrl } from 'src/config';
 import useAuth from 'src/hooks/useAuth';
-import {Stomp} from "@stomp/stompjs";
+import { Stomp } from '@stomp/stompjs';
 
 const BoxComposed = styled(Box)(
   () => `
@@ -140,30 +140,41 @@ function HeaderNotifications() {
     direction: 'DESC'
   };
   const [criteria, setCriteria] = useState<SearchCriteria>(initialCriteria);
-  const [stompHomeClient, setStompHomeClient] = useState(null);
-  const {user} = useAuth();
+  const [stompClient, setStompClient] = useState(null);
+  const { user } = useAuth();
   useEffect(() => {
     dispatch(getNotifications(criteria));
   }, []);
   useEffect(() => {
-    const socket = new SockJS(`${apiUrl}ws`);
-    const client = Stomp.over(socket);
-    client.connect({ token: localStorage.getItem("accessToken") }, function (frame) {
-      const subscription = client.subscribe(
-        `/notifications/${user.id}`,
-        function (message) {
-          const notification: Notification = JSON.parse(message.body);
-              dispatch(
-                newReceivedNotification(notification),
-              );
-        },
-      );
-      setStompHomeClient(client);
-    });
-    return () => {
-      if (stompHomeClient) stompHomeClient.disconnect();
+    const disconnect = () => {
+      console.log('disconnecting', stompClient);
+      if (stompClient) {
+        stompClient.disconnect();
+        setStompClient(null);
+      }
     };
-  }, []);
+    if (user) {
+      if (!stompClient) {
+        const socket = new SockJS(`${apiUrl}ws`);
+        const client = Stomp.over(socket);
+        client.connect({ token: localStorage.getItem('accessToken') }, function(frame) {
+          const subscription = client.subscribe(
+            `/notifications/${user.id}`,
+            function(message) {
+              const notification: Notification = JSON.parse(message.body);
+              dispatch(
+                newReceivedNotification(notification)
+              );
+            }
+          );
+          setStompClient(client);
+        });
+      }
+    } else {
+      disconnect();
+    }
+    return disconnect;
+  }, [user?.id, stompClient]);
   const handleOpen = (): void => {
     setOpen(true);
   };
@@ -250,12 +261,12 @@ function HeaderNotifications() {
             notifications.content.filter((notification) => !notification.seen)
               .length
               ? {
-                  '.MuiBadge-badge': {
-                    background: theme.colors.success.main,
-                    animation: 'pulse 1s infinite',
-                    transition: `${theme.transitions.create(['all'])}`
-                  }
+                '.MuiBadge-badge': {
+                  background: theme.colors.success.main,
+                  animation: 'pulse 1s infinite',
+                  transition: `${theme.transitions.create(['all'])}`
                 }
+              }
               : {}
           }
         >
