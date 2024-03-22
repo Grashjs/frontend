@@ -147,7 +147,6 @@ function HeaderNotifications() {
   }, []);
   useEffect(() => {
     const disconnect = () => {
-      console.log('disconnecting', stompClient);
       if (stompClient) {
         stompClient.disconnect();
         setStompClient(null);

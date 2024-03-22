@@ -25,6 +25,7 @@ import { IField } from '../content/own/type';
 import WorkOrder from '../models/owns/workOrder';
 import { useDispatch } from 'react-redux';
 import { revertAll } from 'src/utils/redux';
+import Meter from '../models/owns/meter';
 
 interface AuthState {
   isInitialized: boolean;
@@ -34,6 +35,7 @@ interface AuthState {
   userSettings: UserSettings | null;
   companySettings: CompanySettings | null;
 }
+
 export type FieldConfigurationsType = 'workOrder' | 'request';
 
 interface AuthContextValue extends AuthState {
@@ -42,7 +44,7 @@ interface AuthContextValue extends AuthState {
   logout: () => void;
   register: (values: any) => Promise<void>;
   getInfos: () => void;
-  switchAccount: (id: number)=> Promise<void>;
+  switchAccount: (id: number) => Promise<void>;
   patchUserSettings: (values: Partial<UserSettings>) => Promise<void>;
   patchUser: (values: Partial<OwnUser>) => Promise<void>;
   cancelSubscription: () => Promise<void>;
@@ -451,7 +453,7 @@ const AuthContext = createContext<AuthContextValue>({
   hasDeletePermission: () => false,
   downgrade: () => Promise.resolve(false),
   upgrade: () => Promise.resolve(false),
-  switchAccount: () => Promise.resolve(),
+  switchAccount: () => Promise.resolve()
 });
 
 export const AuthProvider: FC<AuthProviderProps> = (props) => {
@@ -524,10 +526,10 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
       { headers: authHeader(true) }
     );
     const { accessToken } = response;
-   return loginInternal(accessToken);
+    return loginInternal(accessToken);
   };
-  const loginInternal= async (accessToken: string)=>{
-    globalDispatch(revertAll())
+  const loginInternal = async (accessToken: string) => {
+    globalDispatch(revertAll());
     setSession(accessToken);
     const user = await updateUserInfos();
     const company = await api.get<Company>(`companies/${user.companyId}`);
@@ -540,7 +542,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         company
       }
     });
-  }
+  };
   const switchAccount = async (id: number): Promise<void> => {
     const response = await api.get<{ accessToken: string }>(
       `auth/switch-account?id=${id}`);
@@ -781,6 +783,19 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         state.user.id === entity.createdBy ||
         state.user.role.editOtherPermissions.includes(permissionEntity) ||
         isAssignedTo(entity as unknown as WorkOrder, state.user)
+      );
+    } else if (permissionEntity === PermissionEntity.METERS) {
+      const isAssignedTo = (meter: Meter, user: OwnUser): boolean => {
+        let users = [];
+        if (meter.users) {
+          users.concat(meter.users);
+        }
+        return users.some((user1) => user1.id === user.id);
+      };
+      return (
+        state.user.id === entity.createdBy ||
+        state.user.role.editOtherPermissions.includes(permissionEntity) ||
+        isAssignedTo(entity as unknown as Meter, state.user)
       );
     }
     return (
