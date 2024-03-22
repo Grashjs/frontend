@@ -26,6 +26,8 @@ import WorkOrder from '../models/owns/workOrder';
 import { useDispatch } from 'react-redux';
 import { revertAll } from 'src/utils/redux';
 import Meter from '../models/owns/meter';
+import Asset, { AssetDTO } from '../models/owns/asset';
+import Location from '../models/owns/location';
 
 interface AuthState {
   isInitialized: boolean;
@@ -791,6 +793,35 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         state.user.id === entity.createdBy ||
         state.user.role.editOtherPermissions.includes(permissionEntity) ||
         isAssignedTo(entity as unknown as Meter, state.user)
+      );
+    } else if (permissionEntity === PermissionEntity.ASSETS) {
+      const isAssignedTo = (asset: AssetDTO, user: OwnUser): boolean => {
+        let users = [];
+        if (asset.primaryUser) {
+          users.push(asset.primaryUser);
+        }
+        if (asset.assignedTo) {
+          users = users.concat(asset.assignedTo);
+        }
+        return users.some((user1) => user1.id === user.id);
+      };
+      return (
+        state.user.id === entity.createdBy ||
+        state.user.role.editOtherPermissions.includes(permissionEntity) ||
+        isAssignedTo(entity as unknown as AssetDTO, state.user)
+      );
+    } else if (permissionEntity === PermissionEntity.LOCATIONS) {
+      const isAssignedTo = (location: Location, user: OwnUser): boolean => {
+        let users = [];
+        if (location.workers) {
+          users = users.concat(location.workers);
+        }
+        return users.some((user1) => user1.id === user.id);
+      };
+      return (
+        state.user.id === entity.createdBy ||
+        state.user.role.editOtherPermissions.includes(permissionEntity) ||
+        isAssignedTo(entity as unknown as Location, state.user)
       );
     }
     return (
