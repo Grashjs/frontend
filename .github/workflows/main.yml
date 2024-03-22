@@ -46,8 +46,8 @@ jobs:
         git config --local user.email '$(echo "$EMAIL")'
         git config --local user.name '$(echo "$GIT_USERNAME")'
         pwd
-        sed -i 's|image: amb0u/react-app:.*|image: amb0u/react-app:'$(echo "$GITHUB_RUN_NUMBER")'|' dev/web-deployment.yml
-        ## cat dev/web-deployment.yml
+        sed -i 's|image: amb0u/react-app:.*|image: amb0u/react-app:'$(echo "$GITHUB_RUN_NUMBER")'|' prod/web-deployment.yml
+        ## cat prod/web-deployment.yml
         git add .
         git commit -m 'Update manifest version'
         git push origin master
