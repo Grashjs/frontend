@@ -764,8 +764,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         state.user.id === entity.id ||
         state.user.role.editOtherPermissions.includes(permissionEntity)
       );
-    }
-    if (permissionEntity === PermissionEntity.WORK_ORDERS) {
+    } else if (permissionEntity === PermissionEntity.WORK_ORDERS) {
       const isAssignedTo = (workOrder: WorkOrder, user: OwnUser): boolean => {
         let users = [];
         if (workOrder.primaryUser) {
@@ -775,7 +774,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
           users = users.concat(workOrder.team.users);
         }
         if (workOrder.assignedTo) {
-          users.concat(workOrder.assignedTo);
+          users = users.concat(workOrder.assignedTo);
         }
         return users.some((user1) => user1.id === user.id);
       };
@@ -786,11 +785,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
       );
     } else if (permissionEntity === PermissionEntity.METERS) {
       const isAssignedTo = (meter: Meter, user: OwnUser): boolean => {
-        let users = [];
-        if (meter.users) {
-          users.concat(meter.users);
-        }
-        return users.some((user1) => user1.id === user.id);
+        return meter.users.some((user1) => user1.id === user.id);
       };
       return (
         state.user.id === entity.createdBy ||
