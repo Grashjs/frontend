@@ -204,10 +204,10 @@ export default (props: PropsType) => {
             };
           });
         onOpen = () => {
-          if(field.relatedFields){
-          const locationId = formik.values[field.relatedFields[0].field]?.value??null;
-          fetchAssets(locationId)}
-          else fetchAssets(null);
+          if (field.relatedFields) {
+            const locationId = field.relatedFields ? formik.values[field.relatedFields[0].field]?.value ?? null : null;
+            fetchAssets(locationId);
+          } else fetchAssets(null);
         };
         break;
       case 'role':
@@ -349,10 +349,10 @@ export default (props: PropsType) => {
             fieldsClone.splice(fieldToDeleteIndex, 1);
           }
         }
-      })
-    })
+      });
+    });
     return fieldsClone;
-  }
+  };
   return (
     <>
       <Formik<IHash<any>>
