@@ -7,6 +7,7 @@ import { getInitialPage, Page, SearchCriteria } from '../models/owns/page';
 import { revertAll } from 'src/utils/redux';
 
 const basePath = 'files';
+
 interface FileState {
   files: Page<File>;
   singleFile: File;
@@ -50,7 +51,7 @@ const slice = createSlice({
     },
     addFile(state: FileState, action: PayloadAction<{ file: File }>) {
       const { file } = action.payload;
-      state.files.content = [...state.files.content, file];
+      state.files.content = [file, ...state.files.content];
     },
     addFiles(state: FileState, action: PayloadAction<{ files: File[] }>) {
       const { files } = action.payload;
@@ -79,31 +80,31 @@ export const reducer = slice.reducer;
 
 export const getFiles =
   (criteria: SearchCriteria): AppThunk =>
-  async (dispatch) => {
-    try {
-      dispatch(slice.actions.setLoadingGet({ loading: true }));
-      const files = await api.post<Page<File>>(`${basePath}/search`, criteria);
-      dispatch(slice.actions.getFiles({ files }));
-    } finally {
-      dispatch(slice.actions.setLoadingGet({ loading: false }));
-    }
-  };
+    async (dispatch) => {
+      try {
+        dispatch(slice.actions.setLoadingGet({ loading: true }));
+        const files = await api.post<Page<File>>(`${basePath}/search`, criteria);
+        dispatch(slice.actions.getFiles({ files }));
+      } finally {
+        dispatch(slice.actions.setLoadingGet({ loading: false }));
+      }
+    };
 
 export const getSingleFile =
   (id: number): AppThunk =>
-  async (dispatch) => {
-    dispatch(slice.actions.setLoadingGet({ loading: true }));
-    const file = await api.get<File>(`${basePath}/${id}`);
-    dispatch(slice.actions.getSingleFile({ file }));
-    dispatch(slice.actions.setLoadingGet({ loading: false }));
-  };
+    async (dispatch) => {
+      dispatch(slice.actions.setLoadingGet({ loading: true }));
+      const file = await api.get<File>(`${basePath}/${id}`);
+      dispatch(slice.actions.getSingleFile({ file }));
+      dispatch(slice.actions.setLoadingGet({ loading: false }));
+    };
 
 export const editFile =
   (id: number, file): AppThunk =>
-  async (dispatch) => {
-    const fileResponse = await api.patch<File>(`${basePath}/${id}`, file);
-    dispatch(slice.actions.editFile({ file: fileResponse }));
-  };
+    async (dispatch) => {
+      const fileResponse = await api.patch<File>(`${basePath}/${id}`, file);
+      dispatch(slice.actions.editFile({ file: fileResponse }));
+    };
 
 export const addFiles =
   (
@@ -112,38 +113,38 @@ export const addFiles =
     taskId?: number,
     hidden?: 'true' | 'false'
   ): AppThunk =>
-  async (dispatch) => {
-    let formData = new FormData();
-    const companyId = localStorage.getItem('companyId');
-    const headers = authHeader(false);
-    delete headers['Content-Type'];
-    files.forEach((file) => formData.append('files', file));
-    formData.append('folder', `company ${companyId}`);
-    formData.append('type', fileType);
-    formData.append('hidden', hidden);
-    const baseRoute = `${basePath}/upload`;
-    const filesResponse = await api.post<File[]>(
-      taskId ? `${baseRoute}?taskId=${taskId}` : baseRoute,
-      formData,
-      {
-        headers
-      },
-      true
-    );
-    dispatch(slice.actions.addFiles({ files: filesResponse }));
-    return filesResponse.map((file) => file.id);
-  };
+    async (dispatch) => {
+      let formData = new FormData();
+      const companyId = localStorage.getItem('companyId');
+      const headers = authHeader(false);
+      delete headers['Content-Type'];
+      files.forEach((file) => formData.append('files', file));
+      formData.append('folder', `company ${companyId}`);
+      formData.append('type', fileType);
+      formData.append('hidden', hidden);
+      const baseRoute = `${basePath}/upload`;
+      const filesResponse = await api.post<File[]>(
+        taskId ? `${baseRoute}?taskId=${taskId}` : baseRoute,
+        formData,
+        {
+          headers
+        },
+        true
+      );
+      dispatch(slice.actions.addFiles({ files: filesResponse }));
+      return filesResponse.map((file) => file.id);
+    };
 export const deleteFile =
   (id: number): AppThunk =>
-  async (dispatch) => {
-    const fileResponse = await api.deletes<{ success: boolean }>(
-      `${basePath}/${id}`
-    );
-    const { success } = fileResponse;
-    if (success) {
-      dispatch(slice.actions.deleteFile({ id }));
-    }
-  };
+    async (dispatch) => {
+      const fileResponse = await api.deletes<{ success: boolean }>(
+        `${basePath}/${id}`
+      );
+      const { success } = fileResponse;
+      if (success) {
+        dispatch(slice.actions.deleteFile({ id }));
+      }
+    };
 export const clearSingleFile = (): AppThunk => async (dispatch) => {
   dispatch(slice.actions.clearSingleFile({}));
 };

@@ -205,7 +205,7 @@ export default (props: PropsType) => {
           });
         onOpen = () => {
           if (field.relatedFields) {
-            const locationId = field.relatedFields ? formik.values[field.relatedFields[0].field]?.value ?? null : null;
+            const locationId = formik.values[field.relatedFields[0].field]?.value ?? null;
             fetchAssets(locationId);
           } else fetchAssets(null);
         };
