@@ -26,6 +26,7 @@ interface WOStatusIncompleteProps {
     title: string
   ) => void;
 }
+
 function TimeCostByAsset({ handleOpenModal }: WOStatusIncompleteProps) {
   const { t }: { t: any } = useTranslation();
   const theme = useTheme();
@@ -64,13 +65,16 @@ function TimeCostByAsset({ handleOpenModal }: WOStatusIncompleteProps) {
         <ComposedChart width={508} height={508} data={formattedData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="label" />
-          <YAxis />
+          <YAxis yAxisId="left-axis" unit={t('hours')} />
+          <YAxis yAxisId="right-axis"
+                 orientation="right" />
           <Tooltip />
           <Legend />
           <Bar
             dataKey="time"
             fill={theme.colors.warning.main}
             name={t('hours')}
+            yAxisId="left-axis"
           >
             {formattedData.map((entry, index) => (
               <Cell
@@ -87,6 +91,7 @@ function TimeCostByAsset({ handleOpenModal }: WOStatusIncompleteProps) {
             type="monotone"
             dataKey="cost"
             stroke={theme.colors.primary.main}
+            yAxisId="right-axis"
           />
         </ComposedChart>
       )}

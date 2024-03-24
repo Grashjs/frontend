@@ -26,6 +26,7 @@ interface WOStatusIncompleteProps {
     title: string
   ) => void;
 }
+
 function IncompleteWOByUser({ handleOpenModal }: WOStatusIncompleteProps) {
   const { t }: { t: any } = useTranslation();
   const theme = useTheme();
@@ -63,10 +64,12 @@ function IncompleteWOByUser({ handleOpenModal }: WOStatusIncompleteProps) {
         <ComposedChart width={508} height={508} data={formattedData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="label" />
-          <YAxis />
+          <YAxis yAxisId="left-axis" />
+          <YAxis yAxisId="right-axis"
+                 orientation="right" unit={t('days')} />
           <Tooltip />
           <Legend />
-          <Bar dataKey="count" fill="#8884d8" name={t('work_orders')}>
+          <Bar dataKey="count" fill="#8884d8" name={t('work_orders')} yAxisId="left-axis">
             {formattedData.map((entry, index) => (
               <Cell
                 key={index}
@@ -82,6 +85,7 @@ function IncompleteWOByUser({ handleOpenModal }: WOStatusIncompleteProps) {
             type="monotone"
             dataKey="averageAge"
             stroke="#ff7300"
+            yAxisId="right-axis"
           />
         </ComposedChart>
       )}

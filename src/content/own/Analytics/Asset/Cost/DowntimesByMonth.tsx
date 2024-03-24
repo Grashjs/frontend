@@ -27,6 +27,7 @@ interface DowntimesByMonthProps {
     title: string
   ) => void;
 }
+
 function DowntimesByMonth({ handleOpenModal }: DowntimesByMonthProps) {
   const { t }: { t: any } = useTranslation();
   const theme = useTheme();
@@ -65,10 +66,12 @@ function DowntimesByMonth({ handleOpenModal }: DowntimesByMonthProps) {
         <ComposedChart width={508} height={508} data={formattedData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="label" />
-          <YAxis />
+          <YAxis yAxisId="left-axis" />
+          <YAxis yAxisId="right-axis"
+                 orientation="right" unit={t('hours')} />
           <Tooltip />
           <Legend />
-          <Bar dataKey="cost" fill="#8884d8" name={t('total_maintenance_cost')}>
+          <Bar dataKey="cost" fill="#8884d8" name={t('total_maintenance_cost')} yAxisId="left-axis">
             {formattedData.map((entry, index) => (
               <Cell
                 key={index}
@@ -84,6 +87,7 @@ function DowntimesByMonth({ handleOpenModal }: DowntimesByMonthProps) {
             type="monotone"
             dataKey="duration"
             stroke="#ff7300"
+            yAxisId="right-axis"
           />
         </ComposedChart>
       )}

@@ -53,7 +53,7 @@ const ownMenuItems: MenuItems[] = [
       {
         name: 'work_orders',
         link: '/app/work-orders',
-        icon: AssignmentTwoToneIcon,
+        icon: AssignmentTwoToneIcon
       },
       {
         name: 'preventive_maintenance',
@@ -100,11 +100,11 @@ const ownMenuItems: MenuItems[] = [
               {
                 name: 'total_maintenance_cost',
                 link: '/app/analytics/assets/cost'
-              },
-              {
-                name: 'useful_life',
-                link: '/app/analytics/assets/useful-life'
               }
+              // {
+              //   name: 'useful_life',
+              //   link: '/app/analytics/assets/useful-life'
+              // }
             ]
           },
           {
