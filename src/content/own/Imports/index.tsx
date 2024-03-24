@@ -42,13 +42,16 @@ import { importEntity } from '../../../slices/imports';
 import { PlanFeature } from '../../../models/owns/subscriptionPlan';
 import FeatureErrorMessage from '../components/FeatureErrorMessage';
 
-interface OwnProps {}
+interface OwnProps {
+}
+
 export interface OwnHeader {
   label: string;
   keyName: ImportKeys;
   required?: boolean;
   formatter?: (value: any) => any;
 }
+
 export type EntityType =
   | 'work-orders'
   | 'locations'
@@ -219,7 +222,7 @@ const Import = ({}: OwnProps) => {
             matches.find(
               (headerMatching) => headerMatching.ownHeader.keyName === keyName
             )?.userHeader
-          ];
+            ];
         if (formatter) {
           value = formatter(value);
         }
@@ -241,7 +244,9 @@ const Import = ({}: OwnProps) => {
         );
         setOpenModal(false);
         reset();
-      })
+      }).catch((error) => {
+      showSnackBar(t('import_error'), 'error');
+    })
       .finally(() => {
         setLoadingImport(false);
       });
@@ -318,8 +323,8 @@ const Import = ({}: OwnProps) => {
                 <Typography>
                   {getMatchLabel(userHeader)
                     ? t(`matched_to_field`, {
-                        field: getMatchLabel(userHeader)
-                      })
+                      field: getMatchLabel(userHeader)
+                    })
                     : t('no_match_yet')}
                 </Typography>
                 <Stack direction="row" spacing={1}>
@@ -390,7 +395,7 @@ const Import = ({}: OwnProps) => {
                 onDrop={(files: any) => {
                   setLoading(true);
                   var reader = new FileReader();
-                  reader.onload = function (e) {
+                  reader.onload = function(e) {
                     const data = e.target.result;
                     const file = read(data, {
                       type: 'string'

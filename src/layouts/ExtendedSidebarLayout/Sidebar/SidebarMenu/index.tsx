@@ -4,6 +4,10 @@ import SidebarMenuItem from './item';
 import menuItems, { MenuItem } from './items';
 import { useTranslation } from 'react-i18next';
 import useAuth from '../../../../hooks/useAuth';
+import { useEffect } from 'react';
+import { getUrgentWorkOrdersCount } from '../../../../slices/workOrder';
+import { useDispatch, useSelector } from '../../../../store';
+import { getPendingRequestsCount } from '../../../../slices/request';
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -120,9 +124,9 @@ const SubMenuWrapper = styled(Box)(
                 background: ${theme.colors.alpha.trueWhite[100]};
                 opacity: 0;
                 transition: ${theme.transitions.create([
-                  'transform',
-                  'opacity'
-                ])};
+    'transform',
+    'opacity'
+  ])};
                 width: 6px;
                 height: 6px;
                 transform: scale(0);
@@ -148,9 +152,9 @@ const SubMenuWrapper = styled(Box)(
 );
 
 const renderSidebarMenuItems = ({
-  items,
-  path
-}: {
+                                  items,
+                                  path
+                                }: {
   items: MenuItem[];
   path: string;
 }): JSX.Element => (
@@ -162,10 +166,10 @@ const renderSidebarMenuItems = ({
 );
 
 const reduceChildRoutes = ({
-  ev,
-  path,
-  item
-}: {
+                             ev,
+                             path,
+                             item
+                           }: {
   ev: JSX.Element[];
   path: string;
   item: MenuItem;
@@ -173,23 +177,23 @@ const reduceChildRoutes = ({
   const key = item.name;
   const exactMatch = item.link
     ? !!matchPath(
-        {
-          path: item.link,
-          end: true
-        },
-        path
-      )
+      {
+        path: item.link,
+        end: true
+      },
+      path
+    )
     : false;
 
   if (item.items) {
     const partialMatch = item.link
       ? !!matchPath(
-          {
-            path: item.link,
-            end: false
-          },
-          path
-        )
+        {
+          path: item.link,
+          end: false
+        },
+        path
+      )
       : false;
 
     ev.push(
@@ -229,12 +233,25 @@ const reduceChildRoutes = ({
 function SidebarMenu() {
   const location = useLocation();
   const { t }: { t: any } = useTranslation();
-  const { hasViewPermission, hasFeature } = useAuth();
+  const dispatch = useDispatch();
+  const { hasViewPermission, hasFeature, user } = useAuth();
+  const { urgentCount } = useSelector(
+    (state) => state.workOrders
+  );
+  const { pendingCount } = useSelector(
+    (state) => state.requests
+  );
 
+  useEffect(() => {
+    if (user.id) {
+      dispatch(getUrgentWorkOrdersCount());
+      dispatch(getPendingRequestsCount());
+    }
+  }, [user.id]);
   return (
     <>
       {menuItems
-        .map((section) => {
+        .map((section, index) => {
           const sectionClone = { ...section };
           sectionClone.items = sectionClone.items.filter((item) => {
             const hasPermission = item.permission
@@ -246,6 +263,16 @@ function SidebarMenu() {
 
             return hasPermission && featured;
           });
+          if (index === 0) {//ownItems
+            sectionClone.items = sectionClone.items.map((item => {
+              if (item.name === 'work_orders') {
+                item.badge = urgentCount > 0 ? urgentCount.toString() : null;
+              } else if (item.name === 'requests') {
+                item.badge = pendingCount > 0 ? pendingCount.toString() : null;
+              }
+              return item;
+            }));
+          }
           return sectionClone;
         })
         .map((section) => (

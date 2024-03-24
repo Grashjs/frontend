@@ -10,6 +10,7 @@ export type ImportDTO =
   | LocationImportDTO
   | PartImportDTO
   | MeterImportDTO;
+
 interface WorkOrderImportDTO {
   id: number;
   dueDate: number;
@@ -31,6 +32,7 @@ interface WorkOrderImportDTO {
   feedback: string;
   customersNames: string[];
 }
+
 interface AssetImportDTO {
   id: number;
   archived: string;
@@ -51,7 +53,11 @@ interface AssetImportDTO {
   customersNames: string[];
   vendorsNames: string[];
   partsNames: string[];
+  model: string;
+  power: string;
+  manufacturer: string;
 }
+
 interface LocationImportDTO {
   id: number;
   name: string;
@@ -64,6 +70,7 @@ interface LocationImportDTO {
   customersNames: string[];
   vendorsNames: string[];
 }
+
 interface MeterImportDTO {
   id: string;
   name: string;
@@ -73,6 +80,7 @@ interface MeterImportDTO {
   locationName: string;
   usersEmails: string[];
 }
+
 interface PartImportDTO {
   id: number;
   name: string;
@@ -91,6 +99,7 @@ interface PartImportDTO {
   customersNames: string[];
   vendorsNames: string[];
 }
+
 export interface ImportResponse {
   created: number;
   updated: number;

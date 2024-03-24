@@ -1344,10 +1344,11 @@ const enJSON = {
   switch_account_description: 'Please choose an account to proceed',
   put_location_in_map: 'Put location in map',
   confirm_disable_user: 'Are you sure you want to disable {{user}}? You will only be able to enable it after one month',
-  user_disabled_success: "User disabled successfully",
+  user_disabled_success: 'User disabled successfully',
   disable: 'Disable',
   manufacturer: 'Manufacturer',
-  power: "Power"
+  power: 'Power',
+  import_error: 'The import didn\'t succeed'
 };
 
 export default enJSON;

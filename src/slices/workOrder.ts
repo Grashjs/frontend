@@ -22,6 +22,7 @@ interface WorkOrderState {
   workOrdersByLocation: { [key: number]: WorkOrder[] };
   workOrdersByPart: { [key: number]: WorkOrder[] };
   singleWorkOrder: WorkOrder;
+  urgentCount: number;
   loadingGet: boolean;
   calendar: {
     events: CalendarEvent<WorkOrder | PreventiveMaintenance>[];
@@ -33,6 +34,7 @@ const initialState: WorkOrderState = {
   workOrdersByLocation: {},
   workOrdersByPart: {},
   singleWorkOrder: null,
+  urgentCount: 0,
   loadingGet: false,
   calendar: {
     events: []
@@ -127,6 +129,13 @@ const slice = createSlice({
     ) {
       const { loading } = action.payload;
       state.loadingGet = loading;
+    },
+    getUrgentWorkOrdersCount(
+      state: WorkOrderState,
+      action: PayloadAction<{ count: number }>
+    ) {
+      const { count } = action.payload;
+      state.urgentCount = count;
     }
   }
 });
@@ -253,6 +262,16 @@ export const getWorkOrderEvents =
         })
       );
       dispatch(slice.actions.setLoadingGet({ loading: false }));
+    };
+export const getUrgentWorkOrdersCount =
+  (): AppThunk =>
+    async (dispatch) => {
+      const response = await api.get<{ success: boolean, message: string }>(`${basePath}/urgent`);
+      dispatch(
+        slice.actions.getUrgentWorkOrdersCount({
+          count: Number(response.message)
+        })
+      );
     };
 export const clearSingleWorkOrder = (): AppThunk => async (dispatch) => {
   dispatch(slice.actions.clearSingleWorkOrder({}));

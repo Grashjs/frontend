@@ -12,12 +12,14 @@ const basePath = 'requests';
 interface RequestState {
   requests: Page<Request>;
   singleRequest: Request;
+  pendingCount: number;
   loadingGet: boolean;
 }
 
 const initialState: RequestState = {
   requests: getInitialPage<Request>(),
   singleRequest: null,
+  pendingCount: 0,
   loadingGet: false
 };
 
@@ -103,6 +105,13 @@ const slice = createSlice({
     },
     clearSingleRequest(state: RequestState, action: PayloadAction<{}>) {
       state.singleRequest = null;
+    },
+    getPendingCount(
+      state: RequestState,
+      action: PayloadAction<{ count: number }>
+    ) {
+      const { count } = action.payload;
+      state.pendingCount = count;
     }
   }
 });
@@ -175,7 +184,16 @@ export const cancelRequest =
       const request = await api.patch<WorkOrder>(`${basePath}/${id}/cancel?reason=${reason}`, {});
       dispatch(slice.actions.cancelRequest({ id }));
     };
-
+export const getPendingRequestsCount =
+  (): AppThunk =>
+    async (dispatch) => {
+      const response = await api.get<{ success: boolean, message: string }>(`${basePath}/pending`);
+      dispatch(
+        slice.actions.getPendingCount({
+          count: Number(response.message)
+        })
+      );
+    };
 export const clearSingleRequest = (): AppThunk => async (dispatch) => {
   dispatch(slice.actions.clearSingleRequest({}));
 };

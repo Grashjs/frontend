@@ -30,7 +30,7 @@ export const getOwnHeadersConfig = (
       { label: t('asset_name'), keyName: 'assetName' },
       { label: t('location_name'), keyName: 'locationName' },
       { label: t('team_name'), keyName: 'teamName' },
-      { label: t('customers'), keyName: 'customersNames',formatter: arrayFormatter },
+      { label: t('customers'), keyName: 'customersNames', formatter: arrayFormatter },
       { label: t('feedback'), keyName: 'feedback' },
       { label: t('requires_signature'), keyName: 'requiredSignature' },
       { label: t('archived'), keyName: 'archived' }
@@ -46,8 +46,8 @@ export const getOwnHeadersConfig = (
       { label: t('longitude'), keyName: 'longitude' },
       { label: t('latitude'), keyName: 'latitude' },
       { label: t('parent_location'), keyName: 'parentLocationName' },
-      { label: t('customers'), keyName: 'customersNames',formatter: arrayFormatter },
-      { label: t('vendors'), keyName: 'vendorsNames',formatter: arrayFormatter },
+      { label: t('customers'), keyName: 'customersNames', formatter: arrayFormatter },
+      { label: t('vendors'), keyName: 'vendorsNames', formatter: arrayFormatter },
       {
         label: t('assigned_to'),
         keyName: 'workersEmails',
@@ -72,10 +72,13 @@ export const getOwnHeadersConfig = (
       { label: t('parent_asset'), keyName: 'parentAssetName' },
       { label: t('area'), keyName: 'area' },
       { label: t('barcode'), keyName: 'barCode' },
+      { label: t('model'), keyName: 'model' },
+      { label: t('power'), keyName: 'power' },
+      { label: t('manufacturer'), keyName: 'manufacturer' },
       { label: t('category'), keyName: 'category' },
       { label: t('primary_worker'), keyName: 'primaryUserEmail' },
-      { label: t('customers'), keyName: 'customersNames',formatter: arrayFormatter },
-      { label: t('vendors'), keyName: 'vendorsNames',formatter: arrayFormatter },
+      { label: t('customers'), keyName: 'customersNames', formatter: arrayFormatter },
+      { label: t('vendors'), keyName: 'vendorsNames', formatter: arrayFormatter },
       {
         label: t('warranty_expiration_date'),
         keyName: 'warrantyExpirationDate'
@@ -117,8 +120,8 @@ export const getOwnHeadersConfig = (
       { label: t('area'), keyName: 'area' },
       { label: t('minimum_quantity'), keyName: 'minQuantity' },
       { label: t('location_name'), keyName: 'locationName' },
-      { label: t('customers'), keyName: 'customersNames',formatter: arrayFormatter },
-      { label: t('vendors'), keyName: 'vendorsNames',formatter: arrayFormatter },
+      { label: t('customers'), keyName: 'customersNames', formatter: arrayFormatter },
+      { label: t('vendors'), keyName: 'vendorsNames', formatter: arrayFormatter },
       {
         label: t('assigned_to'),
         keyName: 'assignedToEmails',

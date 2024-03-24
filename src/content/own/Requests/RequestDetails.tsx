@@ -43,12 +43,13 @@ interface RequestDetailsProps {
   handleOpenDelete: () => void;
   onClose: () => void;
 }
+
 export default function RequestDetails({
-  request,
-  handleOpenUpdate,
-  handleOpenDelete,
-  onClose
-}: RequestDetailsProps) {
+                                         request,
+                                         handleOpenUpdate,
+                                         handleOpenDelete,
+                                         onClose
+                                       }: RequestDetailsProps) {
   const [approving, setApproving] = useState<boolean>(false);
   const { t }: { t: any } = useTranslation();
   const dispatch = useDispatch();
@@ -60,7 +61,7 @@ export default function RequestDetails({
     CompanySettingsContext
   );
   const [isImageViewerOpen, setIsImageViewerOpen] = useState<boolean>(false);
-  const [openCancellationModal, setOpenCancellationModal] = useState<boolean>(false)
+  const [openCancellationModal, setOpenCancellationModal] = useState<boolean>(false);
   const onApprove = () => {
     setApproving(true);
     dispatch(approveRequest(request.id))
@@ -71,10 +72,10 @@ export default function RequestDetails({
   };
 
   const BasicField = ({
-    label,
-    value,
-    isPriority
-  }: {
+                        label,
+                        value,
+                        isPriority
+                      }: {
     label: string | number;
     value: string | number;
     isPriority?: boolean;
@@ -93,31 +94,35 @@ export default function RequestDetails({
   const fieldsToRender = (
     request: Request
   ): { label: string; value: string | number }[] => [
-      {
-        label: t('description'),
-        value: request.description
-      },
-      {
-        label: t('id'),
-        value: request.id
-      },
-      {
-        label: t('priority'),
-        value: request.priority
-      },
-      {
-        label: t('due_date'),
-        value: getFormattedDate(request.dueDate)
-      },
-      {
-        label: t('category'),
-        value: request.category?.name
-      },
-      {
-        label: t('feedback'),
-        value: request.cancellationReason
-      }
-    ];
+    {
+      label: t('description'),
+      value: request.description
+    },
+    {
+      label: t('id'),
+      value: request.id
+    },
+    {
+      label: t('priority'),
+      value: request.priority
+    },
+    {
+      label: t('due_date'),
+      value: getFormattedDate(request.dueDate)
+    },
+    {
+      label: t('category'),
+      value: request.category?.name
+    },
+    {
+      label: t('feedback'),
+      value: request.cancellationReason
+    },
+    {
+      label: t('created_at'),
+      value: getFormattedDate(request.createdAt)
+    }
+  ];
   return (
     <Grid
       container

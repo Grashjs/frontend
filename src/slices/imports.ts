@@ -5,7 +5,9 @@ import { ImportDTO, ImportResponse } from '../models/owns/imports';
 import { EntityType } from 'src/content/own/Imports';
 
 const basePath = 'import';
-interface ImportsState {}
+
+interface ImportsState {
+}
 
 const initialState: ImportsState = {};
 
@@ -19,17 +21,13 @@ export const reducer = slice.reducer;
 
 export const importEntity =
   (values: ImportDTO[], entity: EntityType): AppThunk =>
-  async (dispatch) => {
-    let response = { created: 0, updated: 0 };
-    try {
-      response = await api.post<ImportResponse>(
+    async (dispatch) => {
+      const response = await api.post<ImportResponse>(
         `${basePath}/${entity}`,
         values,
         {}
       );
-    } finally {
       return response;
-    }
-  };
+    };
 
 export default slice;

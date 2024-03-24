@@ -64,7 +64,7 @@ function Files() {
   } = useAuth();
   const { workOrderRequestConfiguration } = companySettings;
   const [currentRequest, setCurrentRequest] = useState<Request>();
-  const { uploadFiles } = useContext(CompanySettingsContext);
+  const { uploadFiles, getFormattedDate } = useContext(CompanySettingsContext);
   const { requestId } = useParams();
   const dispatch = useDispatch();
   const [openDelete, setOpenDelete] = useState<boolean>(false);
@@ -216,8 +216,15 @@ function Files() {
         params.row.cancelled
           ? t('rejected')
           : params.row.workOrder
-          ? t('approved')
-          : t('pending')
+            ? t('approved')
+            : t('pending')
+    },
+    {
+      field: 'createdAt',
+      headerName: t('created_at'),
+      description: t('created_at'),
+      width: 150,
+      valueGetter: (params: GridValueGetterParams<null, Request>) => getFormattedDate(params.value)
     }
   ];
   const defaultFields: Array<IField> = [...getWOBaseFields(t)];
@@ -303,7 +310,8 @@ function Files() {
             validation={Yup.object().shape(getFieldsAndShapes()[1])}
             submitText={t('add')}
             values={{ dueDate: null }}
-            onChange={({ field, e }) => {}}
+            onChange={({ field, e }) => {
+            }}
             onSubmit={async (values) => {
               let formattedValues = formatValues(values);
               return new Promise<void>((resolve, rej) => {
@@ -365,7 +373,8 @@ function Files() {
               ...currentRequest,
               ...getWOBaseValues(t, currentRequest)
             }}
-            onChange={({ field, e }) => {}}
+            onChange={({ field, e }) => {
+            }}
             onSubmit={async (values) => {
               let formattedValues = formatValues(values);
               return new Promise<void>((resolve, rej) => {
@@ -458,7 +467,7 @@ function Files() {
                   rowsPerPageOptions={[10, 20, 50]}
                   onRowClick={({ id }) => handleOpenDetails(Number(id))}
                   components={{
-                    
+
                     NoRowsOverlay: () => (
                       <NoRowsMessageWrapper
                         message={t('noRows.request.message')}
