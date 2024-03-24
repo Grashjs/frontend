@@ -49,6 +49,8 @@ import PermissionErrorMessage from '../components/PermissionErrorMessage';
 import NoRowsMessageWrapper from '../components/NoRowsMessageWrapper';
 import { getImageAndFiles } from '../../../utils/overall';
 import { SearchCriteria } from '../../../models/owns/page';
+import { useGridApiRef } from '@mui/x-data-grid-pro';
+import useGridStatePersist from '../../../hooks/useGridStatePersist';
 
 function Files() {
   const { t }: { t: any } = useTranslation();
@@ -227,6 +229,8 @@ function Files() {
       valueGetter: (params: GridValueGetterParams<null, Request>) => getFormattedDate(params.value)
     }
   ];
+  const apiRef = useGridApiRef();
+  useGridStatePersist(apiRef, columns, 'request');
   const defaultFields: Array<IField> = [...getWOBaseFields(t)];
   const defaultShape = {
     title: Yup.string().required(t('required_request_name'))
@@ -454,6 +458,7 @@ function Files() {
             >
               <Box sx={{ width: '95%' }}>
                 <CustomDataGrid
+                  apiRef={apiRef}
                   columns={columns}
                   loading={loadingGet}
                   pageSize={criteria.pageSize}

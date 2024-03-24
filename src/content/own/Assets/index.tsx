@@ -64,6 +64,7 @@ import { getRandomColor, onSearchQueryChange } from '../../../utils/overall';
 import SearchInput from '../components/SearchInput';
 import File from '../../../models/owns/file';
 import { PlanFeature } from '../../../models/owns/subscriptionPlan';
+import useGridStatePersist from '../../../hooks/useGridStatePersist';
 
 const LabelWrapper = styled(Box)(
   ({ theme }) => `
@@ -364,6 +365,7 @@ function Assets() {
         getFormattedDate(params.value)
     }
   ];
+  useGridStatePersist(apiRef, columns, 'asset');
   const onResetFilters = () => {
     setCriteria(initialCriteria);
     setView('hierarchy');

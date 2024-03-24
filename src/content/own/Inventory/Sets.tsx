@@ -42,6 +42,8 @@ import { CustomSnackBarContext } from '../../../contexts/CustomSnackBarContext';
 import { CompanySettingsContext } from '../../../contexts/CompanySettingsContext';
 import NoRowsMessageWrapper from '../components/NoRowsMessageWrapper';
 import { formatSelectMultiple } from '../../../utils/formatters';
+import { useGridApiRef } from '@mui/x-data-grid-pro';
+import useGridStatePersist from '../../../hooks/useGridStatePersist';
 
 interface PropsType {
   setAction: (p: () => () => void) => void;
@@ -141,6 +143,8 @@ const Sets = ({ setAction }: PropsType) => {
       valueGetter: (params) => getFormattedDate(params.row.createdAt)
     }
   ];
+  const apiRef = useGridApiRef();
+  useGridStatePersist(apiRef, columns, 'multiPart');
   const fields: Array<IField> = [
     {
       name: 'name',
@@ -200,9 +204,9 @@ const Sets = ({ setAction }: PropsType) => {
     }
   ];
   const BasicField = ({
-    label,
-    value
-  }: {
+                        label,
+                        value
+                      }: {
     label: string | number;
     value: string | number;
   }) => {
@@ -246,7 +250,8 @@ const Sets = ({ setAction }: PropsType) => {
             validation={Yup.object().shape(shape)}
             submitText={t('create_set')}
             values={{}}
-            onChange={({ field, e }) => {}}
+            onChange={({ field, e }) => {
+            }}
             onSubmit={async (values) => {
               const formattedValues = formatValues(values);
               return dispatch(addMultiParts(formattedValues))
@@ -295,7 +300,8 @@ const Sets = ({ setAction }: PropsType) => {
                 };
               })
             }}
-            onChange={({ field, e }) => {}}
+            onChange={({ field, e }) => {
+            }}
             onSubmit={async (values) => {
               const formattedValues = formatValues(values);
               return dispatch(editMultiParts(currentSet.id, formattedValues))
@@ -327,17 +333,18 @@ const Sets = ({ setAction }: PropsType) => {
       {currentTab === 'list' && (
         <Box sx={{ width: '95%' }}>
           <CustomDataGrid
+            apiRef={apiRef}
             columns={columns}
             rows={multiParts}
             loading={loadingGet}
             components={{
-              
+
               NoRowsOverlay: () => (
                 <NoRowsMessageWrapper
                   message={t(
                     'Manage your inventory by combining inventory part items into a single item which can be a kit, bundle or package'
                   )}
-                  action={t("Press the '+' button to create a Set")}
+                  action={t('Press the \'+\' button to create a Set')}
                 />
               )
             }}

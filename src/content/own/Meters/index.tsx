@@ -61,6 +61,8 @@ import { exportEntity } from '../../../slices/exports';
 import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
 import { canAddReading, onSearchQueryChange } from '../../../utils/overall';
 import SearchInput from '../components/SearchInput';
+import { useGridApiRef } from '@mui/x-data-grid-pro';
+import useGridStatePersist from '../../../hooks/useGridStatePersist';
 
 const LabelWrapper = styled(Box)(
   ({ theme }) => `
@@ -72,6 +74,7 @@ const LabelWrapper = styled(Box)(
     line-height: 1;
   `
 );
+
 function Meters() {
   const { t }: { t: any } = useTranslation();
   const { setTitle } = useContext(TitleContext);
@@ -291,6 +294,8 @@ function Meters() {
         getFormattedDate(params.value)
     }
   ];
+  const apiRef = useGridApiRef();
+  useGridStatePersist(apiRef, columns, 'meter');
   const fields: Array<IField> = [
     {
       name: 'name',
@@ -388,7 +393,8 @@ function Meters() {
             validation={Yup.object().shape(shape)}
             submitText={t('add')}
             values={{}}
-            onChange={({ field, e }) => { }}
+            onChange={({ field, e }) => {
+            }}
             onSubmit={async (values) => {
               let formattedValues = formatValues(values);
               return new Promise<void>((resolve, rej) => {
@@ -466,7 +472,8 @@ function Meters() {
                 value: currentMeter?.meterCategory.id
               } : null
             }}
-            onChange={({ field, e }) => { }}
+            onChange={({ field, e }) => {
+            }}
             onSubmit={async (values) => {
               let formattedValues = formatValues(values);
               return new Promise<void>((resolve, rej) => {
@@ -586,6 +593,7 @@ function Meters() {
               >
                 <Box sx={{ width: '95%' }}>
                   <CustomDataGrid
+                    apiRef={apiRef}
                     columns={columns}
                     loading={loadingGet}
                     pageSize={criteria.pageSize}

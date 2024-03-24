@@ -24,7 +24,7 @@ import { useTranslation } from 'react-i18next';
 import { IField } from '../type';
 import WorkOrder from '../../../models/owns/workOrder';
 import * as React from 'react';
-import { ChangeEvent, useContext, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, useCallback, useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { TitleContext } from '../../../contexts/TitleContext';
 import { GridEnrichedColDef } from '@mui/x-data-grid/models/colDef/gridColDef';
 import CustomDataGrid from '../components/CustomDatagrid';
@@ -82,6 +82,8 @@ import _ from 'lodash';
 import SearchInput from '../components/SearchInput';
 import { PlanFeature } from '../../../models/owns/subscriptionPlan';
 import { getPreventiveMaintenanceUrl } from 'src/utils/urlPaths';
+import { useGridApiRef } from '@mui/x-data-grid-pro';
+import useGridStatePersist from '../../../hooks/useGridStatePersist';
 
 function WorkOrders() {
   const { t }: { t: any } = useTranslation();
@@ -123,6 +125,7 @@ function WorkOrders() {
   const { setTitle } = useContext(TitleContext);
   const { workOrderId } = useParams();
   const { showSnackBar } = useContext(CustomSnackBarContext);
+  const [columnOrder, setColumnOrder] = useState([]);
 
   const [currentWorkOrder, setCurrentWorkOrder] = useState<WorkOrder>();
   const [openDelete, setOpenDelete] = useState<boolean>(false);
@@ -487,6 +490,10 @@ function WorkOrders() {
         getFormattedDate(params.value)
     }
   ];
+  // dataGrid state
+  const apiRef = useGridApiRef();
+  useGridStatePersist(apiRef, columns, 'workOrder');
+
   const defaultFields: Array<IField> = [
     {
       name: 'title',
@@ -641,7 +648,8 @@ function WorkOrders() {
                 }
                 : null
             }}
-            onChange={({ field, e }) => { }}
+            onChange={({ field, e }) => {
+            }}
             onSubmit={async (values) => {
               let formattedValues = formatValues(values);
               return new Promise<void>((resolve, rej) => {
@@ -709,7 +717,8 @@ function WorkOrders() {
               tasks,
               ...getWOBaseValues(t, currentWorkOrder)
             }}
-            onChange={({ field, e }) => { }}
+            onChange={({ field, e }) => {
+            }}
             onSubmit={async (values) => {
               let formattedValues = formatValues(values);
               return new Promise<void>((resolve, rej) => {
@@ -922,6 +931,7 @@ function WorkOrders() {
             <Box sx={{ width: '95%' }}>
               {currentTab === 'list' ? (
                 <CustomDataGrid
+                  apiRef={apiRef}
                   pageSize={criteria.pageSize}
                   page={criteria.pageNum}
                   columns={columns}
@@ -946,11 +956,6 @@ function WorkOrders() {
                   onRowClick={(params) =>
                     handleOpenDetails(Number(params.id))
                   }
-                  initialState={{
-                    columns: {
-                      columnVisibilityModel: {}
-                    }
-                  }}
                 />
               ) : (
                 <WorkOrderCalendar
@@ -960,7 +965,7 @@ function WorkOrders() {
                   }}
                   handleOpenDetails={(id, type) => {
                     if (type === 'WORK_ORDER') handleOpenDetails(id);
-                    else navigate(getPreventiveMaintenanceUrl(id))
+                    else navigate(getPreventiveMaintenanceUrl(id));
                   }}
                 />
               )}

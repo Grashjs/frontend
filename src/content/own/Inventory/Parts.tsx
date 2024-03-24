@@ -59,6 +59,8 @@ import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
 import { PermissionEntity } from '../../../models/owns/role';
 import SearchInput from '../components/SearchInput';
 import { PlanFeature } from '../../../models/owns/subscriptionPlan';
+import { useGridApiRef } from '@mui/x-data-grid-pro';
+import useGridStatePersist from '../../../hooks/useGridStatePersist';
 
 interface PropsType {
   setAction: (p: () => () => void) => void;
@@ -211,7 +213,7 @@ const Parts = ({ setAction }: PropsType) => {
     newValues.teams = formatSelectMultiple(newValues.teams);
     newValues.customers = formatSelectMultiple(newValues.customers);
     newValues.vendors = formatSelectMultiple(newValues.vendors);
-    newValues.category = formatSelect(newValues.category)
+    newValues.category = formatSelect(newValues.category);
     // values.image = formatSelect(values.image);
     // values.files = formatSelect(values.files);
     return newValues;
@@ -311,7 +313,7 @@ const Parts = ({ setAction }: PropsType) => {
       name: 'category',
       type: 'select',
       type2: 'category',
-      category:'part-categories',
+      category: 'part-categories',
       label: t('category'),
       placeholder: t('enter_part_category')
     },
@@ -402,6 +404,8 @@ const Parts = ({ setAction }: PropsType) => {
       label: t('files')
     }
   ];
+  const apiRef = useGridApiRef();
+  useGridStatePersist(apiRef, columns, 'part');
   const shape = {
     name: Yup.string().required(t('required_part_name'))
   };
@@ -434,7 +438,8 @@ const Parts = ({ setAction }: PropsType) => {
             validation={Yup.object().shape(shape)}
             submitText={t('create_part')}
             values={{}}
-            onChange={({ field, e }) => {}}
+            onChange={({ field, e }) => {
+            }}
             onSubmit={async (values) => {
               let formattedValues = formatValues(values);
               return new Promise<void>((resolve, rej) => {
@@ -463,9 +468,9 @@ const Parts = ({ setAction }: PropsType) => {
     </Dialog>
   );
   const BasicField = ({
-    label,
-    value
-  }: {
+                        label,
+                        value
+                      }: {
     label: string | number;
     value: string | number;
   }) => {
@@ -563,7 +568,8 @@ const Parts = ({ setAction }: PropsType) => {
                 };
               })
             }}
-            onChange={({ field, e }) => {}}
+            onChange={({ field, e }) => {
+            }}
             onSubmit={async (values) => {
               let formattedValues = formatValues(values);
               return new Promise<void>((resolve, rej) => {
@@ -667,6 +673,7 @@ const Parts = ({ setAction }: PropsType) => {
       </Grid>
       {currentTab === 'list' && (
         <CustomDataGrid
+          apiRef={apiRef}
           columns={columns}
           pageSize={criteria.pageSize}
           page={criteria.pageNum}
@@ -679,7 +686,7 @@ const Parts = ({ setAction }: PropsType) => {
           rowsPerPageOptions={[10, 20, 50]}
           loading={loadingGet}
           components={{
-            
+
             NoRowsOverlay: () => (
               <NoRowsMessageWrapper
                 message={t('noRows.part.message')}

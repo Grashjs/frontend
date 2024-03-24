@@ -16,7 +16,7 @@ import {
   Tab,
   Tabs,
   Typography, useTheme
-} from "@mui/material";
+} from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { IField } from '../type';
 import ReplayTwoToneIcon from '@mui/icons-material/ReplayTwoTone';
@@ -45,7 +45,7 @@ import {
   GridRowParams,
   GridToolbar,
   GridValueGetterParams
-} from "@mui/x-data-grid";
+} from '@mui/x-data-grid';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import Form from '../components/form';
 import * as Yup from 'yup';
@@ -68,6 +68,7 @@ import { getLocationUrl } from '../../../utils/urlPaths';
 import { exportEntity } from '../../../slices/exports';
 import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
 import { PlanFeature } from '../../../models/owns/subscriptionPlan';
+import useGridStatePersist from '../../../hooks/useGridStatePersist';
 
 function Locations() {
   const { t }: { t: any } = useTranslation();
@@ -79,7 +80,10 @@ function Locations() {
   const { locationsHierarchy, locations, loadingGet } = useSelector(
     (state) => state.locations
   );
-  const [deployedLocations, setDeployedLocations] = useState<{ id: number; hierarchy: number[] }[]>([{ id: 0, hierarchy: [] }]);
+  const [deployedLocations, setDeployedLocations] = useState<{ id: number; hierarchy: number[] }[]>([{
+    id: 0,
+    hierarchy: []
+  }]);
 
   const { loadingExport } = useSelector((state) => state.exports);
   const apiRef = useGridApiRef();
@@ -183,7 +187,10 @@ function Locations() {
             hierarchy: [...row.hierarchy, '']
           }
         ]);
-        if (!deployedLocations.find(deployedLocation => deployedLocation.id === row.id)) setDeployedLocations(deployedLocations.concat({ id: row.id, hierarchy: row.hierarchy }))
+        if (!deployedLocations.find(deployedLocation => deployedLocation.id === row.id)) setDeployedLocations(deployedLocations.concat({
+          id: row.id,
+          hierarchy: row.hierarchy
+        }));
         dispatch(getLocationChildren(row.id, row.hierarchy));
       };
       /**
@@ -297,7 +304,7 @@ function Locations() {
       }
     }
   ];
-
+  useGridStatePersist(apiRef, columns, 'location');
   const fields: Array<IField> = [
     {
       name: 'name',
@@ -357,7 +364,7 @@ function Locations() {
       type: 'checkbox',
       label: t('put_location_in_map'),
       relatedFields: [{ field: 'mapTitle', value: false, hide: true },
-      { field: 'coordinates', value: false, hide: true }]
+        { field: 'coordinates', value: false, hide: true }]
     },
     {
       name: 'mapTitle',
@@ -390,7 +397,7 @@ function Locations() {
   };
   const handleReset = () => {
     dispatch(resetLocationsHierarchy());
-  }
+  };
   const shape = {
     name: Yup.string().required(t('required_location_name')),
     address: Yup.string().required(t('required_location_address'))
@@ -427,7 +434,8 @@ function Locations() {
             validation={Yup.object().shape(shape)}
             submitText={t('add')}
             values={{}}
-            onChange={({ field, e }) => { }}
+            onChange={({ field, e }) => {
+            }}
             onSubmit={async (values) => {
               let formattedValues = formatValues(values);
               return new Promise<void>((resolve, rej) => {
@@ -472,7 +480,10 @@ function Locations() {
     return (
       <GridRow
         {...props}
-        style={(rowNode?.depth ?? 0) > 0 ? { backgroundColor: rowNode.depth % 2 === 0 ? theme.colors.primary.light : theme.colors.primary.main, color: 'white' } : undefined}
+        style={(rowNode?.depth ?? 0) > 0 ? {
+          backgroundColor: rowNode.depth % 2 === 0 ? theme.colors.primary.light : theme.colors.primary.main,
+          color: 'white'
+        } : undefined}
       />
     );
   };
@@ -581,7 +592,8 @@ function Locations() {
                 }
                 : null
             }}
-            onChange={({ field, e }) => { }}
+            onChange={({ field, e }) => {
+            }}
             onSubmit={async (values) => {
               let formattedValues = formatValues(values);
               //differentiate files from api and formattedValues

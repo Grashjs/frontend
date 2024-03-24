@@ -1,13 +1,14 @@
 import { Card, Grid, Stack, Typography, useTheme } from '@mui/material';
 import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone';
 import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
-import { splitToChunks } from '../../../../utils/arrayChunk';
+import { splitToChunks } from '../../../../utils/array';
 import { PlanFeature } from '../../../../models/owns/subscriptionPlan';
 import { useTranslation } from 'react-i18next';
 
 interface PlanFeatureProps {
   features: PlanFeature[];
 }
+
 function PlanFeatures(props: PlanFeatureProps) {
   const { features } = props;
   const { t }: { t: any } = useTranslation();
@@ -65,4 +66,5 @@ function PlanFeatures(props: PlanFeatureProps) {
     </Card>
   );
 }
+
 export default PlanFeatures;

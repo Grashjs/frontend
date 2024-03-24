@@ -46,6 +46,8 @@ import NoRowsMessageWrapper from '../components/NoRowsMessageWrapper';
 import { SearchCriteria } from '../../../models/owns/page';
 import { onSearchQueryChange } from '../../../utils/overall';
 import SearchInput from '../components/SearchInput';
+import { useGridApiRef } from '@mui/x-data-grid-pro';
+import useGridStatePersist from '../../../hooks/useGridStatePersist';
 
 interface PropsType {
   values?: any;
@@ -300,6 +302,8 @@ const Vendors = ({ openModal, handleCloseModal }: PropsType) => {
       width: 150
     }
   ];
+  const apiRef = useGridApiRef();
+  useGridStatePersist(apiRef, columns, 'vendor');
 
   // const searchFilterProperties = ['name', 'companyName', 'vendorType', 'email'];
   const fieldsToRender = [
@@ -361,7 +365,8 @@ const Vendors = ({ openModal, handleCloseModal }: PropsType) => {
             validation={Yup.object().shape(shape)}
             submitText={t('add')}
             values={{}}
-            onChange={({ field, e }) => {}}
+            onChange={({ field, e }) => {
+            }}
             onSubmit={async (values) => {
               const formattedValues = {
                 ...values,
@@ -384,6 +389,7 @@ const Vendors = ({ openModal, handleCloseModal }: PropsType) => {
       }}
     >
       <CustomDataGrid
+        apiRef={apiRef}
         pageSize={criteria.pageSize}
         page={criteria.pageNum}
         rows={vendors.content}
@@ -396,7 +402,7 @@ const Vendors = ({ openModal, handleCloseModal }: PropsType) => {
         columns={columns}
         loading={loadingGet}
         components={{
-          
+
           NoRowsOverlay: () => (
             <NoRowsMessageWrapper
               message={t('noRows.vendor.message')}
@@ -519,13 +525,14 @@ const Vendors = ({ openModal, handleCloseModal }: PropsType) => {
               validation={Yup.object().shape(shape)}
               submitText={t('save')}
               values={currentVendor || {}}
-              onChange={({ field, e }) => {}}
+              onChange={({ field, e }) => {
+              }}
               onSubmit={async (values) => {
                 const formattedValues = values.rate
                   ? {
-                      ...values,
-                      rate: Number(values.rate)
-                    }
+                    ...values,
+                    rate: Number(values.rate)
+                  }
                   : values;
                 return dispatch(editVendor(currentVendor.id, formattedValues))
                   .then(onEditSuccess)

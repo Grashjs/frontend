@@ -60,6 +60,8 @@ import { onSearchQueryChange } from '../../../utils/overall';
 import SearchInput from '../components/SearchInput';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ConfirmDialog from '../components/ConfirmDialog';
+import { useGridApiRef } from '@mui/x-data-grid-pro';
+import useGridStatePersist from '../../../hooks/useGridStatePersist';
 
 interface PropsType {
   values?: any;
@@ -110,7 +112,7 @@ const People = ({ openModal, handleCloseModal }: PropsType) => {
     showSnackBar(t('changes_saved_success'), 'success');
   };
   const onEditFailure = (err) =>
-    showSnackBar(t("The User couldn't be edited"), 'error');
+    showSnackBar(t('The User couldn\'t be edited'), 'error');
 
   const handleOpenDrawer = (user: OwnUser) => {
     setCurrentUser(user);
@@ -208,7 +210,8 @@ const People = ({ openModal, handleCloseModal }: PropsType) => {
                 }
                 : null
             }}
-            onChange={({ field, e }) => { }}
+            onChange={({ field, e }) => {
+            }}
             onSubmit={async (values) => {
               return dispatch(
                 editUser(currentUser.id, {
@@ -375,8 +378,11 @@ const People = ({ openModal, handleCloseModal }: PropsType) => {
       }
     }
   ];
+  const apiRef = useGridApiRef();
+  useGridStatePersist(apiRef, columns, 'users');
   const RenderPeopleList = () => (
     <CustomDataGrid
+      apiRef={apiRef}
       pageSize={criteria.pageSize}
       page={criteria.pageNum}
       rows={users.content}
@@ -472,7 +478,7 @@ const People = ({ openModal, handleCloseModal }: PropsType) => {
                   width: 50
                 }}
                 alt={
-                  "<a href='https://www.flaticon.com/free-icons/team' title='team icons'>Team icons created by Freepik - Flaticon</a>"
+                  '<a href=\'https://www.flaticon.com/free-icons/team\' title=\'team icons\'>Team icons created by Freepik - Flaticon</a>'
                 }
                 src="/static/images/team.png"
               />
@@ -552,9 +558,12 @@ const People = ({ openModal, handleCloseModal }: PropsType) => {
                     }
                   } else {
                     showSnackBar(t('please_type_emails'), 'error');
-                    setIsInviteSubmitting(false)
+                    setIsInviteSubmitting(false);
                   }
-                } else { showSnackBar(t('please_select_role'), 'error'); setIsInviteSubmitting(false) }
+                } else {
+                  showSnackBar(t('please_select_role'), 'error');
+                  setIsInviteSubmitting(false);
+                }
               }}
               variant="contained"
               startIcon={
@@ -573,7 +582,10 @@ const People = ({ openModal, handleCloseModal }: PropsType) => {
           setOpenDisableModal(false);
         }}
         onConfirm={() => {
-          dispatch(disableUser(currentUser.id)).then(() => { setOpenDisableModal(false); showSnackBar(t('user_disabled_success'), 'success') })
+          dispatch(disableUser(currentUser.id)).then(() => {
+            setOpenDisableModal(false);
+            showSnackBar(t('user_disabled_success'), 'success');
+          });
         }}
         confirmText={t('disable')}
         question={t('confirm_disable_user', { user: `${currentUser?.firstName} ${currentUser?.lastName}` })}

@@ -48,6 +48,8 @@ import NoRowsMessageWrapper from '../components/NoRowsMessageWrapper';
 import { useParams } from 'react-router-dom';
 import { SearchCriteria } from '../../../models/owns/page';
 import { isNumeric } from '../../../utils/validators';
+import { useGridApiRef } from '@mui/x-data-grid-pro';
+import useGridStatePersist from '../../../hooks/useGridStatePersist';
 
 function Files() {
   const { t }: { t: any } = useTranslation();
@@ -216,6 +218,8 @@ function Files() {
       }
     }
   ];
+  const apiRef = useGridApiRef();
+  useGridStatePersist(apiRef, columns, 'file');
   const shape = {
     files: Yup.array().required(t('required_files'))
   };
@@ -250,7 +254,8 @@ function Files() {
             validation={Yup.object().shape(shape)}
             submitText={t('add')}
             values={{}}
-            onChange={({ field, e }) => {}}
+            onChange={({ field, e }) => {
+            }}
             onSubmit={async (values) => {
               return dispatch(addFiles(values.files)).then(() =>
                 setOpenAddModal(false)
@@ -289,7 +294,8 @@ function Files() {
             validation={Yup.object().shape(updateShape)}
             submitText={t('save')}
             values={{ ...currentFile }}
-            onChange={({ field, e }) => {}}
+            onChange={({ field, e }) => {
+            }}
             onSubmit={async (values) => {
               return dispatch(
                 editFile(currentFile.id, { ...currentFile, name: values.name })
@@ -345,6 +351,7 @@ function Files() {
               >
                 <Box sx={{ width: '95%' }}>
                   <CustomDataGrid
+                    apiRef={apiRef}
                     columns={columns}
                     pageSize={criteria.pageSize}
                     page={criteria.pageNum}
@@ -357,7 +364,7 @@ function Files() {
                     rowsPerPageOptions={[10, 20, 50]}
                     loading={loadingGet}
                     components={{
-                      
+
                       NoRowsOverlay: () => (
                         <NoRowsMessageWrapper
                           message={t('noRows.file.message')}

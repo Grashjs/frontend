@@ -11,7 +11,7 @@ import {
   Typography
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { TitleContext } from '../../../contexts/TitleContext';
 import {
   addPreventiveMaintenance,
@@ -56,6 +56,9 @@ import Category from '../../../models/owns/category';
 import { LocationMiniDTO } from '../../../models/owns/location';
 import { AssetMiniDTO } from '../../../models/owns/asset';
 import { patchTasksOfPreventiveMaintenance } from '../../../slices/task';
+import * as React from 'react';
+import { GridInitialState, useGridApiRef } from '@mui/x-data-grid-pro';
+import useGridStatePersist from '../../../hooks/useGridStatePersist';
 
 function Files() {
   const { t }: { t: any } = useTranslation();
@@ -290,6 +293,9 @@ function Files() {
         params.value?.name
     }
   ];
+  const apiRef = useGridApiRef();
+  useGridStatePersist(apiRef, columns, 'pm');
+
   const defaultFields: Array<IField> = [
     {
       name: 'triggerConfiguration',
@@ -381,7 +387,8 @@ function Files() {
             validation={Yup.object().shape(getFieldsAndShapes()[1])}
             submitText={t('add')}
             values={{ startsOn: null, endsOn: null, dueDate: null }}
-            onChange={({ field, e }) => {}}
+            onChange={({ field, e }) => {
+            }}
             onSubmit={async (values) => {
               let formattedValues = formatValues(values);
               return new Promise<void>((resolve, rej) => {
@@ -448,7 +455,8 @@ function Files() {
               dueDateDelay: currentPM?.schedule.dueDateDelay,
               tasks
             }}
-            onChange={({ field, e }) => {}}
+            onChange={({ field, e }) => {
+            }}
             onSubmit={async (values) => {
               let formattedValues = formatValues(values);
               return new Promise<void>((resolve, rej) => {
@@ -564,6 +572,7 @@ function Files() {
             >
               <Box sx={{ width: '95%' }}>
                 <CustomDataGrid
+                  apiRef={apiRef}
                   columns={columns}
                   loading={loadingGet}
                   pageSize={criteria.pageSize}
@@ -577,18 +586,13 @@ function Files() {
                   rowsPerPageOptions={[10, 20, 50]}
                   onRowClick={({ id }) => handleOpenDetails(Number(id))}
                   components={{
-                    
+
                     NoRowsOverlay: () => (
                       <NoRowsMessageWrapper
                         message={t('noRows.pm.message')}
                         action={t('noRows.pm.action')}
                       />
                     )
-                  }}
-                  initialState={{
-                    columns: {
-                      columnVisibilityModel: {}
-                    }
                   }}
                 />
               </Box>

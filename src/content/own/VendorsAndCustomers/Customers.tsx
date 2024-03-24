@@ -49,6 +49,8 @@ import Currency from '../../../models/owns/currency';
 import { SearchCriteria } from '../../../models/owns/page';
 import { onSearchQueryChange } from '../../../utils/overall';
 import SearchInput from '../components/SearchInput';
+import { useGridApiRef } from '@mui/x-data-grid-pro';
+import useGridStatePersist from '../../../hooks/useGridStatePersist';
 
 interface PropsType {
   values?: any;
@@ -357,7 +359,8 @@ const Customers = ({ openModal, handleCloseModal }: PropsType) => {
         params.value?.name
     }
   ];
-
+  const apiRef = useGridApiRef();
+  useGridStatePersist(apiRef, columns, 'customer');
   const RenderCustomersAddModal = () => (
     <Dialog fullWidth maxWidth="md" open={openModal} onClose={handleCloseModal}>
       <DialogTitle
@@ -384,7 +387,8 @@ const Customers = ({ openModal, handleCloseModal }: PropsType) => {
             validation={Yup.object().shape(shape)}
             submitText={t('add')}
             values={{}}
-            onChange={({ field, e }) => {}}
+            onChange={({ field, e }) => {
+            }}
             onSubmit={async (values) => {
               const formattedValues = formatValues(values);
               return dispatch(addCustomer(formattedValues))
@@ -404,6 +408,7 @@ const Customers = ({ openModal, handleCloseModal }: PropsType) => {
       }}
     >
       <CustomDataGrid
+        apiRef={apiRef}
         pageSize={criteria.pageSize}
         page={criteria.pageNum}
         rows={customers.content}
@@ -416,7 +421,7 @@ const Customers = ({ openModal, handleCloseModal }: PropsType) => {
         columns={columns}
         loading={loadingGet}
         components={{
-          
+
           NoRowsOverlay: () => (
             <NoRowsMessageWrapper
               message={t('noRows.customer.message')}
@@ -577,12 +582,13 @@ const Customers = ({ openModal, handleCloseModal }: PropsType) => {
                 ...currentCustomer,
                 billingCurrency: currentCustomer?.billingCurrency
                   ? {
-                      label: currentCustomer.billingCurrency.name,
-                      value: currentCustomer.billingCurrency.id
-                    }
+                    label: currentCustomer.billingCurrency.name,
+                    value: currentCustomer.billingCurrency.id
+                  }
                   : null
               }}
-              onChange={({ field, e }) => {}}
+              onChange={({ field, e }) => {
+              }}
               onSubmit={async (values) => {
                 const formattedValues = formatValues(values);
                 return dispatch(
