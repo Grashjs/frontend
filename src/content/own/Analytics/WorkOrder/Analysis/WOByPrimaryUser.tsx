@@ -16,6 +16,7 @@ interface WOByPrimaryUserProps {
     title: string
   ) => void;
 }
+
 function WOByPrimaryUser({ handleOpenModal }: WOByPrimaryUserProps) {
   const { t }: { t: any } = useTranslation();
   const theme = useTheme();
@@ -66,7 +67,6 @@ function WOByPrimaryUser({ handleOpenModal }: WOByPrimaryUserProps) {
             ))}
           </Pie>
           <Tooltip />
-          <Legend />
         </PieChart>
       )}
     </AnalyticsCard>
