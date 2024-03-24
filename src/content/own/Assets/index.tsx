@@ -1,4 +1,4 @@
-import { Helmet } from "react-helmet-async";
+import { Helmet } from 'react-helmet-async';
 import {
   Box,
   Button,
@@ -13,64 +13,75 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  Stack,
+  Stack, styled,
   Typography, useTheme
-} from "@mui/material";
-import { useTranslation } from "react-i18next";
-import { IField } from "../type";
-import { addAsset, getAssetChildren, getAssets, resetAssetsHierarchy } from "../../../slices/asset";
-import { useDispatch, useSelector } from "../../../store";
-import * as React from "react";
+} from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { IField } from '../type';
+import { addAsset, getAssetChildren, getAssets, resetAssetsHierarchy } from '../../../slices/asset';
+import { useDispatch, useSelector } from '../../../store';
+import * as React from 'react';
 import ReplayTwoToneIcon from '@mui/icons-material/ReplayTwoTone';
-import { useContext, useEffect, useMemo, useState } from "react";
-import { TitleContext } from "../../../contexts/TitleContext";
-import { GridEnrichedColDef } from "@mui/x-data-grid/models/colDef/gridColDef";
-import CustomDataGrid from "../components/CustomDatagrid";
+import { useContext, useEffect, useMemo, useState } from 'react';
+import { TitleContext } from '../../../contexts/TitleContext';
+import { GridEnrichedColDef } from '@mui/x-data-grid/models/colDef/gridColDef';
+import CustomDataGrid from '../components/CustomDatagrid';
 import {
   GridEventListener,
   GridRenderCellParams, GridRow,
   GridToolbar,
   GridValueGetterParams
-} from "@mui/x-data-grid";
-import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
-import { AssetDTO, AssetMiniDTO, AssetRow } from "../../../models/owns/asset";
-import Form from "../components/form";
-import * as Yup from "yup";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { DataGridProProps, useGridApiRef } from "@mui/x-data-grid-pro";
-import { formatAssetValues } from "../../../utils/formatters";
-import { GroupingCellWithLazyLoading } from "./GroupingCellWithLazyLoading";
-import { UserMiniDTO } from "../../../models/user";
-import UserAvatars from "../components/UserAvatars";
-import { enumerate } from "../../../utils/displayers";
-import { CustomSnackBarContext } from "../../../contexts/CustomSnackBarContext";
-import { CompanySettingsContext } from "../../../contexts/CompanySettingsContext";
-import { getAssetUrl } from "../../../utils/urlPaths";
-import useAuth from "../../../hooks/useAuth";
-import { PermissionEntity } from "../../../models/owns/role";
-import PermissionErrorMessage from "../components/PermissionErrorMessage";
-import NoRowsMessageWrapper from "../components/NoRowsMessageWrapper";
-import { isNumeric } from "../../../utils/validators";
-import { getSingleLocation } from "../../../slices/location";
-import { LocationMiniDTO } from "../../../models/owns/location";
-import { TeamMiniDTO } from "../../../models/owns/team";
-import { VendorMiniDTO } from "../../../models/owns/vendor";
-import Category from "../../../models/owns/category";
-import { exportEntity } from "../../../slices/exports";
-import MoreVertTwoToneIcon from "@mui/icons-material/MoreVertTwoTone";
-import { FilterField, SearchCriteria } from "../../../models/owns/page";
-import Filters from "./Filters";
-import { getRandomColor, onSearchQueryChange } from "../../../utils/overall";
-import SearchInput from "../components/SearchInput";
-import File from "../../../models/owns/file";
-import { PlanFeature } from "../../../models/owns/subscriptionPlan";
+} from '@mui/x-data-grid';
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
+import { AssetDTO, AssetMiniDTO, AssetRow } from '../../../models/owns/asset';
+import Form from '../components/form';
+import * as Yup from 'yup';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { DataGridProProps, useGridApiRef } from '@mui/x-data-grid-pro';
+import { formatAssetValues } from '../../../utils/formatters';
+import { GroupingCellWithLazyLoading } from './GroupingCellWithLazyLoading';
+import { UserMiniDTO } from '../../../models/user';
+import UserAvatars from '../components/UserAvatars';
+import { enumerate } from '../../../utils/displayers';
+import { CustomSnackBarContext } from '../../../contexts/CustomSnackBarContext';
+import { CompanySettingsContext } from '../../../contexts/CompanySettingsContext';
+import { getAssetUrl } from '../../../utils/urlPaths';
+import useAuth from '../../../hooks/useAuth';
+import { PermissionEntity } from '../../../models/owns/role';
+import PermissionErrorMessage from '../components/PermissionErrorMessage';
+import NoRowsMessageWrapper from '../components/NoRowsMessageWrapper';
+import { isNumeric } from '../../../utils/validators';
+import { getSingleLocation } from '../../../slices/location';
+import { LocationMiniDTO } from '../../../models/owns/location';
+import { TeamMiniDTO } from '../../../models/owns/team';
+import { VendorMiniDTO } from '../../../models/owns/vendor';
+import Category from '../../../models/owns/category';
+import { exportEntity } from '../../../slices/exports';
+import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
+import { FilterField, SearchCriteria } from '../../../models/owns/page';
+import Filters from './Filters';
+import { getRandomColor, onSearchQueryChange } from '../../../utils/overall';
+import SearchInput from '../components/SearchInput';
+import File from '../../../models/owns/file';
+import { PlanFeature } from '../../../models/owns/subscriptionPlan';
+
+const LabelWrapper = styled(Box)(
+  ({ theme }) => `
+    font-size: ${theme.typography.pxToRem(10)};
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: ${theme.general.borderRadiusSm};
+    padding: ${theme.spacing(0.9, 1.5, 0.7)};
+    line-height: 1;
+  `
+);
 
 function Assets() {
   const { t }: { t: any } = useTranslation();
   const { setTitle } = useContext(TitleContext);
   const { uploadFiles } = useContext(CompanySettingsContext);
   const [searchParams, setSearchParams] = useSearchParams();
-  const locationParam = searchParams.get("location");
+  const locationParam = searchParams.get('location');
   const navigate = useNavigate();
   const {
     hasViewPermission,
@@ -94,30 +105,31 @@ function Assets() {
   );
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const openMenu = Boolean(anchorEl);
-  type ViewType = "hierarchy" | "list";
-  const [view, setView] = useState<ViewType>("hierarchy");
+  type ViewType = 'hierarchy' | 'list';
+  const theme = useTheme();
+  const [view, setView] = useState<ViewType>('hierarchy');
   const initialCriteria: SearchCriteria = {
     filterFields: [
       {
-        field: "archived",
-        operation: "eq",
+        field: 'archived',
+        operation: 'eq',
         value: false
       }
     ],
     pageSize: 10,
     pageNum: 0,
-    direction: "DESC"
+    direction: 'DESC'
   };
   const [criteria, setCriteria] = useState<SearchCriteria>(initialCriteria);
   const onQueryChange = (event) => {
-    setView(event.target.value ? "list" : "hierarchy");
+    setView(event.target.value ? 'list' : 'hierarchy');
     onSearchQueryChange<AssetDTO>(event, criteria, setCriteria, [
-      "name",
-      "description",
-      "model",
-      "additionalInfos",
-      "barCode",
-      "area"
+      'name',
+      'description',
+      'model',
+      'additionalInfos',
+      'barCode',
+      'area'
     ]);
   };
   const debouncedQueryChange = useMemo(() => debounce(onQueryChange, 1300), []);
@@ -126,7 +138,10 @@ function Assets() {
     newCriteria.filterFields = newFilters;
     setCriteria(newCriteria);
   };
-  const [deployedAssets, setDeployedAssets] = useState<{ id: number; hierarchy: number[] }[]>([{id: 0, hierarchy:[]}]);
+  const [deployedAssets, setDeployedAssets] = useState<{ id: number; hierarchy: number[] }[]>([{
+    id: 0,
+    hierarchy: []
+  }]);
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -135,7 +150,7 @@ function Assets() {
   };
   const [openFilterDrawer, setOpenFilterDrawer] = useState<boolean>(false);
   useEffect(() => {
-    setTitle(t("assets"));
+    setTitle(t('assets'));
     if (hasViewPermission(PermissionEntity.ASSETS)) {
       dispatch(getAssetChildren(0, []));
     }
@@ -162,10 +177,10 @@ function Assets() {
 
   const onCreationSuccess = () => {
     setOpenAddModal(false);
-    showSnackBar(t("asset_create_success"), "success");
+    showSnackBar(t('asset_create_success'), 'success');
   };
   const onCreationFailure = (err) =>
-    showSnackBar(t("asset_create_failure"), "error");
+    showSnackBar(t('asset_create_failure'), 'error');
   const handleCloseFilterDrawer = () => setOpenFilterDrawer(false);
   const onPageSizeChange = (size: number) => {
     setCriteria({ ...criteria, pageSize: size });
@@ -180,30 +195,30 @@ function Assets() {
       open={openMenu}
       onClose={handleCloseMenu}
       MenuListProps={{
-        "aria-labelledby": "basic-button"
+        'aria-labelledby': 'basic-button'
       }}
     >
       {hasViewOtherPermission(PermissionEntity.ASSETS) && (
         <MenuItem
-          disabled={loadingExport["assets"]}
+          disabled={loadingExport['assets']}
           onClick={() => {
-            dispatch(exportEntity("assets")).then((url: string) => {
+            dispatch(exportEntity('assets')).then((url: string) => {
               window.open(url);
             });
           }}
         >
           <Stack spacing={2} direction="row">
-            {loadingExport["assets"] && <CircularProgress size="1rem" />}
-            <Typography>{t("to_export")}</Typography>
+            {loadingExport['assets'] && <CircularProgress size="1rem" />}
+            <Typography>{t('to_export')}</Typography>
           </Stack>
         </MenuItem>
       )}
       {hasViewPermission(PermissionEntity.SETTINGS) && (
         <MenuItem
-          onClick={() => navigate("/app/imports/assets")}
+          onClick={() => navigate('/app/imports/assets')}
           disabled={!hasFeature(PlanFeature.IMPORT_CSV)}
         >
-          {t("to_import")}
+          {t('to_import')}
         </MenuItem>
       )}
       <MenuItem
@@ -212,38 +227,53 @@ function Assets() {
           handleCloseMenu();
         }}
       >
-        {t("to_filter")}
+        {t('to_filter')}
       </MenuItem>
     </Menu>
   );
   const columns: GridEnrichedColDef[] = [
     {
-      field: "id",
-      headerName: t("id"),
-      description: t("id"),
+      field: 'id',
+      headerName: t('id'),
+      description: t('id'),
       width: 150
     },
     {
-      field: "name",
-      headerName: t("name"),
-      description: t("name"),
+      field: 'name',
+      headerName: t('name'),
+      description: t('name'),
       width: 150,
       renderCell: (params: GridRenderCellParams<string>) => (
-        <Box sx={{ fontWeight: "bold" }}>{params.value}</Box>
+        <Box sx={{ fontWeight: 'bold' }}>{params.value}</Box>
       )
     },
     {
-      field: "location",
-      headerName: t("location"),
-      description: t("location"),
+      field: 'status',
+      headerName: t('status'),
+      description: t('status'),
+      renderCell: (params: GridRenderCellParams<string>) => (
+        <LabelWrapper
+          sx={{
+            background: `${params.value === 'OPERATIONAL' ? theme.colors.success.main : theme.colors.error.main}`,
+            color: `white`
+          }}
+        >
+          {params.value === 'OPERATIONAL' ? t('operational') : t('down')}
+        </LabelWrapper>
+      )
+    },
+    {
+      field: 'location',
+      headerName: t('location'),
+      description: t('location'),
       width: 150,
       valueGetter: (params: GridValueGetterParams<LocationMiniDTO>) =>
         params.value?.name
     },
     {
-      field: "image",
-      headerName: t("image"),
-      description: t("image"),
+      field: 'image',
+      headerName: t('image'),
+      description: t('image'),
       width: 150,
       renderCell: (params: GridRenderCellParams<any, any, File>) =>
         params.value && (
@@ -251,41 +281,41 @@ function Assets() {
         )
     },
     {
-      field: "area",
-      headerName: t("area"),
-      description: t("area"),
+      field: 'area',
+      headerName: t('area'),
+      description: t('area'),
       width: 150
     },
     {
-      field: "model",
-      headerName: t("model"),
-      description: t("model"),
+      field: 'model',
+      headerName: t('model'),
+      description: t('model'),
       width: 150
     },
     {
-      field: "barCode",
-      headerName: t("barcode"),
-      description: t("barcode"),
+      field: 'barCode',
+      headerName: t('barcode'),
+      description: t('barcode'),
       width: 150
     },
     {
-      field: "category",
-      headerName: t("category"),
-      description: t("category"),
+      field: 'category',
+      headerName: t('category'),
+      description: t('category'),
       width: 150,
       valueGetter: (params: GridValueGetterParams<Category>) =>
         params.value?.name
     },
     {
-      field: "description",
-      headerName: t("description"),
-      description: t("description"),
+      field: 'description',
+      headerName: t('description'),
+      description: t('description'),
       width: 300
     },
     {
-      field: "primaryUser",
-      headerName: t("primary_worker"),
-      description: t("primary_worker"),
+      field: 'primaryUser',
+      headerName: t('primary_worker'),
+      description: t('primary_worker'),
       width: 150,
       valueGetter: (params: GridValueGetterParams<UserMiniDTO>) =>
         params.value
@@ -293,42 +323,42 @@ function Assets() {
           : null
     },
     {
-      field: "assignedTo",
-      headerName: t("assigned_to"),
-      description: t("assigned_to"),
+      field: 'assignedTo',
+      headerName: t('assigned_to'),
+      description: t('assigned_to'),
       width: 170,
       renderCell: (params: GridRenderCellParams<UserMiniDTO[]>) => (
         <UserAvatars users={params.value ?? []} />
       )
     },
     {
-      field: "teams",
-      headerName: t("teams"),
-      description: t("teams"),
+      field: 'teams',
+      headerName: t('teams'),
+      description: t('teams'),
       width: 150,
       valueGetter: (params: GridValueGetterParams<TeamMiniDTO[]>) =>
         enumerate(params.value?.map((team) => team.name) ?? [])
     },
     {
-      field: "vendors",
-      headerName: t("vendors"),
-      description: t("vendors"),
+      field: 'vendors',
+      headerName: t('vendors'),
+      description: t('vendors'),
       width: 150,
       valueGetter: (params: GridValueGetterParams<VendorMiniDTO[]>) =>
         enumerate(params.value?.map((vendor) => vendor.companyName) ?? [])
     },
     {
-      field: "parentAsset",
-      headerName: t("parent_asset"),
-      description: t("parent_asset"),
+      field: 'parentAsset',
+      headerName: t('parent_asset'),
+      description: t('parent_asset'),
       width: 150,
       valueGetter: (params: GridValueGetterParams<AssetMiniDTO>) =>
         params.value?.name
     },
     {
-      field: "createdAt",
-      headerName: t("created_at"),
-      description: t("created_at"),
+      field: 'createdAt',
+      headerName: t('created_at'),
+      description: t('created_at'),
       width: 150,
       valueGetter: (params: GridValueGetterParams<string>) =>
         getFormattedDate(params.value)
@@ -336,192 +366,192 @@ function Assets() {
   ];
   const onResetFilters = () => {
     setCriteria(initialCriteria);
-    setView("hierarchy");
+    setView('hierarchy');
   };
   const defaultFields: Array<IField> = [
     {
-      name: "assetInfo",
-      type: "titleGroupField",
-      label: t("asset_information")
+      name: 'assetInfo',
+      type: 'titleGroupField',
+      label: t('asset_information')
     },
     {
-      name: "name",
-      type: "text",
-      label: t("name"),
-      placeholder: t("asset_name_description"),
+      name: 'name',
+      type: 'text',
+      label: t('name'),
+      placeholder: t('asset_name_description'),
       required: true
     },
     {
-      name: "location",
-      type: "select",
-      type2: "location",
-      label: t("location"),
-      placeholder: t("select_asset_location"),
+      name: 'location',
+      type: 'select',
+      type2: 'location',
+      label: t('location'),
+      placeholder: t('select_asset_location'),
       required: true,
       midWidth: true
     },
     {
-      name: "acquisitionCost",
-      type: "number",
-      label: t("acquisition_cost"),
-      placeholder: t("acquisition_cost"),
+      name: 'acquisitionCost',
+      type: 'number',
+      label: t('acquisition_cost'),
+      placeholder: t('acquisition_cost'),
       midWidth: true
     },
     {
-      name: "description",
-      type: "text",
-      label: t("description"),
-      placeholder: t("description"),
+      name: 'description',
+      type: 'text',
+      label: t('description'),
+      placeholder: t('description'),
       multiple: true
     },
     {
-      name: "manufacturer",
-      type: "text",
-      label: t("manufacturer"),
-      placeholder: t("manufacturer"),
+      name: 'manufacturer',
+      type: 'text',
+      label: t('manufacturer'),
+      placeholder: t('manufacturer'),
       midWidth: true
     },
     {
-      name: "power",
-      type: "text",
-      label: t("power"),
-      placeholder: t("power"),
+      name: 'power',
+      type: 'text',
+      label: t('power'),
+      placeholder: t('power'),
       midWidth: true
     },
     {
-      name: "model",
-      type: "text",
-      label: t("model"),
-      placeholder: t("model"),
+      name: 'model',
+      type: 'text',
+      label: t('model'),
+      placeholder: t('model'),
       midWidth: true
     },
     {
-      name: "serialNumber",
-      type: "text",
-      label: t("serial_number"),
-      placeholder: t("serial_number"),
+      name: 'serialNumber',
+      type: 'text',
+      label: t('serial_number'),
+      placeholder: t('serial_number'),
       midWidth: true
     },
     {
-      name: "category",
+      name: 'category',
       midWidth: true,
-      label: t("category"),
-      placeholder: t("category"),
-      type: "select",
-      type2: "category",
-      category: "asset-categories"
+      label: t('category'),
+      placeholder: t('category'),
+      type: 'select',
+      type2: 'category',
+      category: 'asset-categories'
     },
     {
-      name: "area",
-      type: "text",
+      name: 'area',
+      type: 'text',
       midWidth: true,
-      label: t("area"),
-      placeholder: t("area")
+      label: t('area'),
+      placeholder: t('area')
     },
     {
-      name: "image",
-      type: "file",
-      fileType: "image",
-      label: t("image")
+      name: 'image',
+      type: 'file',
+      fileType: 'image',
+      label: t('image')
     },
     {
-      name: "assignedTo",
-      type: "titleGroupField",
-      label: t("assigned_to")
+      name: 'assignedTo',
+      type: 'titleGroupField',
+      label: t('assigned_to')
     },
     {
-      name: "primaryUser",
-      type: "select",
-      type2: "user",
-      label: t("worker"),
-      placeholder: t("primary_user_description")
+      name: 'primaryUser',
+      type: 'select',
+      type2: 'user',
+      label: t('worker'),
+      placeholder: t('primary_user_description')
     },
     {
-      name: "assignedTo",
-      type: "select",
-      type2: "user",
+      name: 'assignedTo',
+      type: 'select',
+      type2: 'user',
       multiple: true,
-      label: t("additional_workers"),
-      placeholder: "additional_workers_description"
+      label: t('additional_workers'),
+      placeholder: 'additional_workers_description'
     },
     {
-      name: "teams",
-      type: "select",
-      type2: "team",
+      name: 'teams',
+      type: 'select',
+      type2: 'team',
       multiple: true,
-      label: t("teams"),
-      placeholder: "Select teams"
+      label: t('teams'),
+      placeholder: 'Select teams'
     },
     {
-      name: "moreInfos",
-      type: "titleGroupField",
-      label: t("more_informations")
+      name: 'moreInfos',
+      type: 'titleGroupField',
+      label: t('more_informations')
     },
     {
-      name: "customers",
-      type: "select",
-      type2: "customer",
+      name: 'customers',
+      type: 'select',
+      type2: 'customer',
       multiple: true,
-      label: t("customers"),
-      placeholder: "customers_description"
+      label: t('customers'),
+      placeholder: 'customers_description'
     },
     {
-      name: "vendors",
-      type: "select",
-      type2: "vendor",
+      name: 'vendors',
+      type: 'select',
+      type2: 'vendor',
       multiple: true,
-      label: t("vendors"),
-      placeholder: t("vendors_description")
+      label: t('vendors'),
+      placeholder: t('vendors_description')
     },
     {
-      name: "inServiceDate",
-      type: "date",
+      name: 'inServiceDate',
+      type: 'date',
       midWidth: true,
-      label: t("inServiceDate_description")
+      label: t('inServiceDate_description')
     },
     {
-      name: "warrantyExpirationDate",
-      type: "date",
+      name: 'warrantyExpirationDate',
+      type: 'date',
       midWidth: true,
-      label: t("warranty_expiration_date")
+      label: t('warranty_expiration_date')
     },
     {
-      name: "files",
-      type: "file",
+      name: 'files',
+      type: 'file',
       multiple: true,
-      label: t("files"),
-      fileType: "file"
+      label: t('files'),
+      fileType: 'file'
     },
     {
-      name: "additionalInfos",
-      type: "text",
-      label: t("additional_information"),
-      placeholder: t("additional_information"),
+      name: 'additionalInfos',
+      type: 'text',
+      label: t('additional_information'),
+      placeholder: t('additional_information'),
       multiple: true
     },
     {
-      name: "structure",
-      type: "titleGroupField",
-      label: t("structure")
+      name: 'structure',
+      type: 'titleGroupField',
+      label: t('structure')
     },
-    { name: "parts", type: "select", type2: "part", label: t("parts") },
+    { name: 'parts', type: 'select', type2: 'part', label: t('parts') },
     {
-      name: "parentAsset",
-      type: "select",
-      type2: "asset",
-      label: t("parent_asset")
+      name: 'parentAsset',
+      type: 'select',
+      type2: 'asset',
+      label: t('parent_asset')
     }
   ];
   const shape = {
-    name: Yup.string().required(t("required_asset_name"))
+    name: Yup.string().required(t('required_asset_name'))
   };
-  const handleReset =()=>{
+  const handleReset = () => {
     dispatch(resetAssetsHierarchy());
-  }
+  };
   useEffect(() => {
     if (apiRef.current.getRow) {
       const handleRowExpansionChange: GridEventListener<
-        "rowExpansionChange"
+        'rowExpansionChange'
       > = async (node) => {
         const row = apiRef.current.getRow(node.id) as AssetRow | null;
         if (!node.childrenExpanded || !row || row.childrenFetched) {
@@ -529,18 +559,21 @@ function Assets() {
         }
         apiRef.current.updateRows([
           {
-            id: t("loading_assets", { name: row.name, id: node.id }),
-            hierarchy: [...row.hierarchy, ""]
+            id: t('loading_assets', { name: row.name, id: node.id }),
+            hierarchy: [...row.hierarchy, '']
           }
         ]);
-        if (!deployedAssets.find(deployedAsset => deployedAsset.id === row.id)) setDeployedAssets(deployedAssets.concat({ id: row.id, hierarchy: row.hierarchy }))
+        if (!deployedAssets.find(deployedAsset => deployedAsset.id === row.id)) setDeployedAssets(deployedAssets.concat({
+          id: row.id,
+          hierarchy: row.hierarchy
+        }));
         dispatch(getAssetChildren(row.id, row.hierarchy));
       };
       /**
        * By default, the grid does not toggle the expansion of rows with 0 children
        * We need to override the `cellKeyDown` event listener to force the expansion if there are children on the server
        */
-      const handleCellKeyDown: GridEventListener<"cellKeyDown"> = (
+      const handleCellKeyDown: GridEventListener<'cellKeyDown'> = (
         params,
         event
       ) => {
@@ -548,7 +581,7 @@ function Assets() {
           params.id,
           params.field
         );
-        if (cellParams.colDef.type === "treeDataGroup" && event.key === " ") {
+        if (cellParams.colDef.type === 'treeDataGroup' && event.key === ' ') {
           event.stopPropagation();
           event.preventDefault();
           event.defaultMuiPrevented = true;
@@ -561,10 +594,10 @@ function Assets() {
       };
 
       apiRef.current.subscribeEvent(
-        "rowExpansionChange",
+        'rowExpansionChange',
         handleRowExpansionChange
       );
-      apiRef.current.subscribeEvent("cellKeyDown", handleCellKeyDown, {
+      apiRef.current.subscribeEvent('cellKeyDown', handleCellKeyDown, {
         isFirst: true
       });
     }
@@ -583,10 +616,10 @@ function Assets() {
         }}
       >
         <Typography variant="h4" gutterBottom>
-          {t("add_asset")}
+          {t('add_asset')}
         </Typography>
         <Typography variant="subtitle2">
-          {t("add_asset_description")}
+          {t('add_asset_description')}
         </Typography>
       </DialogTitle>
       <DialogContent
@@ -599,7 +632,7 @@ function Assets() {
           <Form
             fields={getFilteredFields(defaultFields)}
             validation={Yup.object().shape(shape)}
-            submitText={t("create_asset")}
+            submitText={t('create_asset')}
             values={{
               inServiceDate: null,
               warrantyExpirationDate: null,
@@ -627,7 +660,7 @@ function Assets() {
                     dispatch(addAsset(formattedValues))
                       .then(onCreationSuccess)
                       .then(() => {
-                        deployedAssets.forEach(deployedAsset => dispatch(getAssetChildren(deployedAsset.id, deployedAsset.hierarchy)))
+                        deployedAssets.forEach(deployedAsset => dispatch(getAssetChildren(deployedAsset.id, deployedAsset.hierarchy)));
                       })
                       .catch(onCreationFailure)
                       .finally(resolve);
@@ -644,8 +677,8 @@ function Assets() {
     </Dialog>
   );
 
-  const groupingColDef: DataGridProProps["groupingColDef"] = {
-    headerName: t("hierarchy"),
+  const groupingColDef: DataGridProProps['groupingColDef'] = {
+    headerName: t('hierarchy'),
     renderCell: (params) => <GroupingCellWithLazyLoading {...params} />
   };
   const CustomRow = (props: React.ComponentProps<typeof GridRow>) => {
@@ -655,7 +688,10 @@ function Assets() {
     return (
       <GridRow
         {...props}
-        style={(rowNode?.depth ?? 0) > 0 ? { backgroundColor: rowNode.depth % 2 === 0 ? theme.colors.primary.light : theme.colors.primary.main, color: 'white' } : undefined}
+        style={(rowNode?.depth ?? 0) > 0 ? {
+          backgroundColor: rowNode.depth % 2 === 0 ? theme.colors.primary.light : theme.colors.primary.main,
+          color: 'white'
+        } : undefined}
       />
     );
   };
@@ -664,7 +700,7 @@ function Assets() {
       <>
         {renderAssetAddModal()}
         <Helmet>
-          <title>{t("assets")}</title>
+          <title>{t('assets')}</title>
         </Helmet>
         <Grid
           container
@@ -683,15 +719,15 @@ function Assets() {
           >
             <SearchInput onChange={debouncedQueryChange} />
             <Stack direction="row" spacing={1}>
-            <IconButton onClick={handleReset} color="primary">
+              <IconButton onClick={handleReset} color="primary">
                 <ReplayTwoToneIcon />
               </IconButton>
               <IconButton onClick={handleOpenMenu} color="primary">
                 <MoreVertTwoToneIcon />
               </IconButton>
-              {view === "list" && (
-                <Button variant={"outlined"} onClick={onResetFilters}>
-                  {t("reset_filters")}
+              {view === 'list' && (
+                <Button variant={'outlined'} onClick={onResetFilters}>
+                  {t('reset_filters')}
                 </Button>
               )}
               {hasCreatePermission(PermissionEntity.ASSETS) && (
@@ -701,7 +737,7 @@ function Assets() {
                   sx={{ mx: 6, my: 1 }}
                   variant="contained"
                 >
-                  {t("asset")}
+                  {t('asset')}
                 </Button>
               )}
             </Stack>
@@ -710,41 +746,41 @@ function Assets() {
             <Card
               sx={{
                 p: 2,
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between"
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between'
               }}
             >
-              <Box sx={{ width: "95%" }}>
+              <Box sx={{ width: '95%' }}>
                 <CustomDataGrid
-                  treeData={view === "hierarchy"}
+                  treeData={view === 'hierarchy'}
                   columns={columns}
-                  rows={view === "hierarchy" ? assetsHierarchy : assets.content}
+                  rows={view === 'hierarchy' ? assetsHierarchy : assets.content}
                   apiRef={apiRef}
-                  getRowHeight={() => "auto"}
+                  getRowHeight={() => 'auto'}
                   getTreeDataPath={(row) =>
-                    view === "hierarchy"
+                    view === 'hierarchy'
                       ? row.hierarchy.map((id) => id.toString())
                       : [row.id.toString()]
                   }
                   disableColumnFilter
                   loading={loadingGet}
                   groupingColDef={
-                    view === "hierarchy" ? groupingColDef : undefined
+                    view === 'hierarchy' ? groupingColDef : undefined
                   }
-                  paginationMode={view === "hierarchy" ? undefined : "server"}
+                  paginationMode={view === 'hierarchy' ? undefined : 'server'}
                   onPageSizeChange={onPageSizeChange}
                   onPageChange={onPageChange}
                   rowsPerPageOptions={
-                    view === "list" ? [10, 20, 50] : undefined
+                    view === 'list' ? [10, 20, 50] : undefined
                   }
                   components={{
                     Row: CustomRow,
                     NoRowsOverlay: () => (
                       <NoRowsMessageWrapper
-                        message={t("noRows.asset.message")}
-                        action={t("noRows.asset.action")}
+                        message={t('noRows.asset.message')}
+                        action={t('noRows.asset.action')}
                       />
                     )
                   }}
@@ -767,7 +803,7 @@ function Assets() {
           open={openFilterDrawer}
           onClose={handleCloseFilterDrawer}
           PaperProps={{
-            sx: { width: "30%" }
+            sx: { width: '30%' }
           }}
         >
           <Filters
@@ -775,13 +811,13 @@ function Assets() {
             onFilterChange={onFilterChange}
             onSave={() => {
               handleCloseFilterDrawer();
-              setView("list");
+              setView('list');
             }}
           />
         </Drawer>
       </>
     );
-  else return <PermissionErrorMessage message={"no_access_assets"} />;
+  else return <PermissionErrorMessage message={'no_access_assets'} />;
 }
 
 export default Assets;

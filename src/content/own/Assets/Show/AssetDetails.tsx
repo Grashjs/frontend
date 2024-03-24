@@ -4,8 +4,8 @@ import {
   Divider,
   Grid,
   Link,
-  Stack,
-  Typography
+  Stack, styled,
+  Typography, useTheme
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { AssetDTO } from '../../../../models/owns/asset';
@@ -26,8 +26,19 @@ interface PropsType {
   asset: AssetDTO;
 }
 
+const LabelWrapper = styled(Box)(
+  ({ theme }) => `
+    font-size: ${theme.typography.pxToRem(10)};
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: ${theme.general.borderRadiusSm};
+    padding: ${theme.spacing(0.9, 1.5, 0.7)};
+    line-height: 1;
+  `
+);
 const AssetDetails = ({ asset }: PropsType) => {
   const { t }: { t: any } = useTranslation();
+  const theme = useTheme();
   const { getFormattedDate, getFormattedCurrency } = useContext(
     CompanySettingsContext
   );
@@ -39,10 +50,6 @@ const AssetDetails = ({ asset }: PropsType) => {
     { label: t('serial_number'), value: asset?.serialNumber },
     { label: t('power'), value: asset?.power },
     { label: t('manufacturer'), value: asset?.manufacturer },
-    {
-      label: t('status'),
-      value: asset?.status === 'OPERATIONAL' ? t('operational') : t('down')
-    },
     {
       label: t('acquisition_cost'),
       value: asset?.acquisitionCost
@@ -63,9 +70,9 @@ const AssetDetails = ({ asset }: PropsType) => {
     }
   ];
   const BasicField = ({
-    label,
-    value
-  }: {
+                        label,
+                        value
+                      }: {
     label: string | number;
     value: string | number;
   }) => {
@@ -82,11 +89,11 @@ const AssetDetails = ({ asset }: PropsType) => {
     ) : null;
   };
   const ListField = <T extends { id: number }>({
-    values,
-    label,
-    getHref,
-    getValueLabel
-  }: {
+                                                 values,
+                                                 label,
+                                                 getHref,
+                                                 getValueLabel
+                                               }: {
     values: T[];
     label: string;
     getHref: (value: T) => string;
@@ -129,7 +136,17 @@ const AssetDetails = ({ asset }: PropsType) => {
                 </Grid>
               )}
               <Grid item xs={12}>
-                <Typography variant="h3">{t('asset_information')}</Typography>
+                <Stack direction={'row'} spacing={2} alignItems={'center'}>
+                  <Typography variant="h3">{t('asset_information')}</Typography>
+                  {asset && <LabelWrapper
+                    sx={{
+                      background: `${asset?.status === 'OPERATIONAL' ? theme.colors.success.main : theme.colors.error.main}`,
+                      color: `white`
+                    }}
+                  >
+                    {asset?.status === 'OPERATIONAL' ? t('operational') : t('down')}
+                  </LabelWrapper>}
+                </Stack>
               </Grid>
               {informationFields.map((field) => (
                 <BasicField
