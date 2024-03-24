@@ -25,14 +25,16 @@ import { IField } from '../../type';
 interface TasksProps {
   tasksProps: Task[];
   workOrderId: number;
+  disabled: boolean;
   handleZoomImage: (images: string[], image: string) => void;
 }
 
 export default function Tasks({
-  tasksProps,
-  workOrderId,
-  handleZoomImage
-}: TasksProps) {
+                                tasksProps,
+                                workOrderId,
+                                handleZoomImage,
+                                disabled
+                              }: TasksProps) {
   const { t }: { t: any } = useTranslation();
   const [openSelectImages, setOpenSelectImages] = useState<boolean>(false);
   const initialNotes = new Map();
@@ -89,10 +91,12 @@ export default function Tasks({
       }
     );
   }
+
   function handleSelectImages(id: number) {
     setCurrentTask(tasks.find((task) => task.id === id));
     setOpenSelectImages(true);
   }
+
   const onImageUploadSuccess = () => {
     setOpenSelectImages(false);
     showSnackBar(t('images_add_task_success'), 'success');
@@ -140,7 +144,8 @@ export default function Tasks({
             validation={Yup.object().shape(shape)}
             submitText={t('add')}
             values={{}}
-            onChange={({ field, e }) => {}}
+            onChange={({ field, e }) => {
+            }}
             onSubmit={async (values) => {
               return dispatch(addFiles(values.images, 'IMAGE', currentTask.id))
                 .then(onImageUploadSuccess)
@@ -167,6 +172,7 @@ export default function Tasks({
           {tasks.map((task) => (
             <SingleTask
               key={task.id}
+              disabled={disabled}
               task={task}
               handleChange={handleChange}
               handleNoteChange={handleNoteChange}

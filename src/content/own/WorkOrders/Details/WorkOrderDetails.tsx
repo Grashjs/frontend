@@ -22,14 +22,7 @@ import {
   useTheme
 } from '@mui/material';
 import WorkOrder from '../../../../models/owns/workOrder';
-import {
-  ChangeEvent,
-  Fragment,
-  useContext,
-  useEffect,
-  useMemo,
-  useState
-} from 'react';
+import { ChangeEvent, Fragment, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
@@ -46,26 +39,11 @@ import { useDispatch, useSelector } from '../../../../store';
 import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
 import SelectParts from '../../components/form/SelectParts';
 import ImageViewer from 'react-simple-image-viewer';
-import {
-  editPartQuantity,
-  editWOPartQuantities,
-  getPartQuantitiesByWorkOrder
-} from '../../../../slices/partQuantity';
+import { editPartQuantity, editWOPartQuantities, getPartQuantitiesByWorkOrder } from '../../../../slices/partQuantity';
 import Labor from '../../../../models/owns/labor';
-import {
-  controlTimer,
-  deleteLabor,
-  editLabor,
-  getLabors
-} from '../../../../slices/labor';
-import {
-  durationToHours,
-  getHoursAndMinutesAndSeconds
-} from '../../../../utils/formatters';
-import {
-  deleteAdditionalCost,
-  getAdditionalCosts
-} from '../../../../slices/additionalCost';
+import { controlTimer, deleteLabor, editLabor, getLabors } from '../../../../slices/labor';
+import { durationToHours, getHoursAndMinutesAndSeconds } from '../../../../utils/formatters';
+import { deleteAdditionalCost, getAdditionalCosts } from '../../../../slices/additionalCost';
 import { getTasksByWorkOrder } from '../../../../slices/task';
 import { Task } from '../../../../models/owns/tasks';
 import { getWorkOrderHistories } from '../../../../slices/workOrderHistory';
@@ -74,11 +52,7 @@ import { CustomSnackBarContext } from '../../../../contexts/CustomSnackBarContex
 import { deleteRelation, getRelations } from '../../../../slices/relation';
 import Relation, { relationTypes } from '../../../../models/owns/relation';
 import { CompanySettingsContext } from '../../../../contexts/CompanySettingsContext';
-import {
-  getAssetUrl,
-  getPreventiveMaintenanceUrl,
-  getUserUrl
-} from '../../../../utils/urlPaths';
+import { getAssetUrl, getPreventiveMaintenanceUrl, getUserUrl } from '../../../../utils/urlPaths';
 import CompleteWOModal from './CompleteWOModal';
 import useAuth from '../../../../hooks/useAuth';
 import { PermissionEntity } from '../../../../models/owns/role';
@@ -93,6 +67,7 @@ interface WorkOrderDetailsProps {
   onDelete: (id: number) => void;
   tasks: Task[];
 }
+
 export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
   const { workOrder, onEdit, tasks, onDelete } = props;
   const theme = useTheme();
@@ -278,7 +253,7 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
         feedback: feedback ?? null,
         signature: signatureId ? { id: signatureId } : null
       })
-    ).then(()=>dispatch(getLabors(workOrder?.id))).finally(() => setChangingStatus(false));
+    ).then(() => dispatch(getLabors(workOrder?.id))).finally(() => setChangingStatus(false));
   };
   const groupRelations = (
     relations: Relation[]
@@ -373,11 +348,11 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
       .finally(() => setSavingPrimaryTime(false));
   };
   const BasicField = ({
-    label,
-    value,
-    id,
-    type
-  }: {
+                        label,
+                        value,
+                        id,
+                        type
+                      }: {
     label: string | number;
     value: string | number;
     type?: string;
@@ -413,47 +388,47 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
     type?: 'location' | 'asset' | 'team';
     id?: number;
   }[] => [
-      {
-        label: t('id'),
-        value: workOrder.id
-      },
-      {
-        label: t('due_date'),
-        value: getFormattedDate(workOrder.dueDate)
-      },
-      {
-        label: t('estimated_duration'),
-        value: !!workOrder.estimatedDuration
-          ? t('estimated_hours_in_text', { hours: workOrder.estimatedDuration })
-          : null
-      },
-      {
-        label: t('category'),
-        value: workOrder.category?.name
-      },
-      {
-        label: t('location'),
-        value: workOrder.location?.name,
-        type: 'location',
-        id: workOrder.location?.id
-      },
-      {
-        label: t('asset'),
-        value: workOrder.asset?.name,
-        type: 'asset',
-        id: workOrder.asset?.id
-      },
-      {
-        label: t('team'),
-        value: workOrder.team?.name,
-        type: 'team',
-        id: workOrder.team?.id
-      },
-      {
-        label: t('created_at'),
-        value: getFormattedDate(workOrder.createdAt)
-      }
-    ];
+    {
+      label: t('id'),
+      value: workOrder.id
+    },
+    {
+      label: t('due_date'),
+      value: getFormattedDate(workOrder.dueDate)
+    },
+    {
+      label: t('estimated_duration'),
+      value: !!workOrder.estimatedDuration
+        ? t('estimated_hours_in_text', { hours: workOrder.estimatedDuration })
+        : null
+    },
+    {
+      label: t('category'),
+      value: workOrder.category?.name
+    },
+    {
+      label: t('location'),
+      value: workOrder.location?.name,
+      type: 'location',
+      id: workOrder.location?.id
+    },
+    {
+      label: t('asset'),
+      value: workOrder.asset?.name,
+      type: 'asset',
+      id: workOrder.asset?.id
+    },
+    {
+      label: t('team'),
+      value: workOrder.team?.name,
+      type: 'team',
+      id: workOrder.team?.id
+    },
+    {
+      label: t('created_at'),
+      value: getFormattedDate(workOrder.createdAt)
+    }
+  ];
   return (
     <Grid
       container
@@ -886,6 +861,7 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
                   tasksProps={tasks}
                   workOrderId={workOrder?.id}
                   handleZoomImage={setImageState}
+                  disabled={!hasEditPermission(PermissionEntity.WORK_ORDERS, workOrder)}
                 />
               </Box>
             )}
@@ -925,18 +901,18 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
                               PermissionEntity.WORK_ORDERS,
                               workOrder
                             ) && (
-                                <IconButton
-                                  sx={{ ml: 1 }}
-                                  onClick={() =>
-                                    dispatch(deleteLabor(workOrder.id, labor.id))
-                                  }
-                                >
-                                  <DeleteTwoToneIcon
-                                    fontSize="small"
-                                    color="error"
-                                  />
-                                </IconButton>
-                              )}
+                              <IconButton
+                                sx={{ ml: 1 }}
+                                onClick={() =>
+                                  dispatch(deleteLabor(workOrder.id, labor.id))
+                                }
+                              >
+                                <DeleteTwoToneIcon
+                                  fontSize="small"
+                                  color="error"
+                                />
+                              </IconButton>
+                            )}
                           </Box>
                         }
                       >
@@ -956,8 +932,8 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
                             </>
                           }
                           secondary={`${getHoursAndMinutesAndSeconds(labor.duration)[0]
-                            }h ${getHoursAndMinutesAndSeconds(labor.duration)[1]
-                            }m`}
+                          }h ${getHoursAndMinutesAndSeconds(labor.duration)[1]
+                          }m`}
                         />
                       </ListItem>
                     ))}
@@ -1036,23 +1012,23 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
                                 PermissionEntity.WORK_ORDERS,
                                 workOrder
                               ) && (
-                                  <IconButton
-                                    sx={{ ml: 1 }}
-                                    onClick={() =>
-                                      dispatch(
-                                        deleteAdditionalCost(
-                                          workOrder.id,
-                                          additionalCost.id
-                                        )
+                                <IconButton
+                                  sx={{ ml: 1 }}
+                                  onClick={() =>
+                                    dispatch(
+                                      deleteAdditionalCost(
+                                        workOrder.id,
+                                        additionalCost.id
                                       )
-                                    }
-                                  >
-                                    <DeleteTwoToneIcon
-                                      fontSize="small"
-                                      color="error"
-                                    />
-                                  </IconButton>
-                                )}
+                                    )
+                                  }
+                                >
+                                  <DeleteTwoToneIcon
+                                    fontSize="small"
+                                    color="error"
+                                  />
+                                </IconButton>
+                              )}
                             </Box>
                           }
                         >
@@ -1130,22 +1106,22 @@ export default function WorkOrderDetails(props: WorkOrderDetailsProps) {
                     PermissionEntity.WORK_ORDERS,
                     workOrder
                   ) && (
-                      <SelectParts
-                        selected={partQuantities.map(
-                          (partQuantity) => partQuantity.part.id
-                        )}
-                        onChange={(selectedParts) => {
-                          dispatch(
-                            editWOPartQuantities(
-                              workOrder.id,
-                              selectedParts.map((part) => part.id)
-                            )
-                          ).catch((error) =>
-                            showSnackBar(t('not_enough_part'), 'error')
-                          );
-                        }}
-                      />
-                    )}
+                    <SelectParts
+                      selected={partQuantities.map(
+                        (partQuantity) => partQuantity.part.id
+                      )}
+                      onChange={(selectedParts) => {
+                        dispatch(
+                          editWOPartQuantities(
+                            workOrder.id,
+                            selectedParts.map((part) => part.id)
+                          )
+                        ).catch((error) =>
+                          showSnackBar(t('not_enough_part'), 'error')
+                        );
+                      }}
+                    />
+                  )}
                 </Fragment>
               )}
             </Box>

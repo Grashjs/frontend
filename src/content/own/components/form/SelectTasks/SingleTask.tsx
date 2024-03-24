@@ -31,6 +31,7 @@ import { PlanFeature } from '../../../../../models/owns/subscriptionPlan';
 interface SingleTaskProps {
   task: Task;
   preview?: boolean;
+  disabled?: boolean;
   handleChange?: (value: string | number, id: number) => void;
   handleSaveNotes?: (value: string, id: number) => Promise<void>;
   handleNoteChange?: (value: string, id: number) => void;
@@ -39,17 +40,19 @@ interface SingleTaskProps {
   toggleNotes?: (id: number) => void;
   notes?: Map<number, boolean>;
 }
+
 export default function SingleTask({
-  task,
-  handleChange,
-  handleNoteChange,
-  handleSaveNotes,
-  preview,
-  toggleNotes,
-  notes,
-  handleSelectImages,
-  handleZoomImage
-}: SingleTaskProps) {
+                                     task,
+                                     handleChange,
+                                     handleNoteChange,
+                                     handleSaveNotes,
+                                     preview,
+                                     toggleNotes,
+                                     notes,
+                                     handleSelectImages,
+                                     handleZoomImage,
+                                     disabled
+                                   }: SingleTaskProps) {
   const theme = useTheme();
   const { t }: { t: any } = useTranslation();
   const navigate = useNavigate();
@@ -116,14 +119,14 @@ export default function SingleTask({
               value={
                 preview
                   ? getOptions(task.taskBase.taskType, task.taskBase.options)[0]
-                      .value
+                    .value
                   : task.value
               }
               onChange={(event) =>
                 !preview && handleChange(event.target.value, task.id)
               }
               sx={{ backgroundColor: 'white' }}
-              disabled={task.taskBase.user && task.taskBase.user.id !== user.id}
+              disabled={(task.taskBase.user && task.taskBase.user.id !== user.id) || disabled}
             >
               {getOptions(task.taskBase.taskType, task.taskBase.options).map(
                 (option) => (
@@ -140,7 +143,7 @@ export default function SingleTask({
                 defaultValue={task.value}
                 label={t('value')}
                 disabled={
-                  task.taskBase.user && task.taskBase.user.id !== user.id
+                  (task.taskBase.user && task.taskBase.user.id !== user.id) || disabled
                 }
                 type={
                   task.taskBase.taskType === 'METER'
@@ -176,7 +179,7 @@ export default function SingleTask({
             placement="top"
             title={t(
               hasCreatePermission(PermissionEntity.FILES) &&
-                hasFeature(PlanFeature.FILE)
+              hasFeature(PlanFeature.FILE)
                 ? 'Attach Images'
                 : 'Upgrade to attach Images'
             )}
@@ -185,7 +188,7 @@ export default function SingleTask({
               <IconButton
                 onClick={() => handleSelectImages(task.id)}
                 disabled={
-                  preview ||
+                  preview || disabled ||
                   !(
                     hasCreatePermission(PermissionEntity.FILES) &&
                     hasFeature(PlanFeature.FILE)
@@ -247,7 +250,7 @@ export default function SingleTask({
             sx={{ mt: 1 }}
             variant="contained"
             startIcon={savingNotes ? <CircularProgress size="1rem" /> : null}
-            disabled={savingNotes}
+            disabled={savingNotes || disabled}
             onClick={() => {
               setSavingNotes(true);
               handleSaveNotes(task.notes, task.id).finally(() =>
