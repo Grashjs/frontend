@@ -28,6 +28,7 @@ import { revertAll } from 'src/utils/redux';
 import Meter from '../models/owns/meter';
 import Asset, { AssetDTO } from '../models/owns/asset';
 import Location from '../models/owns/location';
+import { useZendesk } from 'react-use-zendesk';
 
 interface AuthState {
   isInitialized: boolean;
@@ -462,6 +463,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
   const globalDispatch = useDispatch();
   const { children } = props;
   const [state, dispatch] = useReducer(reducer, initialAuthState);
+  const { loginUser: loginZendesk, logoutUser: logoutZendesk } = useZendesk();
   const switchLanguage = ({ lng }: { lng: any }) => {
     internationalization.changeLanguage(lng);
   };
@@ -533,6 +535,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
   const loginInternal = async (accessToken: string) => {
     globalDispatch(revertAll());
     setSession(accessToken);
+    loginZendesk(accessToken);
     const user = await updateUserInfos();
     const company = await api.get<Company>(`companies/${user.companyId}`);
     await setupUser(company.companySettings);
@@ -553,6 +556,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
   };
   const logout = async (): Promise<void> => {
     setSession(null);
+    logoutZendesk();
     //TODO this is not working
     // caches.keys().then((names) => {
     //   names.forEach((name) => {

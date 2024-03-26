@@ -18,6 +18,7 @@ export default function Index() {
     filters: Filter[],
     title: string
   ) => {
+    return;// TODO
     setColumns(columns);
     setFilters(filters);
     setWoModalTitle(title);

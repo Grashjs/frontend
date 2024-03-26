@@ -13,6 +13,8 @@ import { TitleProvider } from 'src/contexts/TitleContext';
 import * as serviceWorker from 'src/serviceWorker';
 import { CompanySettingsProvider } from 'src/contexts/CompanySettingsContext';
 import { AuthProvider } from 'src/contexts/JWTAuthContext';
+import { zendeskKey } from './config';
+import { ZendeskProvider } from 'react-use-zendesk';
 
 ReactDOM.render(
   <HelmetProvider>
@@ -21,11 +23,13 @@ ReactDOM.render(
         <TitleProvider>
           <BrowserRouter>
             <ScrollTop />
-            <AuthProvider>
-              <CompanySettingsProvider>
-                <App />
-              </CompanySettingsProvider>
-            </AuthProvider>
+            <ZendeskProvider apiKey={zendeskKey}>
+              <AuthProvider>
+                <CompanySettingsProvider>
+                  <App />
+                </CompanySettingsProvider>
+              </AuthProvider>
+            </ZendeskProvider>
           </BrowserRouter>
         </TitleProvider>
       </SidebarProvider>
