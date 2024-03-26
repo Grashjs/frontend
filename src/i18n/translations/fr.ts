@@ -1495,7 +1495,9 @@ const frJSON = {
   disable: 'Désactiver',
   manufacturer: 'Fabriquant',
   power: 'Puissance',
-  import_error: 'L\'importation a échoué'
+  import_error: 'L\'importation a échoué',
+  request_upgrade: 'Demander un changement de plan',
+  operation_success: 'L\'opération a réussi'
 };
 
 export default frJSON;

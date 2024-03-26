@@ -1288,7 +1288,9 @@ const trJSON = {
   disable: 'Devre dışı bırakmak',
   manufacturer: 'Üretici',
   power: 'Güç',
-  import_error: 'İçe aktarma başarısız olmadı'
+  import_error: 'İçe aktarma başarısız olmadı',
+  request_upgrade: 'Plan değişikliği talep et',
+  operation_success: 'Operasyon başarılı'
 };
 
 

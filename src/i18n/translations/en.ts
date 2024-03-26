@@ -1348,7 +1348,9 @@ const enJSON = {
   disable: 'Disable',
   manufacturer: 'Manufacturer',
   power: 'Power',
-  import_error: 'The import didn\'t succeed'
+  import_error: 'The import didn\'t succeed',
+  request_upgrade: 'Request upgrade',
+  operation_success: 'The operation is a success'
 };
 
 export default enJSON;

@@ -4,7 +4,7 @@ import { randomInt } from '../../../../utils/generators';
 import {
   Box,
   Button,
-  Card,
+  Card, CircularProgress,
   FormControlLabel,
   Grid,
   Link,
@@ -28,6 +28,7 @@ import { SubscriptionPlan } from '../../../../models/owns/subscriptionPlan';
 import { useNavigate } from 'react-router-dom';
 import { CompanySettingsContext } from '../../../../contexts/CompanySettingsContext';
 import { Order } from '../../../../models/owns/fastspring';
+import api from '../../../../utils/api';
 
 function SubscriptionPlans() {
   const { t }: { t: any } = useTranslation();
@@ -46,6 +47,7 @@ function SubscriptionPlans() {
   const { setTitle } = useContext(TitleContext);
   const { showSnackBar } = useContext(CustomSnackBarContext);
   const { getFormattedCurrency } = useContext(CompanySettingsContext);
+  const [submitting, setSubmitting] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -99,7 +101,28 @@ function SubscriptionPlans() {
       checkout: true
     });
   };
-
+  const onUpgradeRequest = async () => {
+    setSubmitting(true);
+    const payload = {
+      code: selectedPlanObject.code,
+      monthly: period === 'monthly'
+    };
+    try {
+      const { success } = await api.post<{ success: boolean }>(
+        'subscriptions/request-upgrade',
+        payload
+      );
+      if (success) {
+        showSnackBar(t('operation_success'), 'success');
+        return;
+      }
+    } catch (err) {
+      showSnackBar(t('failure'), 'error');
+      return;
+    } finally {
+      setSubmitting(false);
+    }
+  };
   useEffect(() => {
     const onNewOrder = (order: Order) => {
       setUsersCount(order.items[0].quantity);
@@ -162,8 +185,8 @@ function SubscriptionPlans() {
     );
     return selectedPlanData
       ? selectedPlanData[
-          period == 'monthly' ? 'monthlyCostPerUser' : 'yearlyCostPerUser'
-        ] * usersCount
+      period == 'monthly' ? 'monthlyCostPerUser' : 'yearlyCostPerUser'
+      ] * usersCount
       : 0;
   };
 
@@ -172,7 +195,7 @@ function SubscriptionPlans() {
     navigate('/app/work-orders');
   };
   const onSubcriptionPatchFailure = () => {
-    showSnackBar(t("The Subscription couldn't be changed"), 'error');
+    showSnackBar(t('The Subscription couldn\'t be changed'), 'error');
   };
 
   if (user.ownsCompany)
@@ -383,12 +406,13 @@ function SubscriptionPlans() {
                       : t('yearly_adverb')}
                   </Typography>
                   <Button
-                    onClick={buyProduct}
+                    onClick={onUpgradeRequest}
                     size="large"
                     variant="contained"
-                    disabled={!selectedPlan}
+                    startIcon={submitting && <CircularProgress size="1rem" />}
+                    disabled={!selectedPlan || submitting}
                   >
-                    {t('proceed_to_payment')}
+                    {t('request_upgrade')}
                   </Button>
                 </Box>
               </Card>
