@@ -310,8 +310,7 @@ function Files() {
   const onQueryChange = (event) => {
     onSearchQueryChange<WorkOrder>(event, criteria, setCriteria, [
       'title',
-      'description',
-      'feedback'
+      'description'
     ]);
   };
   const debouncedQueryChange = useMemo(() => debounce(onQueryChange, 1300), []);
