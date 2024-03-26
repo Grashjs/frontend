@@ -1350,7 +1350,8 @@ const enJSON = {
   power: 'Power',
   import_error: 'The import didn\'t succeed',
   request_upgrade: 'Request upgrade',
-  operation_success: 'The operation is a success'
+  operation_success: 'The operation is a success',
+  CANCELLED: 'Rejected'
 };
 
 export default enJSON;

@@ -1497,7 +1497,8 @@ const frJSON = {
   power: 'Puissance',
   import_error: 'L\'importation a échoué',
   request_upgrade: 'Demander un changement de plan',
-  operation_success: 'L\'opération a réussi'
+  operation_success: 'L\'opération a réussi',
+  CANCELLED: 'Rejeté'
 };
 
 export default frJSON;

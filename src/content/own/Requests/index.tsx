@@ -2,16 +2,16 @@ import { Helmet } from 'react-helmet-async';
 import {
   Box,
   Button,
-  Card,
+  Card, debounce,
   Dialog,
   DialogContent,
-  DialogTitle,
+  DialogTitle, Divider,
   Drawer,
-  Grid,
+  Grid, Stack,
   Typography
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { TitleContext } from '../../../contexts/TitleContext';
 import {
   addRequest,
@@ -47,10 +47,18 @@ import { getWOBaseFields, getWOBaseValues } from '../../../utils/woBase';
 import { PermissionEntity } from '../../../models/owns/role';
 import PermissionErrorMessage from '../components/PermissionErrorMessage';
 import NoRowsMessageWrapper from '../components/NoRowsMessageWrapper';
-import { getImageAndFiles } from '../../../utils/overall';
-import { SearchCriteria } from '../../../models/owns/page';
+import { getImageAndFiles, onSearchQueryChange } from '../../../utils/overall';
+import { FilterField, SearchCriteria } from '../../../models/owns/page';
 import { useGridApiRef } from '@mui/x-data-grid-pro';
 import useGridStatePersist from '../../../hooks/useGridStatePersist';
+import _ from 'lodash';
+import FilterAltTwoToneIcon from '@mui/icons-material/FilterAltTwoTone';
+import EnumFilter from '../WorkOrders/Filters/EnumFilter';
+import SignalCellularAltTwoToneIcon from '@mui/icons-material/SignalCellularAltTwoTone';
+import CircleTwoToneIcon from '@mui/icons-material/CircleTwoTone';
+import SearchInput from '../components/SearchInput';
+import * as React from 'react';
+import WorkOrder from '../../../models/owns/workOrder';
 
 function Files() {
   const { t }: { t: any } = useTranslation();
@@ -74,8 +82,24 @@ function Files() {
     (state) => state.requests
   );
   const [openDrawerFromUrl, setOpenDrawerFromUrl] = useState<boolean>(false);
+  const defaultFilterFields: FilterField[] = [
+    {
+      field: 'priority',
+      operation: 'in',
+      values: [],
+      value: '',
+      enumName: 'PRIORITY'
+    },
+    {
+      field: 'status',
+      operation: 'in',
+      values: ['APPROVED', 'CANCELLED', 'PENDING'],
+      value: '',
+      enumName: 'STATUS'
+    }
+  ];
   const [criteria, setCriteria] = useState<SearchCriteria>({
-    filterFields: [],
+    filterFields: defaultFilterFields,
     pageSize: 10,
     pageNum: 0,
     direction: 'DESC'
@@ -283,6 +307,20 @@ function Files() {
 
     return [fields, shape];
   };
+  const onQueryChange = (event) => {
+    onSearchQueryChange<WorkOrder>(event, criteria, setCriteria, [
+      'title',
+      'description',
+      'feedback'
+    ]);
+  };
+  const debouncedQueryChange = useMemo(() => debounce(onQueryChange, 1300), []);
+
+  const onFilterChange = (newFilters: FilterField[]) => {
+    const newCriteria = { ...criteria };
+    newCriteria.filterFields = newFilters;
+    setCriteria(newCriteria);
+  };
   const renderAddModal = () => (
     <Dialog
       fullWidth
@@ -451,11 +489,34 @@ function Files() {
               sx={{
                 p: 2,
                 display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between'
+                flexDirection: 'column',
+                alignItems: 'center'
               }}
             >
+              <Stack
+                sx={{ ml: 1 }}
+                direction="row"
+                spacing={1}
+                justifyContent={'flex-start'}
+                width={'95%'}
+              >
+                <EnumFilter
+                  filterFields={criteria.filterFields}
+                  onChange={onFilterChange}
+                  completeOptions={['NONE', 'LOW', 'MEDIUM', 'HIGH']}
+                  fieldName="priority"
+                  icon={<SignalCellularAltTwoToneIcon />}
+                />
+                <EnumFilter
+                  filterFields={criteria.filterFields}
+                  onChange={onFilterChange}
+                  completeOptions={['APPROVED', 'CANCELLED', 'PENDING']}
+                  fieldName="status"
+                  icon={<CircleTwoToneIcon />}
+                />
+                <SearchInput onChange={debouncedQueryChange} />
+              </Stack>
+              <Divider sx={{ mt: 1 }} />
               <Box sx={{ width: '95%' }}>
                 <CustomDataGrid
                   apiRef={apiRef}

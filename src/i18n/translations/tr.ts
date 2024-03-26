@@ -1290,7 +1290,8 @@ const trJSON = {
   power: 'Güç',
   import_error: 'İçe aktarma başarısız olmadı',
   request_upgrade: 'Plan değişikliği talep et',
-  operation_success: 'Operasyon başarılı'
+  operation_success: 'Operasyon başarılı',
+  CANCELLED: 'Reddedilmiş'
 };
 
 
