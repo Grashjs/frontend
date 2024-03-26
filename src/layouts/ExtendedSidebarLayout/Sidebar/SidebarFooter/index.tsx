@@ -33,7 +33,7 @@ const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
 function SidebarFooter() {
   const { t }: { t: any } = useTranslation();
   const theme = useTheme();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async (): Promise<void> => {
@@ -54,7 +54,7 @@ function SidebarFooter() {
       alignItems="center"
       justifyContent="center"
     >
-      <LightTooltip placement="top" arrow title={t('upgrade_now')}>
+      {user.ownsCompany && <LightTooltip placement="top" arrow title={t('upgrade_now')}>
         <IconButton
           sx={{
             background: `${theme.colors.alpha.trueWhite[10]}`,
@@ -72,6 +72,7 @@ function SidebarFooter() {
           <UpgradeTwoToneIcon fontSize="small" />
         </IconButton>
       </LightTooltip>
+      }
       <LightTooltip placement="top" arrow title={t('wo_calendar')}>
         <IconButton
           sx={{
