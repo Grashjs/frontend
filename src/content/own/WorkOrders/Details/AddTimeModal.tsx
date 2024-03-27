@@ -15,11 +15,12 @@ interface AddTimeProps {
   onClose: () => void;
   workOrderId: number;
 }
+
 export default function AddTimeModal({
-  open,
-  onClose,
-  workOrderId
-}: AddTimeProps) {
+                                       open,
+                                       onClose,
+                                       workOrderId
+                                     }: AddTimeProps) {
   const { t }: { t: any } = useTranslation();
   const dispatch = useDispatch();
   const { hasFeature } = useAuth();
@@ -77,7 +78,8 @@ export default function AddTimeModal({
   ];
   const shape = {
     hours: Yup.number().required(t('required_hours')),
-    minutes: Yup.number().required(t('required_minutes'))
+    minutes: Yup.number().required(t('required_minutes')),
+    startedAt: Yup.date().required(t('required_field'))
   };
   return (
     <Dialog fullWidth maxWidth="sm" open={open} onClose={onClose}>
@@ -103,7 +105,8 @@ export default function AddTimeModal({
             validation={Yup.object().shape(shape)}
             submitText={t('add')}
             values={{ includeToTotalTime: true }}
-            onChange={({ field, e }) => {}}
+            onChange={({ field, e }) => {
+            }}
             onSubmit={async (values) => {
               const formattedValues = { ...values };
               formattedValues.assignedTo = formatSelect(

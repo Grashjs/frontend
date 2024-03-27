@@ -36,8 +36,10 @@ import ConfirmDialog from '../../components/ConfirmDialog';
 import AssetMeters from './AssetMeters';
 import { getImageAndFiles } from '../../../../utils/overall';
 import AssetDowntimes from './AssetDowntimes';
+import AssetAnalytics from './AssetAnalytics';
 
-interface PropsType {}
+interface PropsType {
+}
 
 const ShowAsset = ({}: PropsType) => {
   const { t }: { t: any } = useTranslation();
@@ -83,7 +85,8 @@ const ShowAsset = ({}: PropsType) => {
     { value: 'parts', label: t('parts') },
     { value: 'files', label: t('files') },
     { value: 'meters', label: t('meters') },
-    { value: 'downtimes', label: t('downtimes') }
+    { value: 'downtimes', label: t('downtimes') },
+    { value: 'analytics', label: t('analytics') }
   ];
   const tabIndex = tabs.findIndex((tab) => tab.value === arr[arr.length - 1]);
   const onDeleteSuccess = () => {
@@ -129,17 +132,17 @@ const ShowAsset = ({}: PropsType) => {
       multiple: true
     },
     {
-      name: "manufacturer",
-      type: "text",
-      label: t("manufacturer"),
-      placeholder: t("manufacturer"),
+      name: 'manufacturer',
+      type: 'text',
+      label: t('manufacturer'),
+      placeholder: t('manufacturer'),
       midWidth: true
     },
     {
-      name: "power",
-      type: "text",
-      label: t("power"),
-      placeholder: t("power"),
+      name: 'power',
+      type: 'text',
+      label: t('power'),
+      placeholder: t('power'),
       midWidth: true
     },
     {
@@ -312,21 +315,21 @@ const ShowAsset = ({}: PropsType) => {
               ...asset,
               location: asset?.location
                 ? {
-                    label: asset?.location.name,
-                    value: asset?.location.id
-                  }
+                  label: asset?.location.name,
+                  value: asset?.location.id
+                }
                 : null,
               category: asset?.category
                 ? {
-                    label: asset.category.name,
-                    value: asset.category.id
-                  }
+                  label: asset.category.name,
+                  value: asset.category.id
+                }
                 : null,
               primaryUser: asset?.primaryUser
                 ? {
-                    label: `${asset?.primaryUser.firstName} ${asset?.primaryUser.lastName}`,
-                    value: asset?.primaryUser.id
-                  }
+                  label: `${asset?.primaryUser.firstName} ${asset?.primaryUser.lastName}`,
+                  value: asset?.primaryUser.id
+                }
                 : null,
               assignedTo: asset?.assignedTo?.map((user) => {
                 return {
@@ -361,12 +364,13 @@ const ShowAsset = ({}: PropsType) => {
                 }) ?? [],
               parentAsset: asset?.parentAsset
                 ? {
-                    label: asset.parentAsset.name,
-                    value: asset.parentAsset.id
-                  }
+                  label: asset.parentAsset.name,
+                  value: asset.parentAsset.id
+                }
                 : null
             }}
-            onChange={({ field, e }) => {}}
+            onChange={({ field, e }) => {
+            }}
             onSubmit={async (values) => {
               let formattedValues = formatAssetValues(values);
               const files = formattedValues.files.find((file) => file.id)
@@ -434,7 +438,8 @@ const ShowAsset = ({}: PropsType) => {
           ) : tabIndex === 4 ? (
             <AssetMeters asset={asset} />
           ) : (
-            tabIndex === 5 && <AssetDowntimes asset={asset} />
+            tabIndex === 5 ? <AssetDowntimes asset={asset} /> :
+              tabIndex === 6 && <AssetAnalytics id={Number(assetId)} />
           )
         ) : null}
         <ConfirmDialog

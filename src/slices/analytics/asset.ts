@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { AppThunk } from 'src/store';
 import api from '../../utils/api';
 import {
+  AssetOverview,
   AssetOverviewStats,
   AssetsCost,
   DowntimesAndCostsByAsset,
@@ -16,6 +17,7 @@ import {
 import { revertAll } from 'src/utils/redux';
 
 const basePath = 'analytics/assets';
+
 interface AssetStatstate {
   overview: AssetOverviewStats;
   completeTimeCostByAsset: TimeCostByAsset[];
@@ -26,8 +28,10 @@ interface AssetStatstate {
   downtimesMeantimeByMonth: DowntimesMeantimeByMonth[];
   meantimes: Meantimes;
   repairTimeByAsset: RepairTimeByAsset[];
+  assetDetailsOverview: AssetOverview;
   loading: Omit<Record<keyof AssetStatstate, boolean>, 'loading'>;
 }
+
 type Operation = keyof AssetStatstate;
 
 const initialState: AssetStatstate = {
@@ -48,6 +52,13 @@ const initialState: AssetStatstate = {
   downtimesMeantimeByMonth: [],
   meantimes: { betweenDowntimes: 0, betweenMaintenances: 0 },
   repairTimeByAsset: [],
+  assetDetailsOverview: {
+    mtbf: 0,
+    mttr: 0,
+    downtime: 0,
+    uptime: 0,
+    totalCost: 0
+  },
   loading: {
     completeTimeCostByAsset: false,
     overview: false,
@@ -57,7 +68,8 @@ const initialState: AssetStatstate = {
     downtimesByMonth: false,
     downtimesMeantimeByMonth: false,
     meantimes: false,
-    repairTimeByAsset: false
+    repairTimeByAsset: false,
+    assetDetailsOverview: false
   }
 };
 
@@ -129,6 +141,13 @@ const slice = createSlice({
       const { stats } = action.payload;
       state.repairTimeByAsset = stats;
     },
+    getAssetDetailsOverview(
+      state: AssetStatstate,
+      action: PayloadAction<{ stats: AssetOverview }>
+    ) {
+      const { stats } = action.payload;
+      state.assetDetailsOverview = stats;
+    },
     setLoading(
       state: AssetStatstate,
       action: PayloadAction<{ loading: boolean; operation: Operation }>
@@ -169,6 +188,22 @@ export const getAssetOverview = (): AppThunk => async (dispatch) => {
   dispatch(
     slice.actions.setLoading({
       operation: 'overview',
+      loading: false
+    })
+  );
+};
+export const getAssetDetailsOverview = (id: number, start: Date, end: Date): AppThunk => async (dispatch) => {
+  dispatch(
+    slice.actions.setLoading({
+      operation: 'assetDetailsOverview',
+      loading: true
+    })
+  );
+  const stats = await api.post<AssetOverview>(`${basePath}/${id}/overview`, { start, end });
+  dispatch(slice.actions.getAssetDetailsOverview({ stats }));
+  dispatch(
+    slice.actions.setLoading({
+      operation: 'assetDetailsOverview',
       loading: false
     })
   );
