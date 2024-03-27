@@ -1291,7 +1291,9 @@ const trJSON = {
   import_error: 'İçe aktarma başarısız olmadı',
   request_upgrade: 'Plan değişikliği talep et',
   operation_success: 'Operasyon başarılı',
-  CANCELLED: 'Reddedilmiş'
+  CANCELLED: 'Reddedilmiş',
+  uptime_hours: 'Kullanılabilirlik(saat)',
+  downtime_hours: 'Kesinti süresi(saat)'
 };
 
 

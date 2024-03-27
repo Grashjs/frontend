@@ -82,11 +82,11 @@ const AssetDowntimes = ({ id }: PropsType) => {
       value: assetDetailsOverview.mttr.toString()
     },
     {
-      label: t('downtime'),
+      label: t('downtime_hours'),
       value: (assetDetailsOverview.downtime / 3600).toFixed(2)
     },
     {
-      label: t('uptime'),
+      label: t('uptime_hours'),
       value: (assetDetailsOverview.uptime / 3600).toFixed(2)
     },
     {

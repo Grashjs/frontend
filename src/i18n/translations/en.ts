@@ -1351,7 +1351,9 @@ const enJSON = {
   import_error: 'The import didn\'t succeed',
   request_upgrade: 'Request upgrade',
   operation_success: 'The operation is a success',
-  CANCELLED: 'Rejected'
+  CANCELLED: 'Rejected',
+  uptime_hours: 'Uptime(h)',
+  downtime_hours: 'Downtime(h)'
 };
 
 export default enJSON;

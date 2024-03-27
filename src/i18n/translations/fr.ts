@@ -1498,7 +1498,9 @@ const frJSON = {
   import_error: 'L\'importation a échoué',
   request_upgrade: 'Demander un changement de plan',
   operation_success: 'L\'opération a réussi',
-  CANCELLED: 'Rejeté'
+  CANCELLED: 'Rejeté',
+  uptime_hours: 'Disponibilité(h)',
+  downtime_hours: 'Temps d\'arrêt(h)'
 };
 
 export default frJSON;
